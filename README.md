@@ -95,19 +95,4 @@ This runs the script defined in `server/package.json` (`node server.js`) and sho
 - If the server fails to connect to DB, verify `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, and that MySQL is running and accepting TCP connections.
 - If you see ESM import errors, ensure Node version supports ESM and `package.json` has `"type": "module"` (already present).
 
-## Next steps / recommended improvements
-
-- Add a `.env.example` to document env variables.
-- Add database migrations with `sequelize-cli` instead of using `sync` in production.
-- Add unit/integration tests and a `test` script.
-- Add a small README for the `client/` folder (if there is a front-end).
-
 ---
-
-Created to help run and develop the project locally. If you want, I can:
-
-- Add a `.env.example` file with the expected variables
-- Add a `Makefile` or npm scripts for `dev`/`migrate`/`seed`
-- Detect and document the default server port from `server/server.js`
-
-Tell me which follow-up you'd like next.
