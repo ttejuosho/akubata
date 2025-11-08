@@ -1,0 +1,94 @@
+USE akubata;
+
+-- Supplier Data Seed
+INSERT INTO Suppliers (supplierId, companyName, contactName, contactEmail, contactPhone, address, city, state, country, createdAt, updatedAt) VALUES
+('b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', 'Ally Pharma', 'Ally McBeal', 'ally.mcbeal@allypharma.com', '3468820922', '1200 E Ozzy Street', 'Hillside', 'Illinois', 'USA', NOW(), NOW()),
+('9d2b94c4-8c88-4f4d-a5c0-8a9b9a7e4102', 'Medline Corp', 'Derek Watson', 'derek.watson@medlinecorp.com', '3125558711', '220 North River Rd', 'Rosemont', 'Illinois', 'USA', NOW(), NOW()),
+('e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03', 'HealthFirst Supply', 'Rachel Green', 'rachel.green@healthfirst.com', '9175552212', '45 Hudson Ave', 'Brooklyn', 'New York', 'USA', NOW(), NOW()),
+('6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04', 'PureMed Distributors', 'Chris Nolan', 'chris.nolan@puremed.com', '4698821002', '303 Elm Drive', 'Plano', 'Texas', 'USA', NOW(), NOW()),
+('3a0d3f5f-bf81-4b3f-9a20-34b3b8dc4a05', 'GlobalPharm Inc', 'Sophia Lee', 'sophia.lee@globalpharm.com', '2134409283', '1101 Pico Blvd', 'Los Angeles', 'California', 'USA', NOW(), NOW()),
+('a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06', 'Sunrise Medical', 'Brian Thompson', 'brian.thompson@sunrise.com', '4806622391', '550 W Apache Trail', 'Mesa', 'Arizona', 'USA', NOW(), NOW()),
+('7c0d58b5-3e73-4cb3-a0de-2d2e6a4c4a07', 'Elite Pharma', 'Monica Patel', 'monica.patel@elitepharma.com', '3057783499', '2400 Brickell Ave', 'Miami', 'Florida', 'USA', NOW(), NOW()),
+('1a9f2d4d-58d2-4a8e-b91e-6f2a1c3b4a08', 'WellCare Logistics', 'Ethan Brooks', 'ethan.brooks@wellcarelogistics.com', '4029902133', '1010 Farnam St', 'Omaha', 'Nebraska', 'USA', NOW(), NOW()),
+('d9c81c5b-15d3-4c7f-bc67-0a6e6b3a4a09', 'Summit Healthcare', 'Lena Adams', 'lena.adams@summithealthcare.com', '6147728822', '660 High St', 'Columbus', 'Ohio', 'USA', NOW(), NOW()),
+('fe29ac10-3f8b-4f23-8f99-90a1b8e44a10', 'Northstar Pharma', 'Jacob White', 'jacob.white@northstarpharma.com', '6123039911', '2210 University Ave', 'Minneapolis', 'Minnesota', 'USA', NOW(), NOW()),
+('820b6f87-48a3-4c4c-8c8f-90b6f6e44a11', 'Prime Biotech', 'Natalie Cruz', 'natalie.cruz@primebiotech.com', '7138229988', '909 Westheimer Rd', 'Houston', 'Texas', 'USA', NOW(), NOW()),
+('da3f90a9-567c-4b2a-8aa0-8a2b3f4e4a12', 'MediTrust Supply', 'Oscar Rivera', 'oscar.rivera@meditrust.com', '2069205567', '120 Pike St', 'Seattle', 'Washington', 'USA', NOW(), NOW()),
+('ed4c1e32-7b94-45d4-91e3-bb7d4f3f4a13', 'CuraMed Solutions', 'Hannah Kim', 'hannah.kim@curamed.com', '7208812234', '600 17th St', 'Denver', 'Colorado', 'USA', NOW(), NOW()),
+('a72c7812-19a3-42c7-bac1-5c6a1d4f4a14', 'Zenith Pharmaceuticals', 'Michael Ross', 'michael.ross@zenithpharma.com', '3127734488', '355 Michigan Ave', 'Chicago', 'Illinois', 'USA', NOW(), NOW()),
+('fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15', 'TruLife Medical', 'Emma Brown', 'emma.brown@trulifemedical.com', '6159091221', '800 Broadway', 'Nashville', 'Tennessee', 'USA', NOW(), NOW()),
+('b6f9c6f2-91a1-48db-91d4-2b1a4a5f4a16', 'BluePeak Pharma', 'Caleb Harris', 'caleb.harris@bluepeak.com', '8016623311', '177 Main St', 'Salt Lake City', 'Utah', 'USA', NOW(), NOW()),
+('5b9d4c8e-5d5e-46f2-8b7e-7b4a2f4f4a17', 'MedSmart Supply Co.', 'Ava Johnson', 'ava.johnson@medsmart.com', '6179932278', '92 Commonwealth Ave', 'Boston', 'Massachusetts', 'USA', NOW(), NOW()),
+('f7d1b9e0-2a2b-4b1c-93d2-9b7a3a6f4a18', 'Evergreen Health', 'Daniel Clark', 'daniel.clark@evergreen.com', '5038884455', '411 Burnside St', 'Portland', 'Oregon', 'USA', NOW(), NOW()),
+('2e4a6a5f-7f3b-42d1-8b92-0a7b4b7f4a19', 'NextGen Pharma', 'Victoria Lopez', 'victoria.lopez@nextgenpharma.com', '7027713399', '840 Fremont St', 'Las Vegas', 'Nevada', 'USA', NOW(), NOW()),
+('c9b6a1e1-32e9-48af-81f0-3b9a6b8f4a20', 'Integrity Meds', 'Anthony Carter', 'anthony.carter@integritymeds.com', '9196624433', '390 Hillsborough St', 'Raleigh', 'North Carolina', 'USA', NOW(), NOW());
+
+-- Product Data Seed
+-- productId should be UUIDs, change accordingly
+
+INSERT INTO Products (productId, productName, category, description, unitPrice, stockQuantity, supplierId, createdAt, updatedAt) VALUES
+-- Ally Pharma
+('c8f4d1e2-1b8b-4a9a-9b4b-81e7d1e01a01', 'Chebe Hair Cream', 'Hair Products', 'Chebe hair cream for hair growth', 14500, 320, 'b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', NOW(), NOW()),
+('df91a64b-7b2a-43b4-9e7c-15b3b5e91a02', 'Aloe Vera Conditioner', 'Hair Products', 'Natural conditioner infused with aloe vera for smooth hair', 11800, 210, 'b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', NOW(), NOW()),
+
+-- Medline Corp
+('f4b2c7d3-9d31-41b7-b78c-1c6e3d9b1a03', 'Surgical Gloves', 'Medical Supplies', 'Latex-free sterile surgical gloves', 3500, 540, '9d2b94c4-8c88-4f4d-a5c0-8a9b9a7e4102', NOW(), NOW()),
+('d0e5a9f9-68a2-4c87-a1b8-93a7f1e91a04', 'Face Masks', 'Medical Supplies', 'Disposable 3-ply protective masks', 1200, 1200, '9d2b94c4-8c88-4f4d-a5c0-8a9b9a7e4102', NOW(), NOW()),
+
+-- HealthFirst Supply
+('a3e2d9b1-5c73-42f9-8a7a-91e8d4f91a05', 'Vitamin C Tablets', 'Supplements', '1000mg Vitamin C tablets, 100 count', 8900, 460, 'e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03', NOW(), NOW()),
+('b9d4f6c2-22b7-4b9c-8f1d-11e5f1f91a06', 'Omega-3 Capsules', 'Supplements', 'Fish oil capsules for heart health', 13200, 380, 'e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03', NOW(), NOW()),
+
+-- PureMed Distributors
+('efc6a2a3-87a2-4c9e-8221-32b7b9d01a07', 'Paracetamol 500mg', 'Pharmaceuticals', 'Pain relief tablets, 500mg dosage', 4200, 1500, '6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04', NOW(), NOW()),
+('a5f1b4c7-48e9-456b-9b2b-5a2c3b9a1a08', 'Cough Syrup', 'Pharmaceuticals', 'Herbal cough syrup, 100ml bottle', 6800, 670, '6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04', NOW(), NOW()),
+
+-- GlobalPharm Inc
+('d4b1f9e7-6a4e-4729-88f1-41a2b9c01a09', 'Insulin Pen', 'Diabetes Care', 'Pre-filled insulin injection pens', 89000, 110, '3a0d3f5f-bf81-4b3f-9a20-34b3b8dc4a05', NOW(), NOW()),
+('b2a6d9e9-7e2f-4e81-a2c7-55a8b1f91a10', 'Glucose Test Strips', 'Diabetes Care', '100-pack of blood glucose testing strips', 42000, 340, '3a0d3f5f-bf81-4b3f-9a20-34b3b8dc4a05', NOW(), NOW()),
+
+-- Sunrise Medical
+('c1e7d9b8-6d21-49d3-8f1e-4a9f7b3a1a11', 'Blood Pressure Monitor', 'Medical Equipment', 'Automatic digital BP monitor', 49000, 150, 'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06', NOW(), NOW()),
+('f3a2b5c7-1f7d-4e92-b8d1-99f2c3e91a12', 'Infrared Thermometer', 'Medical Equipment', 'Contactless thermometer for fever detection', 17500, 280, 'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06', NOW(), NOW()),
+
+-- Elite Pharma
+('b7d9e1c4-55a1-44af-87f2-2a1f3b7a1a13', 'Pain Relief Gel', 'Topical Medicine', 'Menthol-based gel for muscle pain relief', 8900, 430, '7c0d58b5-3e73-4cb3-a0de-2d2e6a4c4a07', NOW(), NOW()),
+('e6a4b2c7-21f9-4f91-9a7d-3a8e1d7e1a14', 'Antiseptic Cream', 'Topical Medicine', 'Multi-purpose skin antiseptic cream', 7500, 520, '7c0d58b5-3e73-4cb3-a0de-2d2e6a4c4a07', NOW(), NOW()),
+
+-- WellCare Logistics
+('d2a5e8b9-1e7f-4c7a-9f2a-4c2a8d9f1a15', 'Wheelchair', 'Medical Equipment', 'Foldable lightweight wheelchair', 189000, 45, '1a9f2d4d-58d2-4a8e-b91e-6f2a1c3b4a08', NOW(), NOW()),
+('f8b7c9e2-7d4a-44a1-b8a1-7e2d9f3a1a16', 'Walking Cane', 'Medical Equipment', 'Adjustable aluminum walking cane', 12000, 260, '1a9f2d4d-58d2-4a8e-b91e-6f2a1c3b4a08', NOW(), NOW()),
+
+-- Summit Healthcare
+('a4f1c2d7-2b3c-45a1-92f1-1a3f4d5a1a17', 'Antibiotic Ointment', 'Pharmaceuticals', 'Topical antibiotic for wound care', 6200, 380, 'd9c81c5b-15d3-4c7f-bc67-0a6e6b3a4a09', NOW(), NOW()),
+('c7b9e8a2-4f3a-46d2-b9a1-3f4d7a5b1a18', 'Hydrocortisone Cream', 'Pharmaceuticals', 'Anti-itch cream for skin irritation', 7400, 290, 'd9c81c5b-15d3-4c7f-bc67-0a6e6b3a4a09', NOW(), NOW()),
+
+-- Northstar Pharma
+('f9a1b8d4-6c5a-4f1a-92a1-1e3b9f7b1a19', 'Zinc Tablets', 'Supplements', '50mg zinc tablets, immune support', 8800, 470, 'fe29ac10-3f8b-4f23-8f99-90a1b8e44a10', NOW(), NOW()),
+('e4b8c9f7-2f1a-4b3e-8b9d-7a3e1f9a1a20', 'Calcium + D3', 'Supplements', 'Calcium with Vitamin D3 tablets', 9100, 510, 'fe29ac10-3f8b-4f23-8f99-90a1b8e44a10', NOW(), NOW()),
+-- Prime Biotech
+('b1d9e2c3-3a4b-45f1-9a2b-2c3d4e5f1a21', 'Multivitamin Gummies', 'Supplements', 'Kids multivitamin gummies, assorted flavors', 7600, 600, '820b6f87-48a3-4c4c-8c8f-90b6f6e44a11', NOW(), NOW()),
+('d3e4f5a6-5b6c-47d1-8a9b-3c4d5e6f1a22', 'Probiotic Capsules', 'Supplements', 'Digestive health probiotic capsules', 13400, 420, '820b6f87-48a3-4c4c-8c8f-90b6f6e44a11', NOW(), NOW()),
+
+-- Additional Products
+('b52a1b9d-2e4a-47b8-9b1a-832e2473ad01', 'Aspirin 100mg', 'Pain Relief', 'Pain relief tablets used to reduce fever and inflammation', 5.99, 150, 'b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', NOW(), NOW()),
+('e8b79e4f-6d9a-4c3d-9b6e-72c14e68ad02', 'Ibuprofen 200mg', 'Pain Relief', 'Nonsteroidal anti-inflammatory drug for pain and fever', 7.49, 200, '9d2b94c4-8c88-4f4d-a5c0-8a9b9a7e4102', NOW(), NOW()),
+('92a47c89-02d5-48a4-8f0b-9e0c124cad03', 'Paracetamol 500mg', 'Pain Relief', 'Used to relieve mild to moderate pain and reduce fever', 6.99, 180, 'e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03', NOW(), NOW()),
+('fa92f3d4-66e1-44d4-b3d1-0bcb7c1bad04', 'Amoxicillin 250mg', 'Antibiotics', 'Broad-spectrum antibiotic used to treat bacterial infections', 12.99, 120, '6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04', NOW(), NOW()),
+('b0f4e9d1-0194-4df2-b8d4-51ef2b42ad05', 'Ciprofloxacin 500mg', 'Antibiotics', 'Fluoroquinolone antibiotic used for urinary and respiratory infections', 15.49, 100, '3a0d3f5f-bf81-4b3f-9a20-34b3b8dc4a05', NOW(), NOW()),
+('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 'Loratadine 10mg', 'Allergy Relief', 'Non-drowsy antihistamine for allergy symptoms', 8.99, 160, 'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06', NOW(), NOW()),
+('f09a6c44-5c9b-4039-9817-7255bcb7ad07', 'Cetirizine 10mg', 'Allergy Relief', 'Relieves sneezing, runny nose, and itchy eyes caused by allergies', 9.49, 140, '7c0d58b5-3e73-4cb3-a0de-2d2e6a4c4a07', NOW(), NOW()),
+('e80a44f6-b50d-4f3b-9621-347b9da3ad08', 'Omeprazole 20mg', 'Digestive Health', 'Proton pump inhibitor used to treat acid reflux and ulcers', 11.99, 130, '1a9f2d4d-58d2-4a8e-b91e-6f2a1c3b4a08', NOW(), NOW()),
+('9d4215c0-2732-4f61-b289-f4a2a16bad09', 'Ranitidine 150mg', 'Digestive Health', 'H2 blocker used to reduce stomach acid and treat heartburn', 10.49, 110, 'd9c81c5b-15d3-4c7f-bc67-0a6e6b3a4a09', NOW(), NOW()),
+('a612d81e-2b7a-420c-b731-7235b3f2ad10', 'Metformin 500mg', 'Diabetes Care', 'Oral medication for type 2 diabetes to control blood sugar', 13.99, 90, 'fe29ac10-3f8b-4f23-8f99-90a1b8e44a10', NOW(), NOW()),
+('cb34a22d-441e-4217-b8b8-42c7d2cbad11', 'Glipizide 5mg', 'Diabetes Care', 'Stimulates insulin release to manage type 2 diabetes', 14.49, 80, '820b6f87-48a3-4c4c-8c8f-90b6f6e44a11', NOW(), NOW()),
+('f92a6e7a-78f2-4b4b-801f-63d5a1baad12', 'Atorvastatin 20mg', 'Cholesterol Control', 'Lowers cholesterol to reduce risk of heart disease', 16.99, 70, 'da3f90a9-567c-4b2a-8aa0-8a2b3f4e4a12', NOW(), NOW()),
+('b47d2d21-9f4a-4e37-b9d8-42c7e6e4ad13', 'Simvastatin 20mg', 'Cholesterol Control', 'Statin used to lower cholesterol and prevent cardiovascular events', 15.99, 60, 'ed4c1e32-7b94-45d4-91e3-bb7d4f3f4a13', NOW(), NOW()),
+('8b62b78c-8a35-4c9d-9b8e-f9d5a2a4ad14', 'Levothyroxine 50mcg', 'Thyroid Medication', 'Hormone replacement therapy for hypothyroidism', 18.99, 50, 'a72c7812-19a3-42c7-bac1-5c6a1d4f4a14', NOW(), NOW()),
+('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15', 'Lisinopril 10mg', 'Blood Pressure', 'ACE inhibitor for managing high blood pressure and heart failure', 12.49, 75, 'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15', NOW(), NOW()),    
+('ff43c7b1-0a4c-4e99-9c44-7e4f2e4fad16', 'Amlodipine 5mg', 'Blood Pressure', 'Calcium channel blocker used to treat hypertension', 13.49, 85, 'b6f9c6f2-91a1-48db-91d4-2b1a4a5f4a16', NOW(), NOW()),
+('ae6b89d3-47c2-4e37-9c6a-94b4a1cfad17', 'Hydrochlorothiazide 25mg', 'Diuretics', 'Diuretic used to treat high blood pressure and fluid retention', 9.99, 95, '5b9d4c8e-5d5e-46f2-8b7e-7b4a2f4f4a17', NOW(), NOW()),
+('b912a2d4-8e4b-4e5a-a5b7-3a7b6b8fad18', 'Furosemide 40mg', 'Diuretics', 'Loop diuretic for edema and hypertension management', 11.49, 105, 'f7d1b9e0-2a2b-4b1c-93d2-9b7a3a6f4a18', NOW(), NOW()),
+('e04f4b2e-90f1-42b3-8b82-6f4b2e7fad19', 'Albuterol Inhaler', 'Respiratory Care', 'Bronchodilator inhaler for asthma and COPD relief', 22.99, 65, '2e4a6a5f-7f3b-42d1-8b92-0a7b4b7f4a19', NOW(), NOW()),
+('c6d1f42b-25a3-43e8-9081-8f2a4d6aad20', 'Fluticasone Nasal Spray', 'Respiratory Care', 'Corticosteroid nasal spray for allergy and asthma symptoms', 19.99, 55, 'c9b6a1e1-32e9-48af-81f0-3b9a6b8f4a20', NOW(), NOW());
+
