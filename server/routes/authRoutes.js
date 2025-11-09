@@ -39,6 +39,6 @@ router.post("/reset-password/:token", resetPassword);
 
 // @route   POST /api/auth/verify-email
 // @desc    Placeholder for additional auth flow
-router.post("/verify-email", verifyEmail);
+router.post("/verify-email/:token", verifyEmail);
 
 export default router;

@@ -50,19 +50,7 @@ export const createProduct = async (req, res) => {
  */
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Supplier,
-          attributes: [
-            "supplierId",
-            "companyName",
-            "contactName",
-            "contactEmail",
-          ],
-        },
-      ],
-    });
+    const products = await Product.findAll();
     res.status(200).json(products);
   } catch (err) {
     console.error(err);

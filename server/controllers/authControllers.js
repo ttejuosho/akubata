@@ -44,25 +44,28 @@ export const signup = async (req, res) => {
       role = "basic",
     } = req.body;
 
+    // Normalize email
+    const normalizedEmail = emailAddress.trim().toLowerCase();
+
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    const existingUser = await User.findOne({ where: { emailAddress } });
+    const existingUser = await User.findOne({
+      where: { emailAddress: normalizedEmail },
+    });
     if (existingUser)
       return res.status(400).json({ message: "Email already in use" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       firstName,
       lastName,
-      emailAddress,
-      password: hashedPassword,
+      emailAddress: normalizedEmail,
+      password,
       role,
     });
 
-    const token = generateJWT(newUser);
+    const token = newUser.generateJWT();
 
     // set token in HTTP-only cookie
     res.cookie("token", token, {
@@ -95,8 +98,12 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { emailAddress, password } = req.body;
+    // Normalize email
+    const normalizedEmail = emailAddress.trim().toLowerCase();
 
-    const user = await User.findOne({ where: { emailAddress } });
+    const user = await User.findOne({
+      where: { emailAddress: normalizedEmail },
+    });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
     const userData = user.toJSON();
 
@@ -104,7 +111,7 @@ export const login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = generateJWT(user);
+    const token = user.generateJWT();
 
     // set token in HTTP-only cookie
     res.cookie("token", token, {
@@ -134,10 +141,25 @@ export const login = async (req, res) => {
 /**
  * POST /api/auth/logout
  * Logout user (client should delete token)
+ * res.clearCookie("token") removes the JWT from the browser.
+ * Keeps httpOnly, secure, and sameSite aligned with how the cookie was set in login.
+ * Returns a simple confirmation message.
+ * Frontend handles redirect or state reset.
  */
 export const logout = async (req, res) => {
-  // JWT logout is handled on the client by deleting the token
-  res.status(200).json({ message: "Logged out successfully" });
+  try {
+    // Clear the HttpOnly cookie storing the JWT
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 /**
@@ -147,8 +169,11 @@ export const logout = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   try {
     const { emailAddress } = req.body;
+    const normalizedEmail = emailAddress.trim().toLowerCase();
 
-    const user = await User.findOne({ where: { emailAddress } });
+    const user = await User.findOne({
+      where: { emailAddress: normalizedEmail },
+    });
     if (!user)
       return res.status(400).json({ message: "No user with that email" });
 
@@ -194,7 +219,7 @@ export const resetPassword = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "Invalid or expired token" });
 
-    user.password = await bcrypt.hash(newPassword, 10);
+    user.password = newPassword;
     user.passwordResetToken = null;
     user.tokenExpires = null;
 
@@ -212,8 +237,38 @@ export const resetPassword = async (req, res) => {
  * Placeholder for additional auth flow (e.g., email verification)
  */
 export const verifyEmail = async (req, res) => {
-  // Example implementation depends on your flow
-  res.status(200).json({ message: "Email verification flow placeholder" });
+  try {
+    const { token } = req.params; // token comes from email link like /api/auth/verify-email/:token
+
+    if (!token)
+      return res
+        .status(400)
+        .json({ message: "Verification token is required" });
+
+    // Find user by token and ensure token not expired
+    const user = await User.findOne({
+      where: {
+        passwordResetToken: token,
+        tokenExpires: { [Op.gt]: new Date() },
+      },
+    });
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ message: "Invalid or expired verification token" });
+
+    // Mark email verified
+    user.isActive = true;
+    user.passwordResetToken = null;
+    user.tokenExpires = null;
+    await user.save();
+
+    return res.status(200).json({ message: "Email verified successfully" });
+  } catch (err) {
+    console.error("Verify email error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
 };
 
 /**
@@ -222,10 +277,6 @@ export const verifyEmail = async (req, res) => {
  * Protects routes by verifying JWT token.
  * Can also check user roles for authorization.
  */
-
-// import jwt from "jsonwebtoken";
-
-// const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 /**
  * Middleware to verify JWT and attach user to request
