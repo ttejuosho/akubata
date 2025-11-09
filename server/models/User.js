@@ -1,6 +1,6 @@
 // models/User.js
 import { DataTypes } from "sequelize";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sequelize from "../config/db.js";
 
@@ -71,8 +71,8 @@ User.prototype.comparePassword = async function (enteredPassword) {
 
 User.prototype.generateJWT = function () {
   const payload = {
-    id: this.id,
-    email: this.email,
+    userId: this.userId,
+    emailAddress: this.emailAddress,
     role: this.role,
   };
   return jwt.sign(payload, process.env.JWT_SECRET, {

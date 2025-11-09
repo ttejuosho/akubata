@@ -76,7 +76,15 @@ export const getSuppliers = async (req, res) => {
 export const getSupplierById = async (req, res) => {
   try {
     const { supplierId } = req.params;
-    const supplier = await Supplier.findByPk(supplierId);
+    //const supplier = await Supplier.findByPk(supplierId);
+    // inclue products supplied by this supplier
+    const supplier = await Supplier.findByPk(supplierId, {
+      include: [
+        {
+          model: Product,
+        },
+      ],
+    });
 
     if (!supplier) {
       return res.status(404).json({ message: "Supplier not found" });

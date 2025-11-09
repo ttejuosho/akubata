@@ -6,7 +6,7 @@
  */
 
 import User from "../models/User.js"; // import your Sequelize User model
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { Op } from "sequelize";
@@ -21,8 +21,9 @@ const JWT_EXPIRES_IN = "7d";
  * @returns {string} JWT token
  */
 const generateJWT = (user) => {
+  console.log("User: ", user.userId, user.emailAddress, user.role);
   return jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
+    { userId: user.userId, emailAddress: user.emailAddress, role: user.role },
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES_IN }
   );
@@ -39,11 +40,11 @@ export const signup = async (req, res) => {
       lastName,
       emailAddress,
       password,
-      verifyPassword,
+      confirmPassword,
       role = "basic",
     } = req.body;
 
-    if (password !== verifyPassword) {
+    if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
@@ -63,9 +64,16 @@ export const signup = async (req, res) => {
 
     const token = generateJWT(newUser);
 
+    // set token in HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(201).json({
-      message: "User created successfully",
-      token,
+      message: "Welcome! Signup successful.",
       user: {
         userId: newUser.userId,
         firstName: newUser.firstName,
@@ -90,16 +98,25 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ where: { emailAddress } });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    const userData = user.toJSON();
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, userData.password);
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
     const token = generateJWT(user);
 
+    // set token in HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // Respond with user data excluding password
     res.status(200).json({
       message: "Logged in successfully",
-      token,
       user: {
         userId: user.userId,
         firstName: user.firstName,
@@ -161,7 +178,11 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
-    const { newPassword } = req.body;
+    const { newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
 
     const user = await User.findOne({
       where: {
