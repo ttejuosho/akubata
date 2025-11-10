@@ -15,18 +15,40 @@ import { Op } from "sequelize";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 const JWT_EXPIRES_IN = "7d";
 
-/**
- * Generate JWT token for a user
- * @param {Object} user - Sequelize User instance
- * @returns {string} JWT token
- */
-const generateJWT = (user) => {
-  console.log("User: ", user.userId, user.emailAddress, user.role);
-  return jwt.sign(
-    { userId: user.userId, emailAddress: user.emailAddress, role: user.role },
-    JWT_SECRET,
-    { expiresIn: JWT_EXPIRES_IN }
-  );
+//** GET /api/auth/me
+//* Get current authenticated user
+//*/
+export const getCurrentUser = async (req, res) => {
+  try {
+    let token;
+
+    // Get token from Authorization header or cookie
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies?.token) {
+      token = req.cookies.token;
+    }
+
+    if (!token) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findByPk(decoded.userId); // exclude password
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    console.error("getCurrentUser error:", err);
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
 };
 
 /**

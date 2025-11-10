@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import Supplier from "./pages/Supplier";
 import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
-//import Orders from "./pages/Orders";
+import Product from "./pages/Product";
 import "./App.css";
 
 function App() {
@@ -24,16 +24,14 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/supplier/:supplierId" element={<Supplier />} />
-          <Route path="/suppliers" element={<Suppliers />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
-            {/* <Route path="/products" element={<Products />} /> */}
-            {/* <Route path="/orders" element={<Orders />} /> */}
-            {/* <Route path="/suppliers" element={<Suppliers />} /> */}
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/product/:productId" element={<Product />} />
+            <Route path="/supplier/:supplierId" element={<Supplier />} />
+            <Route path="/suppliers" element={<Suppliers />} />
           </Route>
 
           {/* Optional: 404 */}

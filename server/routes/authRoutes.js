@@ -7,6 +7,7 @@
 
 import express from "express";
 import {
+  getCurrentUser,
   signup,
   login,
   logout,
@@ -16,6 +17,10 @@ import {
 } from "../controllers/authControllers.js";
 
 const router = express.Router();
+
+// @route   GET /api/auth/me
+// @desc    Get current authenticated user
+router.get("/me", getCurrentUser);
 
 // @route   POST /api/auth/signup
 // @desc    Register a new user

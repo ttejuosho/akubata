@@ -74,6 +74,7 @@ export const getProductById = async (req, res) => {
             "companyName",
             "contactName",
             "contactEmail",
+            "contactPhone",
           ],
         },
       ],

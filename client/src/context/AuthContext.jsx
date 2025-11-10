@@ -14,21 +14,34 @@ import { createContext, useState, useEffect } from "react";
 import api from "../api/axios";
 import { toast } from "react-hot-toast";
 
-// Create the AuthContext (not exported directly for consumption)
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔹 Set token in axios if exists
+  const setAxiosToken = (token) => {
+    if (token) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      delete api.defaults.headers.common["Authorization"];
+    }
+  };
+
   // 🔹 Check current user on app load
   useEffect(() => {
     const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      if (token) setAxiosToken(token);
+
       try {
         const { data } = await api.get("/auth/me");
         setUser(data.user);
-      } catch {
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
         setUser(null);
+        localStorage.removeItem("token");
       } finally {
         setLoading(false);
       }
@@ -43,7 +56,10 @@ const AuthProvider = ({ children }) => {
         emailAddress,
         password,
       });
-      if (data?.token) localStorage.setItem("token", data.token);
+      if (data?.token) {
+        localStorage.setItem("token", data.token);
+        setAxiosToken(data.token);
+      }
       setUser(data.user);
       toast.success("Login successful!");
       return data;
@@ -57,7 +73,10 @@ const AuthProvider = ({ children }) => {
   const signup = async (formData) => {
     try {
       const { data } = await api.post("/auth/signup", formData);
-      if (data?.token) localStorage.setItem("token", data.token);
+      if (data?.token) {
+        localStorage.setItem("token", data.token);
+        setAxiosToken(data.token);
+      }
       setUser(data.user);
       toast.success("Welcome to Akubata!");
       return data;
@@ -75,6 +94,7 @@ const AuthProvider = ({ children }) => {
       console.error("Logout error:", err);
     } finally {
       localStorage.removeItem("token");
+      setAxiosToken(null);
       setUser(null);
       toast.success("Logged out");
     }

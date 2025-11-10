@@ -7,12 +7,10 @@ import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { FaTrash, FaPencilAlt, FaPlus } from "react-icons/fa";
 import toast from "react-hot-toast";
 import api from "../api/axios";
-import { useAuth } from "../hooks/useAuth";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const Suppliers = () => {
-  const { user } = useAuth();
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,16 +63,7 @@ const Suppliers = () => {
   // Edit supplier
   const handleEdit = (supplier) => {
     setEditingSupplier(supplier);
-    setFormData({
-      companyName: supplier.companyName,
-      contactName: supplier.contactName,
-      contactEmail: supplier.contactEmail,
-      contactPhone: supplier.contactPhone,
-      address: supplier.address,
-      city: supplier.city,
-      state: supplier.state,
-      country: supplier.country,
-    });
+    setFormData({ ...supplier });
     setShowModal(true);
   };
 

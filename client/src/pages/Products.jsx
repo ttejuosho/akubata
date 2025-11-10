@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useAuth } from "../hooks/useAuth";
 import api from "../api/axios";
 import { Link } from "react-router-dom";
 import { Button, Modal, Form } from "react-bootstrap";
@@ -12,7 +11,6 @@ import toast from "react-hot-toast";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const Products = () => {
-  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,19 +26,18 @@ const Products = () => {
     supplierId: "",
   });
 
-  // Fetch products
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await api.get("/products");
       setProducts(data);
+      setLoading(false);
     } catch (err) {
       console.error(err);
       toast.error("Failed to fetch products");
     }
   }, []);
 
-  // Fetch Suppliers
   const fetchSuppliers = useCallback(async () => {
     try {
       const { data } = await api.get("/suppliers");
@@ -58,7 +55,6 @@ const Products = () => {
     fetchSuppliers();
   }, [fetchProducts, fetchSuppliers]);
 
-  // Delete product
   const handleDelete = async (productId) => {
     if (!window.confirm("Are you sure you want to delete this product?"))
       return;
@@ -73,7 +69,6 @@ const Products = () => {
     }
   };
 
-  // Open edit modal
   const handleEdit = (product) => {
     setEditingProduct(product);
     setFormData({
@@ -87,7 +82,6 @@ const Products = () => {
     setShowModal(true);
   };
 
-  // Open new product modal
   const handleNewProduct = () => {
     setEditingProduct(null);
     setFormData({
@@ -101,21 +95,17 @@ const Products = () => {
     setShowModal(true);
   };
 
-  // Close modal
   const handleClose = () => {
     setShowModal(false);
     setEditingProduct(null);
   };
 
-  // Save changes (edit or create)
   const handleSave = async () => {
     try {
       if (editingProduct) {
-        // Update product
         await api.put(`/products/${editingProduct.productId}`, formData);
         toast.success("Product updated");
       } else {
-        // Create new product
         await api.post(`/products`, formData);
         toast.success("Product created");
       }
@@ -136,19 +126,16 @@ const Products = () => {
         alignItems: "center",
       }}
     >
-      {
-        <img
-          alt={`${params.value}`}
-          src={`https://www.ag-grid.com/example-assets/icons/${
-            params.value ? "tick-in-circle" : "cross-in-circle"
-          }.png`}
-          style={{ width: "auto", height: "auto" }}
-        />
-      }
+      <img
+        alt={`${params.value}`}
+        src={`https://www.ag-grid.com/example-assets/icons/${
+          params.value ? "tick-in-circle" : "cross-in-circle"
+        }.png`}
+        style={{ width: "auto", height: "auto" }}
+      />
     </span>
   );
 
-  // AG Grid columns
   const columns = [
     {
       headerName: "",
@@ -161,7 +148,15 @@ const Products = () => {
       field: "productName",
       sortable: true,
       filter: true,
-      flex: 1,
+      flex: 1.5,
+      cellRenderer: (params) => (
+        <Link
+          to={`/product/${params.data.productId}`}
+          className="text-decoration-none text-dark"
+        >
+          {params.value}
+        </Link>
+      ),
     },
     {
       headerName: "Category",
@@ -180,7 +175,10 @@ const Products = () => {
     {
       headerName: "Price",
       field: "unitPrice",
-      cellRenderer: (params) => `₦${params.value}`,
+      cellRenderer: (params) =>
+        `₦${Number(params.value).toLocaleString("en-NG", {
+          minimumFractionDigits: 2,
+        })}`,
       sortable: true,
       filter: true,
       flex: 1,
@@ -200,9 +198,9 @@ const Products = () => {
         <div className="d-flex gap-2">
           <Link
             to={`/supplier/${params.data.supplierId}`}
-            className="btn btn-sm btn-outline-primary"
+            className="text-decoration-none text-dark"
           >
-            See Supplier
+            View Supplier
           </Link>
           <Button
             variant="outline-secondary"
@@ -223,12 +221,7 @@ const Products = () => {
     },
   ];
 
-  // Apply settings across all columns
-  const defaultColDef = useMemo(() => {
-    return {
-      filter: true,
-    };
-  }, []);
+  const defaultColDef = useMemo(() => ({ filter: true }), []);
 
   return (
     <div className="container mt-3">
@@ -260,7 +253,7 @@ const Products = () => {
           </div>
         )}
 
-        {/* Modal for create/edit */}
+        {/* Modal */}
         <Modal show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>

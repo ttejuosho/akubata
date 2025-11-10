@@ -215,7 +215,13 @@ const Supplier = () => {
                 <strong>Contact:</strong> {supplier.contactName}
               </p>
               <p className="mb-1">
-                <strong>Email:</strong> {supplier.contactEmail}
+                <strong>Email:</strong>{" "}
+                <a
+                  href={`mailto:${supplier.contactEmail}`}
+                  className="text-decoration-none text-dark"
+                >
+                  {supplier.contactEmail}
+                </a>
               </p>
               <p className="mb-1">
                 <strong>Phone:</strong> {supplier.contactPhone}
