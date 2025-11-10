@@ -37,7 +37,7 @@ const Product = () => {
         onClick={() => navigate("/products")}
         className="mb-3"
       >
-        &larr; Back to Products
+        &larr; All Products
       </Button>
 
       <h2>{product.productName}</h2>
@@ -103,7 +103,7 @@ const Product = () => {
               to={`/supplier/${Supplier.supplierId}`}
               className="btn btn-outline-primary"
             >
-              View Supplier
+              &larr; View Supplier
             </Link>
             {Supplier.contactEmail && (
               <a

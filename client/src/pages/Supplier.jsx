@@ -132,7 +132,15 @@ const Supplier = () => {
       field: "productName",
       sortable: true,
       filter: true,
-      flex: 1,
+      flex: 2,
+      cellRenderer: (params) => (
+        <Link
+          to={`/product/${params.data.productId}`}
+          className="text-decoration-none text-dark"
+        >
+          {params.value}
+        </Link>
+      ),
     },
     {
       headerName: "Category",
@@ -173,7 +181,7 @@ const Supplier = () => {
     {
       headerName: "Options",
       field: "options",
-      flex: 1.5,
+      flex: 1,
       cellRenderer: (params) => (
         <div className="d-flex gap-2">
           <Button
