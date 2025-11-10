@@ -151,14 +151,14 @@ const Suppliers = () => {
       field: "contactName",
       sortable: true,
       filter: true,
-      flex: 1,
+      flex: 1.5,
     },
     {
       headerName: "Email",
       field: "contactEmail",
       sortable: true,
       filter: true,
-      flex: 1.2,
+      flex: 2,
     },
     {
       headerName: "Phone",
@@ -184,15 +184,9 @@ const Suppliers = () => {
     {
       headerName: "Options",
       field: "options",
-      flex: 1.5,
+      flex: 1,
       cellRenderer: (params) => (
         <div className="d-flex gap-2">
-          <Link
-            to={`/supplier/${params.data.supplierId}`}
-            className="text-decoration-none text-dark"
-          >
-            View Products
-          </Link>
           <Button
             variant="outline-secondary"
             size="sm"
