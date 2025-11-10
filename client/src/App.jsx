@@ -7,8 +7,9 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
-//import Suppliers from "./pages/Suppliers";
-//import Products from "./pages/Products";
+import Supplier from "./pages/Supplier";
+import Suppliers from "./pages/Suppliers";
+import Products from "./pages/Products";
 //import Orders from "./pages/Orders";
 import "./App.css";
 
@@ -24,6 +25,9 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/supplier/:supplierId" element={<Supplier />} />
+          <Route path="/suppliers" element={<Suppliers />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
