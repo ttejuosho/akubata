@@ -90,5 +90,62 @@ INSERT INTO Products (productId, productName, category, description, unitPrice, 
 ('ae6b89d3-47c2-4e37-9c6a-94b4a1cfad17', 'Hydrochlorothiazide 25mg', 'Diuretics', 'Diuretic used to treat high blood pressure and fluid retention', 9.99, 95, '5b9d4c8e-5d5e-46f2-8b7e-7b4a2f4f4a17', NOW(), NOW()),
 ('b912a2d4-8e4b-4e5a-a5b7-3a7b6b8fad18', 'Furosemide 40mg', 'Diuretics', 'Loop diuretic for edema and hypertension management', 11.49, 105, 'f7d1b9e0-2a2b-4b1c-93d2-9b7a3a6f4a18', NOW(), NOW()),
 ('e04f4b2e-90f1-42b3-8b82-6f4b2e7fad19', 'Albuterol Inhaler', 'Respiratory Care', 'Bronchodilator inhaler for asthma and COPD relief', 22.99, 65, '2e4a6a5f-7f3b-42d1-8b92-0a7b4b7f4a19', NOW(), NOW()),
-('c6d1f42b-25a3-43e8-9081-8f2a4d6aad20', 'Fluticasone Nasal Spray', 'Respiratory Care', 'Corticosteroid nasal spray for allergy and asthma symptoms', 19.99, 55, 'c9b6a1e1-32e9-48af-81f0-3b9a6b8f4a20', NOW(), NOW());
+('c6d1f42b-25a3-43e8-9081-8f2a4d6aad20', 'Fluticasone Nasal Spray', 'Respiratory Care', 'Corticosteroid nasal spray for allergy and asthma symptoms', 19.99, 55, 'c9b6a1e1-32e9-48af-81f0-3b9a6b8f4a20', NOW(), NOW()),
 
+INSERT INTO Users (userId, firstName, lastName, emailAddress, password, isActive, role, passwordResetToken, tokenExpires, createdAt, updatedAt) VALUES
+('a1f3c0e2-11a4-4b1a-bc2f-9d2a3f4e1a01', 'James', 'Anderson', 'james.anderson@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'admin', NULL, NULL, NOW(), NOW()),
+('b2e4d1f3-22b5-4c2b-ad3f-8c3b5f5f2b02', 'Maria', 'Lopez', 'maria.lopez@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'manager', NULL, NULL,NOW(), NOW()),
+('c3f5e2a4-33c6-4d3c-be4f-7d4c6g6g3c03', 'David', 'Kim', 'david.kim@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'staff', NULL, NULL,NOW(), NOW()),
+('d4g6f3b5-44d7-4e4d-cf5f-6e5d7h7h4d04', 'Sophia', 'Nguyen', 'sophia.nguyen@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'basic', NULL, NULL,NOW(), NOW()),
+('e5h7g4c6-55e8-4f5e-dg6f-5f6e8i8i5e05', 'Michael', 'Brown', 'michael.brown@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'manager', NULL, NULL,NOW(), NOW()),
+('f6i8h5d7-66f9-4g6f-eh7f-4g7f9j9j6f06', 'Emma', 'Johnson', 'emma.johnson@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'staff', NULL, NULL,NOW(), NOW()),
+('g7j9i6e8-77g0-4h7g-fi8f-3h8g0k0k7g07', 'William', 'Martinez', 'william.martinez@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'admin', NULL, NULL,NOW(), NOW()),
+('h8k0j7f9-88h1-4i8h-gj9f-2i9h1l1l8h08', 'Olivia', 'Davis', 'olivia.davis@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'staff', NULL, NULL,NOW(), NOW()),
+('i9l1k8g0-99i2-4j9i-hk0f-1j0i2m2m9i09', 'Ethan', 'White', 'ethan.white@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'manager', NULL, NULL,NOW(), NOW()),
+('j0m2l9h1-00j3-4k0j-il1f-0k1j3n3n0j10', 'Ava', 'Taylor', 'ava.taylor@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'basic', NULL, NULL,NOW(), NOW());
+
+INSERT INTO order_items (orderItemId, orderId, productId, quantity, price, createdAt, updatedAt)
+VALUES
+-- Order 1 (Admin - James Anderson)
+('aaa11111-aaaa-4a1a-bb1b-000000000101', '11111111-aaaa-4a1a-bb1b-000000000001', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 2, 8.99, NOW(), NOW()), -- Loratadine
+-- Order 2 (Manager - Maria Lopez)
+('bbb22222-bbbb-4b2b-cc2c-000000000201', '22222222-bbbb-4b2b-cc2c-000000000002', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 3, 8.99, NOW(), NOW()),
+
+-- Order 3 (Staff - David Kim)
+('ccc33333-cccc-4c3c-dd3d-000000000301', '33333333-cccc-4c3c-dd3d-000000000003', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 5, 8.99, NOW(), NOW()),
+('ccc33333-cccc-4c3c-dd3d-000000000302', '33333333-cccc-4c3c-dd3d-000000000003', 'e4b8c9f7-2f1a-4b3e-8b9d-7a3e1f9a1a20', 2, 22.99, NOW(), NOW()),
+
+-- Order 4 (Basic - Sophia Nguyen)
+('ddd44444-dddd-4d4d-ee4e-000000000401', '44444444-dddd-4d4d-ee4e-000000000004', 'efc6a2a3-87a2-4c9e-8221-32b7b9d01a07', 5, 8.99, NOW(), NOW()),
+
+-- Order 5 (Manager - Michael Brown)
+('eee55555-eeee-4e5e-ff5f-000000000501', '55555555-eeee-4e5e-ff5f-000000000005', 'a5f1b4c7-48e9-456b-9b2b-5a2c3b9a1a08', 0, 0.00, NOW(), NOW());
+
+-- ===== ORDERS =====
+INSERT INTO orders (orderId, userId, orderDate, orderStatus, paymentMethod, totalAmount, createdAt, updatedAt)
+VALUES
+('11111111-aaaa-4a1a-bb1b-000000000001', 'a1f3c0e2-11a4-4b1a-bc2f-9d2a3f4e1a01', NOW(), 'completed', 'credit card', 58.94, NOW(), NOW()),
+('22222222-bbbb-4b2b-cc2c-000000000002', 'b2e4d1f3-22b5-4c2b-ad3f-8c3b5f5f2b02', NOW(), 'pending', 'cash', 26.97, NOW(), NOW()),
+('33333333-cccc-4c3c-dd3d-000000000003', 'c3f5e2a4-33c6-4d3c-be4f-7d4c6g6g3c03', NOW(), 'completed', 'bank transfer', 89.95, NOW(), NOW()),
+('44444444-dddd-4d4d-ee4e-000000000004', 'd4g6f3b5-44d7-4e4d-cf5f-6e5d7h7h4d04', NOW(), 'open', 'check', 44.95, NOW(), NOW()),
+('55555555-eeee-4e5e-ff5f-000000000005', 'e5h7g4c6-55e8-4f5e-dg6f-5f6e8i8i5e05', NOW(), 'cancelled', 'cryptocurrency', 0.00, NOW(), NOW());
+
+-- ===== ORDER ITEMS =====
+INSERT INTO order_items (orderItemId, orderId, productId, quantity, price, createdAt, updatedAt)
+VALUES
+-- Order 1 (Admin - James Anderson)
+('aaa11111-aaaa-4a1a-bb1b-000000000101', '11111111-aaaa-4a1a-bb1b-000000000001', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 2, 8.99, NOW(), NOW()), -- Loratadine
+('aaa11111-aaaa-4a1a-bb1b-000000000102', '11111111-aaaa-4a1a-bb1b-000000000001', '4d82f91b-9a7b-4b2d-912f-9c2a6f3b4c07', 4, 10.24, NOW(), NOW()),
+
+-- Order 2 (Manager - Maria Lopez)
+('bbb22222-bbbb-4b2b-cc2c-000000000201', '22222222-bbbb-4b2b-cc2c-000000000002', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 3, 8.99, NOW(), NOW()),
+
+-- Order 3 (Staff - David Kim)
+('ccc33333-cccc-4c3c-dd3d-000000000301', '33333333-cccc-4c3c-dd3d-000000000003', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 5, 8.99, NOW(), NOW()),
+('ccc33333-cccc-4c3c-dd3d-000000000302', '33333333-cccc-4c3c-dd3d-000000000003', '5c83fa2c-ab8c-4c3e-923f-8d3b7h4c5d08', 2, 22.99, NOW(), NOW()),
+
+-- Order 4 (Basic - Sophia Nguyen)
+('ddd44444-dddd-4d4d-ee4e-000000000401', '44444444-dddd-4d4d-ee4e-000000000004', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 5, 8.99, NOW(), NOW()),
+
+-- Order 5 (Manager - Michael Brown)
+('eee55555-eeee-4e5e-ff5f-000000000501', '55555555-eeee-4e5e-ff5f-000000000005', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 0, 0.00, NOW(), NOW());

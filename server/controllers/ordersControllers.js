@@ -68,6 +68,34 @@ export const createOrder = async (req, res) => {
   }
 };
 
+//** Get orders for logged-in user
+// GET /api/orders/user
+export const getUserOrders = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const orders = await Order.findAll({
+      where: { userId },
+      include: [
+        {
+          model: OrderItem,
+          include: [
+            {
+              model: Product,
+              attributes: ["productId", "productName", "category", "unitPrice"],
+            },
+          ],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 /**
  * Get all orders
  * GET /api/orders
@@ -106,8 +134,8 @@ export const getOrders = async (req, res) => {
  */
 export const getOrderById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const order = await Order.findByPk(id, {
+    const { orderId } = req.params;
+    const order = await Order.findByPk(orderId, {
       include: [
         {
           model: User,

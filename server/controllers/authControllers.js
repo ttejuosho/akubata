@@ -303,40 +303,29 @@ export const verifyEmail = async (req, res) => {
 /**
  * Middleware to verify JWT and attach user to request
  */
+
 export const protect = async (req, res, next) => {
   let token;
 
-  // Check for token in Authorization header
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
   }
 
   if (!token) {
-    return res.status(401).json({ message: "Not authorized, token missing" });
+    return res.status(401).json({ message: "Not authorized, no token" });
   }
 
   try {
-    // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // decoded should contain { userId: '...' }
+    const user = await User.findByPk(decoded.userId);
+    if (!user) return res.status(401).json({ message: "User not found" });
 
-    // Attach user to request object (exclude password)
-    const user = await User.findByPk(decoded.id, {
-      attributes: { exclude: ["password"] },
-    });
-    if (!user) {
-      return res
-        .status(401)
-        .json({ message: "Not authorized, user not found" });
-    }
-
-    req.user = user;
+    req.user = user; // attach user to request
     next();
   } catch (err) {
     console.error(err);
-    return res.status(401).json({ message: "Not authorized, token invalid" });
+    res.status(401).json({ message: "Token invalid" });
   }
 };
 

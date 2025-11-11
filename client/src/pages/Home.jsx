@@ -31,6 +31,34 @@ const Home = () => {
           </Link>
         </div>
       </div>
+
+      <div className="row mt-4">
+        {/* Products Tile */}
+        <div className="col-md-6 mb-3">
+          <Link to="/orders" className="text-decoration-none">
+            <div className="card text-center h-100 shadow-sm hover-shadow">
+              <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                <h3 className="card-title">Orders</h3>
+                <p className="card-text">View and manage your orders.</p>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Suppliers Tile */}
+        <div className="col-md-6 mb-3">
+          <Link to="/profile" className="text-decoration-none">
+            <div className="card text-center h-100 shadow-sm hover-shadow">
+              <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                <h3 className="card-title">Account Settings</h3>
+                <p className="card-text">
+                  View and manage your account information.
+                </p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

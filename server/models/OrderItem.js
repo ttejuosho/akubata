@@ -30,7 +30,7 @@ const OrderItem = sequelize.define(
       allowNull: false,
       references: {
         model: Order,
-        key: "id",
+        key: "orderId",
       },
     },
     productId: {
@@ -38,7 +38,7 @@ const OrderItem = sequelize.define(
       allowNull: false,
       references: {
         model: Product,
-        key: "id",
+        key: "productId",
       },
     },
     quantity: {
@@ -68,5 +68,12 @@ Product.belongsToMany(Order, {
   foreignKey: "productId",
   otherKey: "orderId",
 });
+
+// Direct relationships (for querying items)
+Order.hasMany(OrderItem, { foreignKey: "orderId" });
+OrderItem.belongsTo(Order, { foreignKey: "orderId" });
+
+Product.hasMany(OrderItem, { foreignKey: "productId" });
+OrderItem.belongsTo(Product, { foreignKey: "productId" });
 
 export default OrderItem;

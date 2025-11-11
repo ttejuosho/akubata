@@ -40,6 +40,16 @@ const Order = sequelize.define(
       type: DataTypes.ENUM("pending", "completed", "cancelled", "open"),
       defaultValue: "pending",
     },
+    paymentMethod: {
+      type: DataTypes.ENUM(
+        "credit card",
+        "cash",
+        "check",
+        "bank transfer",
+        "cryptocurrency"
+      ),
+      defaultValue: "credit card",
+    },
     totalAmount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
