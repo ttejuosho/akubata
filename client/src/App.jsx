@@ -11,6 +11,7 @@ import Supplier from "./pages/Supplier";
 import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
+import Orders from "./pages/Orders";
 import "./App.css";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/supplier/:supplierId" element={<Supplier />} />
             <Route path="/suppliers" element={<Suppliers />} />
+            <Route path="/orders" element={<Orders />} />
           </Route>
 
           {/* Optional: 404 */}

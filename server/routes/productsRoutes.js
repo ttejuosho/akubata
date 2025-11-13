@@ -27,13 +27,13 @@ const router = express.Router();
 // @desc    Create a new product
 // @access  Private (admin or manager)
 //router.post("/", protect, authorize("admin", "manager"), createProduct);
-router.post("/", createProduct);
+router.post("/", protect, createProduct);
 
 // @route   GET /api/products
 // @desc    Get all products
 // @access  Private
 //router.get("/", protect, getProducts);
-router.get("/", getProducts);
+router.get("/", protect, getProducts);
 
 // @route   GET /api/products/:id
 // @desc    Get product by ID
@@ -44,7 +44,7 @@ router.get("/:productId", getProductById);
 // @route   GET /api/products/bySupplier/:supplierId
 // @desc    Get product by Supplier Id
 // @access  Private
-router.get("/bySupplier/:supplierId", getProductsBySupplier);
+router.get("/bySupplier/:supplierId", protect, getProductsBySupplier);
 
 // @route   PUT /api/products/:id
 // @desc    Update a product
@@ -55,12 +55,12 @@ router.get("/bySupplier/:supplierId", getProductsBySupplier);
 //   authorize("admin", "manager"),
 //   updateProduct
 // );
-router.put("/:productId", updateProduct);
+router.put("/:productId", protect, updateProduct);
 
 // @route   DELETE /api/products/:id
 // @desc    Delete a product
 // @access  Private (admin only)
 //router.delete("/:productId", protect, authorize("admin"), deleteProduct);
-router.delete("/:productId", deleteProduct);
+router.delete("/:productId", protect, deleteProduct);
 
 export default router;

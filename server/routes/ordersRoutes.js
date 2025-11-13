@@ -14,6 +14,7 @@ import {
   getOrderById,
   updateOrderStatus,
   deleteOrder,
+  addOrderItem,
 } from "../controllers/ordersControllers.js";
 import { protect, authorize } from "../controllers/authControllers.js";
 
@@ -24,13 +25,14 @@ const router = express.Router();
 // @access  Private
 //router.post("/", protect, createOrder);
 router.post("/", createOrder);
-
+router.post("/:orderId/items", addOrderItem);
 // @route   GET /api/orders
 // @desc    Get all orders
 // @access  Private
 //router.get("/", protect, getOrders);
-router.get("/", getOrders);
-router.get("/user", protect, getUserOrders);
+router.get("/all", getOrders);
+router.get("/", protect, getUserOrders);
+
 // @route   GET /api/orders/:id
 // @desc    Get order by ID including items
 // @access  Private

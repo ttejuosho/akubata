@@ -17,13 +17,25 @@ const Product = () => {
         setProduct(data);
       } catch (err) {
         console.error(err);
-        toast.error("Failed to fetch product");
+        if (err.response) {
+          if (err.response.status === 404) {
+            setProduct(null);
+            toast.error("No Products Found");
+            return;
+          }
+
+          if (err.response.status === 401) {
+            navigate("/login");
+            toast.error("Youve been logged out. Please log in again.");
+            return;
+          }
+        }
       } finally {
         setLoading(false);
       }
     };
     fetchProduct();
-  }, [productId]);
+  }, [productId, navigate]);
 
   if (loading) return <div>Loading product...</div>;
   if (!product) return <div>Product not found</div>;

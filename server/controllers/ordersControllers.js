@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
     const result = await Order.sequelize.transaction(async (t) => {
       // Create the order
       const order = await Order.create(
-        { userId: req.user.userId, status: "pending" },
+        { userId: "39252d06-f433-4bd7-8b39-e0eaa453e285", status: "completed" },
         { transaction: t }
       );
 
@@ -36,7 +36,7 @@ export const createOrder = async (req, res) => {
         const product = await Product.findByPk(item.productId);
         if (!product) throw new Error(`Product ${item.productId} not found`);
 
-        if (product.stock < item.quantity) {
+        if (product.stockQuantity < item.quantity) {
           throw new Error(`Insufficient stock for product ${product.name}`);
         }
 
@@ -46,7 +46,7 @@ export const createOrder = async (req, res) => {
             orderId: order.orderId,
             productId: product.productId,
             quantity: item.quantity,
-            price: product.price,
+            price: product.unitPrice,
           },
           { transaction: t }
         );
@@ -54,6 +54,10 @@ export const createOrder = async (req, res) => {
         // Update product stock
         product.stockQuantity -= item.quantity;
         await product.save({ transaction: t });
+
+        // Update order total
+        order.totalAmount += item.quantity * parseFloat(product.unitPrice);
+        await order.save({ transaction: t });
       }
 
       return order;
@@ -61,7 +65,7 @@ export const createOrder = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Order created successfully", orderId: result.id });
+      .json({ message: "Order created successfully", orderId: result.orderId });
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: err.message || "Server error" });
@@ -164,12 +168,12 @@ export const getOrderById = async (req, res) => {
 
 /**
  * Update order status
- * PUT /api/orders/:id/status
+ * PUT /api/orders/:orderId/:orderStatus
  */
 export const updateOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { orderStatus } = req.body;
+    const { orderStatus } = req.params;
 
     const order = await Order.findByPk(orderId);
     if (!order) return res.status(404).json({ message: "Order not found" });
@@ -209,6 +213,51 @@ export const deleteOrder = async (req, res) => {
     res.status(200).json({ message: "Order deleted successfully" });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const addOrderItem = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { productId, quantity, price } = req.body;
+
+    // Validate
+    if (!productId || !quantity || !price) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Ensure order exists
+    const order = await Order.findByPk(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Ensure product exists
+    const product = await Product.findByPk(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Create order item
+    const orderItem = await OrderItem.create({
+      orderId,
+      productId,
+      quantity,
+      price,
+    });
+
+    // Update order total
+    order.totalAmount =
+      parseFloat(order.totalAmount) + quantity * parseFloat(price);
+    await order.save();
+
+    res.status(201).json({
+      message: "Item added to order successfully",
+      orderItem,
+    });
+  } catch (error) {
+    console.error("Error adding order item:", error);
     res.status(500).json({ message: "Server error" });
   }
 };

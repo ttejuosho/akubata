@@ -27,35 +27,35 @@ const router = express.Router();
 // @desc    Create a new supplier
 // @access  Private (only admin or manager)
 //router.post("/", protect, authorize("admin", "manager"), createSupplier);
-router.post("/", createSupplier);
+router.post("/", protect, createSupplier);
 
 // @route   GET /api/suppliers
 // @desc    Get all suppliers
 // @access  Private
 //router.get("/", protect, getSuppliers);
-router.get("/", getSuppliers);
+router.get("/", protect, getSuppliers);
 
 // @route   GET /api/suppliers/:id
 // @desc    Get supplier by ID
 // @access  Private
 //router.get("/:supplierId", protect, getSupplierById);
-router.get("/:supplierId", getSupplierById);
+router.get("/:supplierId", protect, getSupplierById);
 
 // @route   GET /api/suppliers/byProduct/:productId
 // @desc    Get supplier by Product Id
 // @access  Private
-router.get("/byProduct/:productId", getSupplierByProduct);
+router.get("/byProduct/:productId", protect, getSupplierByProduct);
 
 // @route   PUT /api/suppliers/:id
 // @desc    Update a supplier
 // @access  Private (only admin or manager)
 //router.put("/:supplierId", protect, authorize("admin", "manager"), updateSupplier);
-router.put("/:supplierId", updateSupplier);
+router.put("/:supplierId", protect, updateSupplier);
 
 // @route   DELETE /api/suppliers/:id
 // @desc    Delete a supplier
 // @access  Private (only admin)
 //router.delete("/:supplierId", protect, authorize("admin"), deleteSupplier);
-router.delete("/:supplierId", deleteSupplier);
+router.delete("/:supplierId", protect, deleteSupplier);
 
 export default router;
