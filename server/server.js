@@ -32,7 +32,7 @@ app.get("/", (req, res) => res.send("Akubata API is running 🚀"));
 
 // Sync DB
 sequelize
-  .sync({ alter: true }) // { force: true } if you want to reset DB
+  .sync() // { force: true } if you want to reset DB
   .then(() => {
     console.log("Database synced");
     const PORT = process.env.PORT || 5001;
