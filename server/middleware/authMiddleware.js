@@ -1,0 +1,70 @@
+/**
+ * authMiddleware.js
+ *
+ * Protects routes by verifying JWT token.
+ * Can also check user roles for authorization.
+ */
+
+/**
+ * Middleware to verify JWT and attach user to request
+ */
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+
+export const protect = async (req, res, next) => {
+  let token;
+
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  }
+
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized, no token" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // decoded should contain { userId: '...' }
+    const user = await User.findByPk(decoded.userId);
+    if (!user) return res.status(401).json({ message: "User not found" });
+
+    req.user = user; // attach user to request
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: "Token invalid" });
+  }
+};
+
+/**
+ * Middleware to restrict access based on user role(s)
+ * @param  {...string} roles - roles allowed to access the route
+ */
+export const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ message: "Forbidden: Insufficient permissions" });
+    }
+
+    next();
+  };
+};
+
+export const roleBasedResponse = (handlers) => {
+  return (req, res, next) => {
+    const role = req.user?.role;
+
+    const handler = handlers[role] || handlers.default;
+    if (!handler) {
+      return res.status(403).json({ message: "Forbidden for your role" });
+    }
+
+    return handler(req, res, next);
+  };
+};

@@ -47,6 +47,11 @@ const Product = sequelize.define(
       allowNull: false,
       defaultValue: 0,
     },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: "URL to the product image",
+    },
     supplierId: {
       type: DataTypes.UUID,
       allowNull: true,

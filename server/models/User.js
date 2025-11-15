@@ -76,7 +76,7 @@ User.prototype.generateJWT = function () {
     role: this.role,
   };
   return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "7d", // adjust as needed
+    expiresIn: "1d", // adjust as needed
   });
 };
 

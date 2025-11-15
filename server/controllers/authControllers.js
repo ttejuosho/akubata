@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 
 // JWT secret and expiration (move to environment variables in production)
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
-const JWT_EXPIRES_IN = "7d";
+const JWT_EXPIRES_IN = "1d";
 
 //** GET /api/auth/me
 //* Get current authenticated user
@@ -291,60 +291,4 @@ export const verifyEmail = async (req, res) => {
     console.error("Verify email error:", err);
     return res.status(500).json({ message: "Server error" });
   }
-};
-
-/**
- * authMiddleware.js
- *
- * Protects routes by verifying JWT token.
- * Can also check user roles for authorization.
- */
-
-/**
- * Middleware to verify JWT and attach user to request
- */
-
-export const protect = async (req, res, next) => {
-  let token;
-
-  if (req.cookies && req.cookies.token) {
-    token = req.cookies.token;
-  }
-
-  if (!token) {
-    return res.status(401).json({ message: "Not authorized, no token" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // decoded should contain { userId: '...' }
-    const user = await User.findByPk(decoded.userId);
-    if (!user) return res.status(401).json({ message: "User not found" });
-
-    req.user = user; // attach user to request
-    next();
-  } catch (err) {
-    console.error(err);
-    res.status(401).json({ message: "Token invalid" });
-  }
-};
-
-/**
- * Middleware to restrict access based on user role(s)
- * @param  {...string} roles - roles allowed to access the route
- */
-export const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user) {
-      return res.status(401).json({ message: "Not authorized" });
-    }
-
-    if (!roles.includes(req.user.role)) {
-      return res
-        .status(403)
-        .json({ message: "Forbidden: Insufficient permissions" });
-    }
-
-    next();
-  };
 };

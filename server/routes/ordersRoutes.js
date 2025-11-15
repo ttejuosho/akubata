@@ -10,13 +10,12 @@ import express from "express";
 import {
   createOrder,
   getOrders,
-  getUserOrders,
   getOrderById,
   updateOrderStatus,
   deleteOrder,
   addOrderItem,
 } from "../controllers/ordersControllers.js";
-import { protect, authorize } from "../controllers/authControllers.js";
+import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -25,13 +24,18 @@ const router = express.Router();
 // @access  Private
 //router.post("/", protect, createOrder);
 router.post("/", createOrder);
+
+// @route   POST /api/orders/:orderId/items
+// @desc    Add an item to an existing order
+// @access  Private
+//router.post("/:orderId/items", protect, addOrderItem);
 router.post("/:orderId/items", addOrderItem);
+
 // @route   GET /api/orders
 // @desc    Get all orders
 // @access  Private
 //router.get("/", protect, getOrders);
-router.get("/all", getOrders);
-router.get("/", protect, getUserOrders);
+router.get("/", protect, authorize("admin", "manager", "basic"), getOrders);
 
 // @route   GET /api/orders/:id
 // @desc    Get order by ID including items

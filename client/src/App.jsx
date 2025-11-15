@@ -12,6 +12,7 @@ import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Orders from "./pages/Orders";
+import Store from "./pages/Store";
 import "./App.css";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Header />
         <Routes>
           {/* Public Routes */}
+          <Route path="/store" element={<Store />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -106,30 +106,81 @@ export const getUserOrders = async (req, res) => {
  */
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Order.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ["userId", "firstName", "lastName", "emailAddress"],
-        },
-        {
-          model: OrderItem,
-          include: [
-            {
-              model: Product,
-              attributes: ["productId", "productName", "category", "unitPrice"],
-            },
-          ],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
+    const role = req.user.role;
 
-    res.status(200).json(orders);
+    if (role === "admin") return await getAdminOrders(req, res);
+    if (role === "manager") return await getManagerOrders(req, res);
+    if (role === "basic") return await getBasicOrders(req, res);
+
+    return res.status(403).json({ message: "Unauthorized" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
+};
+
+const getAdminOrders = async (req, res) => {
+  const orders = await Order.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ["userId", "firstName", "lastName", "emailAddress"],
+      },
+      {
+        model: OrderItem,
+        include: [
+          {
+            model: Product,
+            attributes: ["productId", "productName", "category", "unitPrice"],
+          },
+        ],
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+  res.status(200).json(orders);
+};
+
+const getManagerOrders = async (req, res) => {
+  const orders = await Order.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ["userId", "firstName", "lastName", "emailAddress"],
+      },
+      {
+        model: OrderItem,
+        include: [
+          {
+            model: Product,
+            attributes: ["productId", "productName", "category", "unitPrice"],
+          },
+        ],
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+  res.status(200).json(orders);
+};
+
+const getBasicOrders = async (req, res) => {
+  const userId = req.user.userId;
+  const orders = await Order.findAll({
+    where: { userId },
+    include: [
+      {
+        model: OrderItem,
+        include: [
+          {
+            model: Product,
+            attributes: ["productId", "productName", "category", "unitPrice"],
+          },
+        ],
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+  res.status(200).json(orders);
 };
 
 /**

@@ -10,7 +10,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await api.get("/orders/all", { withCredentials: true });
+        const res = await api.get("/orders", { withCredentials: true });
         setOrders(res.data);
       } catch (err) {
         console.error(err);

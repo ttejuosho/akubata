@@ -15,7 +15,12 @@ import {
   deleteProduct,
   getProductsBySupplier,
 } from "../controllers/productsControllers.js";
-import { protect, authorize } from "../controllers/authControllers.js";
+import {
+  protect,
+  authorize,
+  roleBasedResponse,
+} from "../middleware/authMiddleware.js";
+import Product from "../models/Product.js";
 
 const router = express.Router();
 
@@ -33,7 +38,7 @@ router.post("/", protect, createProduct);
 // @desc    Get all products
 // @access  Private
 //router.get("/", protect, getProducts);
-router.get("/", protect, getProducts);
+router.get("/", getProducts);
 
 // @route   GET /api/products/:id
 // @desc    Get product by ID
