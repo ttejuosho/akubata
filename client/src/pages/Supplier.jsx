@@ -15,6 +15,7 @@ const Supplier = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [search, setSearch] = useState("");
   const [formData, setFormData] = useState({
     productName: "",
     category: "",
@@ -260,9 +261,18 @@ const Supplier = () => {
       {/* Products Table */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5>Products by {supplier.companyName}</h5>
-        <Button variant="primary" onClick={handleNewProduct}>
-          <FaPlus /> New Product
-        </Button>
+        <div className="d-flex gap-2">
+          <Form.Control
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ width: "250px" }}
+          />
+          <Button variant="primary" onClick={handleNewProduct}>
+            <FaPlus /> New Product
+          </Button>
+        </div>
       </div>
 
       {loading ? (
@@ -276,6 +286,7 @@ const Supplier = () => {
             rowData={supplier.Products}
             columnDefs={columns}
             defaultColDef={{ resizable: true }}
+            quickFilterText={search}
           />
         </div>
       )}

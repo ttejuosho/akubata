@@ -12,7 +12,8 @@ const Header = () => {
   const showBothButtons =
     (!isAuthenticated && location.pathname === "/forgot-password") ||
     location.pathname === "/reset-password/:token" ||
-    location.pathname === "/";
+    location.pathname === "/" ||
+    location.pathname === "/store";
 
   return (
     <Navbar

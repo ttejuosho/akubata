@@ -67,7 +67,7 @@ const Product = () => {
           <Card className="shadow-sm">
             <Card.Img
               variant="top"
-              src={product.imageUrl || "../../public/akubata_product_image.png"}
+              src={product.imageUrl || "/akubata_product_image.png"}
               alt={product.productName}
               style={{ maxHeight: "320px", objectFit: "cover" }}
             />

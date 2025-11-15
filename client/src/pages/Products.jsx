@@ -14,6 +14,7 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -229,11 +230,22 @@ const Products = () => {
         className="ag-theme-alpine"
         style={{ width: "100%", minHeight: "90vh" }}
       >
-        <div className="d-flex justify-content-between align-items-center mb-1">
+        <div className="d-flex justify-content-between align-items-center mb-2">
           <h2>Manage Products</h2>
-          <Button variant="primary" onClick={handleNewProduct}>
-            <FaPlus /> New Product
-          </Button>
+
+          <div className="d-flex gap-2">
+            <Form.Control
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ width: "250px" }}
+            />
+
+            <Button variant="primary" onClick={handleNewProduct}>
+              <FaPlus /> New Product
+            </Button>
+          </div>
         </div>
 
         {loading ? (
@@ -249,6 +261,7 @@ const Products = () => {
               rowData={products}
               columnDefs={columns}
               defaultColDef={defaultColDef}
+              quickFilterText={search}
             />
           </div>
         )}

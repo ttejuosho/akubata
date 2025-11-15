@@ -13,6 +13,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const [showModal, setShowModal] = useState(false);
   const [editingSupplier, setEditingSupplier] = useState(null);
@@ -214,11 +215,22 @@ const Suppliers = () => {
         className="ag-theme-alpine"
         style={{ width: "100%", minHeight: "90vh" }}
       >
-        <div className="d-flex justify-content-between align-items-center mb-1">
+        <div className="d-flex justify-content-between align-items-center mb-2">
           <h2>Manage Suppliers</h2>
-          <Button variant="primary" onClick={handleNewSupplier}>
-            <FaPlus /> New Supplier
-          </Button>
+
+          <div className="d-flex gap-2">
+            <Form.Control
+              type="text"
+              placeholder="Search suppliers..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{ width: "250px" }}
+            />
+
+            <Button variant="primary" onClick={handleNewSupplier}>
+              <FaPlus /> New Supplier
+            </Button>
+          </div>
         </div>
 
         {loading ? (
@@ -233,6 +245,7 @@ const Suppliers = () => {
               rowData={suppliers}
               columnDefs={columns}
               defaultColDef={defaultColDef}
+              quickFilterText={search}
             />
           </div>
         )}

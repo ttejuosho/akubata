@@ -47,16 +47,15 @@ export default function Store() {
 
   return (
     <Container className="py-4">
-      {/* <h2 className="mb-4 text-center">All Products</h2> */}
       <Row>
         {products.map((p) => (
-          <Col key={p.productId} md={4} className="mb-4">
-            <Card className="shadow-sm h-100">
+          <Col key={p.productId} sm={4} className="mb-4">
+            <Card className="shadow-sm h-80 p-3">
               <Link to={`/product/${p.productId}`}>
                 <Card.Img
                   variant="top"
-                  src={p.imageUrl || "../../public/akubata_product_image.png"}
-                  style={{ height: 240, objectFit: "cover" }}
+                  src={p.imageUrl || "/akubata_product_image.png"}
+                  style={{ width: 200, height: 240, objectFit: "fill" }}
                 />
               </Link>
 
@@ -64,7 +63,13 @@ export default function Store() {
                 <Card.Title>{p.productName}</Card.Title>
                 <Card.Text className="text-muted">{p.category}</Card.Text>
                 <Card.Text style={{ minHeight: 60 }}>{p.description}</Card.Text>
-                <h5>${parseFloat(p.unitPrice).toFixed(2)}</h5>
+                <h5>
+                  ₦
+                  {new Intl.NumberFormat("en-NG", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(p.unitPrice)}
+                </h5>
 
                 <div className="mb-2">
                   {[1, 2, 3, 4, 5].map((r) => (

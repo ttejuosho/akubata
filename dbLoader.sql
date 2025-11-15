@@ -28,6 +28,7 @@ INSERT INTO Suppliers (supplierId, companyName, contactName, contactEmail, conta
 
 INSERT INTO Products (productId, productName, category, description, unitPrice, stockQuantity, supplierId, createdAt, updatedAt) VALUES
 -- Ally Pharma
+('c49f9fcb-10f0-4e86-8be3-9ea8c97c4c41', 'Deep Moisturizing Conditioner', 'Hair Products', 'Hydrating conditioner for dry and damaged hair', 15000, 25, 'b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', NOW(), NOW()),
 ('c8f4d1e2-1b8b-4a9a-9b4b-81e7d1e01a01', 'Chebe Hair Cream', 'Hair Products', 'Chebe hair cream for hair growth', 14500, 320, 'b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', NOW(), NOW()),
 ('df91a64b-7b2a-43b4-9e7c-15b3b5e91a02', 'Aloe Vera Conditioner', 'Hair Products', 'Natural conditioner infused with aloe vera for smooth hair', 11800, 210, 'b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', NOW(), NOW()),
 
