@@ -9,11 +9,12 @@ import { getOrderById } from "./ordersControllers.js";
  */
 export const addToCart = async (req, res) => {
   try {
-    const { productId, quantity } = req.body; // items: [{ productId, quantity }]
+    const { productId, quantity } = req.body;
+
     if (!productId || quantity <= 0) {
-      return res
-        .status(400)
-        .json({ message: "Order must have at least one item" });
+      return res.status(400).json({
+        message: "Order must have at least one item",
+      });
     }
 
     const product = await Product.findByPk(productId);
@@ -23,105 +24,96 @@ export const addToCart = async (req, res) => {
       throw new Error(`Insufficient stock for product ${product.name}`);
     }
 
-    //Check for open orders for the user
+    // Look for open order
     const openOrder = await Order.findOne({
       where: { userId: req.user.userId, orderStatus: "open" },
     });
 
-    console.log("OPEN ORDER FOUND", openOrder.orderId);
-    let result = null;
+    let result;
 
-    if (openOrder == null) {
-      // Start transaction
+    // ------------------------------------------
+    // CASE 1: No open order → Create new order
+    // ------------------------------------------
+    if (!openOrder) {
       result = await Order.sequelize.transaction(async (t) => {
-        // Create the order
         const order = await Order.create(
-          { userId: req.user.userId, orderStatus: "open" },
+          { userId: req.user.userId, orderStatus: "open", totalAmount: 0 },
           { transaction: t }
         );
 
-        // Create order item
+        // Create cart item
         await OrderItem.create(
           {
             orderId: order.orderId,
             productId: product.productId,
-            quantity: quantity,
+            quantity,
             price: product.unitPrice,
           },
           { transaction: t }
         );
 
-        // Update product stock
+        // Update stock
         product.stockQuantity -= quantity;
         await product.save({ transaction: t });
 
         // Update order total
-        (order.totalAmount += quantity * parseFloat(product.unitPrice)).toFixed(
-          2
-        );
-        await order.save({ transaction: t });
+        const itemTotal = quantity * Number(product.unitPrice);
+        order.totalAmount = Number(order.totalAmount) + itemTotal;
 
+        await order.save({ transaction: t });
         return order;
       });
-    } else {
-      // check if item already exists in cart, if true, increase quantity
+    }
+
+    // ------------------------------------------
+    // CASE 2: Open order exists → Add/edit item
+    // ------------------------------------------
+    else {
       const existingCartItem = await OrderItem.findOne({
         where: { orderId: openOrder.orderId, productId: product.productId },
       });
 
-      if (existingCartItem !== null) {
-        result = await OrderItem.sequelize.transaction(async (t) => {
+      result = await OrderItem.sequelize.transaction(async (t) => {
+        // Item already in cart → increase qty
+        if (existingCartItem) {
           existingCartItem.quantity += quantity;
-          product.stockQuantity -= quantity;
           await existingCartItem.save({ transaction: t });
-          await product.save({ transaction: t });
-          let orderTotal = (quantity * product.unitPrice).toFixed(2);
-          console.log(orderTotal);
-          openOrder.totalAmount += parseFloat(orderTotal);
-          let oota =
-            parseFloat(openOrder.totalAmount).toFixed(2) +
-            parseFloat(orderTotal).toFixed(2);
-          openOrder.totalAmount = parseFloat(oota).toFixed(2);
-          console.log(parseFloat(oota).toFixed(2));
-          await openOrder.save({ transaction: t });
-          return openOrder;
-        });
-      } else {
-        result = await OrderItem.sequelize.transaction(async (t) => {
+        }
+
+        // Item not in cart → create new item
+        else {
           await OrderItem.create(
             {
               orderId: openOrder.orderId,
               productId: product.productId,
-              quantity: quantity,
+              quantity,
               price: product.unitPrice,
             },
             { transaction: t }
           );
-          // Update product stock
-          product.stockQuantity -= quantity;
-          await product.save({ transaction: t });
+        }
 
-          // Update order total
-          let orderTotal = (quantity * product.unitPrice).toFixed(2);
-          console.log("orderTotal", orderTotal);
-          console.log("Open Order Total", parseFloat(openOrder.totalAmount));
-          openOrder.totalAmount += parseFloat(orderTotal);
-          let oota =
-            parseFloat(openOrder.totalAmount).toFixed(2) +
-            parseFloat(orderTotal);
-          console.log(oota);
-          openOrder.totalAmount = parseFloat(oota).toFixed(2);
+        // Update stock
+        product.stockQuantity -= quantity;
+        await product.save({ transaction: t });
 
-          await openOrder.save({ transaction: t });
+        // Update order total
+        const itemTotal = quantity * Number(product.unitPrice);
+        openOrder.totalAmount =
+          Number(openOrder.totalAmount) + Number(itemTotal);
 
-          return openOrder;
-        });
-      }
+        await openOrder.save({ transaction: t });
+        return openOrder;
+      });
     }
 
-    res
-      .status(201)
-      .json({ message: "Order created successfully", order: result });
+    // Convert totalAmount to 2 decimals for response
+    result.totalAmount = Number(result.totalAmount).toFixed(2);
+
+    res.status(201).json({
+      message: "Order updated successfully",
+      order: result,
+    });
   } catch (error) {
     console.error("Error creating order:", error);
     res.status(500).json({ message: "Server error", error: error.message });
