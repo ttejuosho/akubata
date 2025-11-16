@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 import ordersRoutes from "./routes/ordersRoutes.js";
 import productsRoutes from "./routes/productsRoutes.js";
 import suppliersRoutes from "./routes/suppliersRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -27,8 +28,9 @@ app.use("/api/orders", ordersRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/suppliers", suppliersRoutes);
+app.use("/api/carts", cartRoutes);
 
-app.get("/", (req, res) => res.send("Akubata API is running 🚀"));
+app.get("/", (req, res) => res.send("Akubata API is running..."));
 
 // Sync DB
 sequelize

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, navigate } from "react";
 import {
   Container,
   Row,
@@ -8,12 +8,16 @@ import {
   Spinner,
   Form,
 } from "react-bootstrap";
+import { useCart } from "../hooks/useCart";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
 
 export default function Store() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedQty, setSelectedQty] = useState({});
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,6 +38,16 @@ export default function Store() {
     // TODO: POST /products/:id/rate
   };
 
+  const handleAddToCart = async (productId, qty) => {
+    try {
+      await addToCart(productId, qty);
+      toast.success("Added to cart");
+    } catch (err) {
+      console.error("Error adding to cart", err);
+      toast.error("Could not add to cart");
+    }
+  };
+
   if (loading) {
     return (
       <div
@@ -49,7 +63,7 @@ export default function Store() {
     <Container className="py-4">
       <Row>
         {products.map((p) => (
-          <Col key={p.productId} sm={4} className="mb-4">
+          <Col key={p.productId} md={4} className="mb-4">
             <Card className="shadow-sm h-80 p-3">
               <Link to={`/product/${p.productId}`}>
                 <Card.Img
@@ -62,7 +76,9 @@ export default function Store() {
               <Card.Body>
                 <Card.Title>{p.productName}</Card.Title>
                 <Card.Text className="text-muted">{p.category}</Card.Text>
-                <Card.Text style={{ minHeight: 60 }}>{p.description}</Card.Text>
+                <Card.Text className="mb-0" style={{ minHeight: 60 }}>
+                  {p.description}
+                </Card.Text>
                 <h5>
                   ₦
                   {new Intl.NumberFormat("en-NG", {
@@ -94,28 +110,49 @@ export default function Store() {
                 <div className="d-flex gap-2">
                   <div className="w-100">
                     <Form.Select
-                      defaultValue={1}
-                      disabled={p.stockQuantity === 0}
+                      className="mb-3"
+                      value={selectedQty[p.productId] || 1}
+                      onChange={(e) =>
+                        setSelectedQty({
+                          ...selectedQty,
+                          [p.productId]: Number(e.target.value),
+                        })
+                      }
                     >
-                      {p.stockQuantity === 0 ? (
-                        <option>Out of Stock</option>
-                      ) : (
-                        [...Array(Math.min(10, p.stockQuantity))].map(
-                          (_, i) => (
-                            <option key={i + 1} value={i + 1}>
-                              {i + 1}
-                            </option>
-                          )
-                        )
-                      )}
+                      {[...Array(Math.min(10, p.stockQuantity))].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
                     </Form.Select>
+
+                    <Button
+                      variant="warning"
+                      className="w-100"
+                      size="sm"
+                      onClick={() =>
+                        handleAddToCart(
+                          p.productId,
+                          selectedQty[p.productId] || 1
+                        )
+                      }
+                    >
+                      Add to Cart
+                    </Button>
                   </div>
-                  <Button variant="warning" className="w-100">
-                    Add to Cart
-                  </Button>
                 </div>
 
-                <Button variant="success" className="mt-2 w-100">
+                <Button
+                  variant="success"
+                  className="mt-2 w-100"
+                  onClick={() =>
+                    navigate(
+                      `/checkout?productId=${p.productId}&qty=${
+                        selectedQty[p.productId] || 1
+                      }`
+                    )
+                  }
+                >
                   Buy Now
                 </Button>
               </Card.Body>

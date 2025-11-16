@@ -47,12 +47,12 @@ const Home = () => {
 
         {/* Suppliers Tile */}
         <div className="col-md-6 mb-3">
-          <Link to="/store" className="text-decoration-none">
+          <Link to="/profile" className="text-decoration-none">
             <div className="card text-center h-100 shadow-sm hover-shadow">
               <div className="card-body d-flex flex-column justify-content-center align-items-center">
-                <h3 className="card-title">Store</h3>
+                <h3 className="card-title">Account Settings</h3>
                 <p className="card-text">
-                  Shop products from the Akubata online store.
+                  View and manage your account information.
                 </p>
               </div>
             </div>

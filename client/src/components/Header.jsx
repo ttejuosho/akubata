@@ -1,7 +1,8 @@
-import { Navbar, Container, Nav, Button, Image } from "react-bootstrap";
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { FaUserCircle } from "react-icons/fa"; // profile icon
+import { NavbarCart } from "./NavbarCart";
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -34,7 +35,10 @@ const Header = () => {
 
         <Nav className="ms-auto align-items-center">
           {/* Logged-in user view */}
-
+          <Button as={Link} to="/store" variant="primary" className="me-2">
+            Store
+          </Button>
+          <NavbarCart />
           {isAuthenticated && user ? (
             <>
               <div className="d-flex align-items-center me-3">
