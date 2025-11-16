@@ -11,7 +11,7 @@ const CartProvider = ({ children }) => {
     try {
       const { data } = await api.get("/carts");
       setCart(data.cart);
-      setCount(data.cart.reduce((sum, item) => sum + item.quantity, 0));
+      setCount(data.cartItemsCount);
     } catch (err) {
       console.error(err);
     }
