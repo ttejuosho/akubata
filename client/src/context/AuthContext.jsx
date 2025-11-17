@@ -13,10 +13,11 @@
 import { createContext, useState, useEffect } from "react";
 import api from "../api/axios";
 import { toast } from "react-hot-toast";
-
+import { useCart } from "../hooks/useCart";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const { clearCartState, getCart } = useCart();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -62,6 +63,7 @@ const AuthProvider = ({ children }) => {
       }
       setUser(data.user);
       toast.success("Login successful!");
+      getCart();
       return data;
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
@@ -89,10 +91,12 @@ const AuthProvider = ({ children }) => {
   // 🔹 Logout
   const logout = async () => {
     try {
+      await api.get("/carts/reset");
       await api.post("/auth/logout");
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
+      clearCartState();
       localStorage.removeItem("token");
       setAxiosToken(null);
       setUser(null);

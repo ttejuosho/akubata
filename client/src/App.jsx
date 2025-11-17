@@ -13,6 +13,7 @@ import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Orders from "./pages/Orders";
 import Store from "./pages/Store";
+import Cart from "./pages/Cart";
 import "./App.css";
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/supplier/:supplierId" element={<Supplier />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/cart" element={<Cart />} />
           </Route>
 
           {/* Optional: 404 */}

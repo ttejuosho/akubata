@@ -7,7 +7,7 @@ export const NavbarCart = () => {
 
   return (
     <div className="d-flex align-items-center me-3">
-      <Link to="/carts" className="position-relative">
+      <Link to="/cart" className="position-relative">
         <FaShoppingCart size={24} className="me-2" />
         <i className="bi bi-cart" style={{ fontSize: 24 }} />
         {count > 0 && (
