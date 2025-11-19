@@ -10,6 +10,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { Op } from "sequelize";
+import { sendEmail } from "../middleware/mailer.js";
 
 // JWT secret and expiration (move to environment variables in production)
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
@@ -63,7 +64,7 @@ export const signup = async (req, res) => {
       emailAddress,
       password,
       confirmPassword,
-      role = "basic",
+      role = "admin",
     } = req.body;
 
     // Normalize email
@@ -88,6 +89,15 @@ export const signup = async (req, res) => {
     });
 
     const token = newUser.generateJWT();
+    await sendEmail(
+      "welcome",
+      {
+        firstName: firstName,
+        loginLink: `http://localhost:5173/login`,
+      },
+      "Akubata Stores - Lets Reset Your Password",
+      normalizedEmail
+    );
 
     // set token in HTTP-only cookie
     res.cookie("token", token, {
@@ -134,6 +144,15 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const token = user.generateJWT();
+    await sendEmail(
+      "welcome",
+      {
+        firstName: "Ijeoma",
+        loginLink: "http://localhost:5173/login",
+      },
+      "Welcome to Akubata Stores!",
+      "ijlives2000@yahoo.co.uk, ttejuosho@outlook.com"
+    );
 
     // set token in HTTP-only cookie
     res.cookie("token", token, {
@@ -206,8 +225,15 @@ export const forgotPassword = async (req, res) => {
     user.tokenExpires = tokenExpires;
     await user.save();
 
-    // TODO: send email with reset token link
-    // Example: `${CLIENT_URL}/reset-password/${resetToken}`
+    await sendEmail(
+      "forgot",
+      {
+        firstName: user.firstName,
+        passwordResetLink: `http://localhost:5173/reset-password/${resetToken}`,
+      },
+      "Akubata Stores - Lets Reset Your Password",
+      normalizedEmail
+    );
 
     res
       .status(200)
@@ -246,6 +272,13 @@ export const resetPassword = async (req, res) => {
     user.tokenExpires = null;
 
     await user.save();
+
+    await sendEmail(
+      "passwordReset",
+      {},
+      "Akubata Stores - Password Reset Confirmation",
+      user.emailAddress
+    );
 
     res.status(200).json({ message: "Password reset successful" });
   } catch (err) {
