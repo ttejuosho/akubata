@@ -1,6 +1,7 @@
 // CartItem.jsx
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import Divider from "./Divider";
+import { Link } from "react-router-dom";
 // ----------------- CartItem Component -----------------
 export default function CartItem({
   removingId,
@@ -18,17 +19,24 @@ export default function CartItem({
       <Row className="align-items-start gy-3">
         {/* Image */}
         <Col xs={4} md={3}>
-          <img
-            src={item.product.imageUrl || "/akubata_product_image.png"}
-            alt={item.productName}
-            className="img-fluid rounded"
-            style={{ maxHeight: "140px", objectFit: "contain" }}
-          />
+          <Link to={`/product/${item.product.productId}`}>
+            <Card.Img
+              variant="top"
+              src={item.product.imageUrl || "/akubata_product_image.png"}
+              style={{ maxHeight: "140px", objectFit: "contain" }}
+            />
+          </Link>
         </Col>
 
         {/* Product info */}
         <Col xs={8} md={6}>
-          <h5 className="fw-semibold">{item.productName}</h5>
+          <Link
+            className="text-decoration-none text-dark"
+            to={`/product/${item.product.productId}`}
+          >
+            <h5 className="fw-semibold">{item.productName}</h5>
+          </Link>
+
           <h6 className="text-muted">Unit Price: ₦{item.price}</h6>
 
           <div className="mt-3">

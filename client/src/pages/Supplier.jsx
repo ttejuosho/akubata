@@ -253,6 +253,12 @@ const Supplier = () => {
               >
                 Go to Suppliers Page
               </Link>
+              <Link
+                to={`/store/supplier/${supplier.supplierId}`}
+                className="btn btn-outline-primary mt-3 mt-md-0"
+              >
+                Shop Suppliers Store
+              </Link>
             </div>
           </div>
         </Card.Body>

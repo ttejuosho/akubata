@@ -30,7 +30,7 @@ const Header = () => {
           to="/"
           style={{ fontWeight: "700", color: "#123456" }}
         >
-          Akubata Inc.
+          Akubata Pharma
         </Navbar.Brand>
 
         <Nav className="ms-auto align-items-center">

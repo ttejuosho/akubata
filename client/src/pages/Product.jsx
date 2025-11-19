@@ -166,6 +166,12 @@ const Product = () => {
                   >
                     View Supplier
                   </Link>
+                  <Link
+                    to={`/store/supplier/${Supplier.supplierId}`}
+                    className="btn btn-success"
+                  >
+                    Shop Supplier
+                  </Link>
 
                   {Supplier.contactEmail && (
                     <a

@@ -15,6 +15,7 @@ import Orders from "./pages/Orders";
 import Store from "./pages/Store";
 import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
+import SupplierStore from "./pages/SupplierStore";
 import "./App.css";
 
 function App() {
@@ -37,6 +38,10 @@ function App() {
             <Route path="/product/:productId" element={<Product />} />
             <Route path="/supplier/:supplierId" element={<Supplier />} />
             <Route path="/suppliers" element={<Suppliers />} />
+            <Route
+              path="/store/supplier/:supplierId"
+              element={<SupplierStore />}
+            />
             <Route path="/orders" element={<Orders />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />
