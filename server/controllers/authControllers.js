@@ -46,7 +46,7 @@ export const getCurrentUser = async (req, res) => {
 
     return res.status(200).json({ user });
   } catch (err) {
-    console.error("getCurrentUser error:", err);
+    console.error("getCurrentUser error:", err.message);
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };

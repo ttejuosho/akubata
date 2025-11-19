@@ -14,6 +14,7 @@ import Product from "./pages/Product";
 import Orders from "./pages/Orders";
 import Store from "./pages/Store";
 import Cart from "./pages/Cart";
+import CheckoutPage from "./pages/Checkout";
 import "./App.css";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Route>
 
           {/* Optional: 404 */}

@@ -4,8 +4,8 @@ import {
   getCart,
   addToCart,
   checkoutCart,
-  removeFromCart,
-  updateCartItem,
+  removeItemFromCart,
+  updateCartItemQuantity,
   clearCart,
   resetCart,
 } from "../controllers/cartControllers.js";
@@ -27,9 +27,9 @@ router.post("/", addToCart);
 // @route   POST /api/carts/remove
 // @desc    Remove item from cart
 // @access  Private
-router.post("/remove", removeFromCart);
+router.post("/remove", removeItemFromCart);
 
-router.put("/", updateCartItem);
+router.put("/", updateCartItemQuantity);
 
 router.delete("/", clearCart);
 router.get("/reset", resetCart);

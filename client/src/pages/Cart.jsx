@@ -1,133 +1,121 @@
-import { useEffect, useState } from "react";
-import api from "../api/axios";
+// Cart.jsx
+import { useState } from "react";
+import { useCart } from "../hooks/useCart";
 import { Link } from "react-router-dom";
-import { Form, Button, Card, Row, Col } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
+import toast from "react-hot-toast";
+import CartItem from "../components/CartItem";
+import Divider from "../components/Divider";
 
 export default function CartPage() {
-  const [cart, setCart] = useState({
-    items: [],
-    totalAmount: "0.00",
-    cartItemsCount: 0,
-  });
-  const [loading, setLoading] = useState(true);
+  const [removingId, setRemovingId] = useState(null);
+  const { loading, cart, updateCartItem, removeItemFromCart } = useCart();
 
-  const fetchCart = async () => {
+  const updateQuantity = async (productId, qty) => {
     try {
-      const { data } = await api.get("/carts");
-      setCart(data.cart);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching cart", err);
-      setLoading(false);
+      await updateCartItem(productId, Number(qty));
+      toast.success("Cart Updated");
+    } catch {
+      toast.error("Update failed");
     }
   };
 
-  const updateQuantity = async (productId, newQty) => {
-    try {
-      await api.put(`/carts`, {
-        productId: productId,
-        quantity: Number(newQty),
-      });
-      fetchCart(); // refresh cart
-    } catch (err) {
-      console.error("Error updating quantity", err);
-    }
+  const removeItem = (productId, quantity) => {
+    setRemovingId(productId);
+
+    // Delay for animation before hitting API
+    setTimeout(async () => {
+      try {
+        await removeItemFromCart(productId, quantity);
+        toast.success("Cart Updated");
+      } catch {
+        toast.error("Failed to remove item");
+      } finally {
+        setRemovingId(null);
+      }
+    }, 350); // match CSS duration
   };
 
-  const removeItem = async (orderItemId) => {
-    try {
-      await axios.delete(`/cart/remove/${orderItemId}`);
-      fetchCart();
-    } catch (err) {
-      console.error("Error removing item", err);
-    }
-  };
+  if (loading || !cart || !cart.items) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-50">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
-  if (loading) return <div>Loading cart...</div>;
+  const hasItems = cart.items.length > 0;
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Your Cart</h2>
+    <div className="container py-5" style={{ maxWidth: "900px" }}>
+      {/* ---------------------------------- TOP TOTAL ---------------------------------- */}
+      <div className="text-center mb-4">
+        <h2 className="fw-bold">Your bag total is ₦{cart.totalAmount}</h2>
+        <p className="text-muted">Free delivery and free returns.</p>
 
-      {/* EMPTY CART */}
-      {cart.items.length === 0 && (
-        <div className="text-center">
-          <h4>Your cart is empty</h4>
-          <Link to="/products" className="btn btn-primary mt-3">
-            Browse Products
-          </Link>
-        </div>
-      )}
+        {/* Check Out Buttons */}
+        {hasItems && (
+          <div className="d-flex justify-content-center gap-3 mt-3">
+            <Link to="/store" className="btn btn-outline-primary px-4 py-2">
+              Continue Shopping
+            </Link>
+            <Link to="/checkout" className="btn btn-primary px-4 py-2">
+              Check Out
+            </Link>
+          </div>
+        )}
+      </div>
 
+      <Divider />
+
+      {/* ------------------------ CART ITEMS ------------------------ */}
       {cart.items.map((item) => (
-        <Card key={item.orderItemId} className="mb-3 p-3 shadow-sm">
-          <Row>
-            {/* Product Image */}
-            <Col md={2} className="d-flex align-items-center">
-              <img
-                src={item.product.imageUrl}
-                alt={item.productName}
-                className="img-fluid rounded"
-              />
-            </Col>
-
-            {/* Product Info */}
-            <Col md={4}>
-              <h5>{item.productName}</h5>
-              <p className="text-muted">${item.product.unitPrice}</p>
-              <p className="small text-muted">
-                In stock: {item.product.stockQuantity}
-              </p>
-            </Col>
-
-            {/* Quantity */}
-            <Col md={3}>
-              <Form.Select
-                value={item.quantity}
-                onChange={(e) => updateQuantity(item.productId, e.target.value)}
-              >
-                {[...Array(Math.min(10, item.product.stockQuantity))].map(
-                  (_, i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  )
-                )}
-              </Form.Select>
-
-              <p className="mt-2">
-                Item Total: <strong>${item.itemTotal}</strong>
-              </p>
-            </Col>
-
-            {/* Remove */}
-            <Col md={3} className="d-flex align-items-center">
-              <Button
-                variant="danger"
-                onClick={() => removeItem(item.orderItemId)}
-              >
-                Remove
-              </Button>
-            </Col>
-          </Row>
-        </Card>
+        <CartItem
+          key={item.orderItemId}
+          removingId={removingId}
+          item={item}
+          updateQuantity={updateQuantity}
+          removeItem={removeItem}
+        />
       ))}
 
-      {/* CART TOTAL */}
-      {cart.items.length > 0 && (
-        <Card className="p-3 mt-4 shadow-sm">
-          <h4>
-            Total: <span className="text-primary">${cart.totalAmount}</span>
-          </h4>
+      {/* ------------------ ORDER SUMMARY ------------------ */}
+      {hasItems && (
+        <div className="mt-4">
+          <h5 className="fw-semibold mb-3">Summary</h5>
 
-          <Link to="/checkout" className="btn btn-success w-100 mt-3">
-            Proceed to Checkout
-          </Link>
-        </Card>
+          <div className="d-flex justify-content-between mb-2">
+            <span className="text-muted">Subtotal</span>
+            <span>₦{cart.totalAmount}</span>
+          </div>
+
+          <div className="d-flex justify-content-between mb-2">
+            <span className="text-muted">Shipping</span>
+            <span>FREE</span>
+          </div>
+
+          <div className="d-flex justify-content-between mb-2">
+            <span className="text-muted">Estimated Tax</span>
+            <span>₦0.00</span>
+          </div>
+
+          <Divider />
+
+          <div className="d-flex justify-content-between align-items-center">
+            <h4 className="fw-bold">Total</h4>
+            <h4 className="fw-bold text-primary">₦{cart.totalAmount}</h4>
+          </div>
+
+          {/* Bottom buttons */}
+          <div className="d-flex justify-content-center gap-3 mt-4">
+            <Link to="/store" className="btn btn-outline-primary px-4 py-2">
+              Continue Shopping
+            </Link>
+            <Link to="/checkout" className="btn btn-primary px-4 py-2">
+              Check Out
+            </Link>
+          </div>
+        </div>
       )}
     </div>
   );

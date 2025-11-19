@@ -101,3 +101,12 @@ button:focus-visible {
     color: #747bff;
   }
 }
+
+.cart-item {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.cart-item.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}

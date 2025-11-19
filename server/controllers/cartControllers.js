@@ -165,6 +165,9 @@ export const getCart = async (req, res) => {
         productId: item.productId,
         quantity: item.quantity,
         price: Number(item.price).toFixed(2),
+        productTotalPrice: (Number(item.price) * Number(item.quantity)).toFixed(
+          2
+        ),
         productName: item.Product.productName,
         itemTotal: itemTotal.toFixed(2),
         product: {
@@ -205,7 +208,7 @@ export const getCart = async (req, res) => {
   }
 };
 
-export const removeFromCart = async (req, res) => {
+export const removeItemFromCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
 
@@ -319,7 +322,7 @@ export const removeFromCart = async (req, res) => {
   }
 };
 
-export const updateCartItem = async (req, res) => {
+export const updateCartItemQuantity = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
 

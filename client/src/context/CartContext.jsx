@@ -1,19 +1,29 @@
+// CartContext.jsx
 import { createContext, useState, useEffect } from "react";
 import api from "../api/axios";
 
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({
+    items: [],
+    totalAmount: 0,
+    cartItemsCount: 0,
+  });
+  const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const [cartTotal, setCartTotal] = useState("0.00");
 
   const getCart = async () => {
     try {
       const { data } = await api.get("/carts");
       setCart(data.cart);
       setCount(data.cart.cartItemsCount);
+      setCartTotal(data.cart.totalAmount);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -23,24 +33,25 @@ const CartProvider = ({ children }) => {
     return data.order;
   };
 
-  const removeFromCart = async (cartItemId) => {
-    await api.delete(`/carts/${cartItemId}`);
-    getCart();
+  const removeItemFromCart = async (productId, quantity) => {
+    await api.post(`/carts/remove`, { productId, quantity });
+    return getCart();
   };
 
   const updateCartItem = async (productId, quantity) => {
     await api.put("/carts", { productId, quantity });
-    await getCart();
+    return getCart();
   };
 
   const clearCart = async () => {
-    await api.post("/carts/clear");
+    await api.delete("/carts");
     await getCart();
   };
 
   const clearCartState = () => {
     setCart([]);
     setCount(0);
+    setCartTotal("0.00");
   };
 
   useEffect(() => {
@@ -52,8 +63,10 @@ const CartProvider = ({ children }) => {
       value={{
         cart,
         count,
+        loading,
+        cartTotal,
         addToCart,
-        removeFromCart,
+        removeItemFromCart,
         updateCartItem,
         clearCart,
         getCart,
