@@ -144,15 +144,6 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const token = user.generateJWT();
-    await sendEmail(
-      "welcome",
-      {
-        firstName: "Ijeoma",
-        loginLink: "http://localhost:5173/login",
-      },
-      "Welcome to Akubata Stores!",
-      "ijlives2000@yahoo.co.uk, ttejuosho@outlook.com"
-    );
 
     // set token in HTTP-only cookie
     res.cookie("token", token, {
