@@ -1,4 +1,5 @@
-import { useEffect, useState, navigate } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Container,
   Row,
@@ -7,23 +8,34 @@ import {
   Button,
   Spinner,
   Form,
+  Alert,
 } from "react-bootstrap";
 import { useCart } from "../hooks/useCart";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
 export default function Store() {
   const [products, setProducts] = useState([]);
+  const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedQty, setSelectedQty] = useState({});
   const { addToCart } = useCart();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get("searchQuery") || "";
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const { data } = await api.get("/products");
-        setProducts(data);
+        const { data } = await api.get("/products", {
+          params: { searchQuery },
+        });
+        setProducts(data.products);
+        setResponseMessage(data.message);
       } catch (err) {
         console.error("Error fetching products", err);
       } finally {
@@ -31,7 +43,7 @@ export default function Store() {
       }
     };
     fetchProducts();
-  }, []);
+  }, [searchQuery]);
 
   const handleRate = (productId, rating) => {
     console.log("Rated", productId, rating);
@@ -54,39 +66,48 @@ export default function Store() {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "60vh" }}
       >
-        <Spinner animation="border" />
+        {" "}
+        <Spinner animation="border" />{" "}
       </div>
     );
   }
 
   return (
     <Container className="py-4">
+      {" "}
       <Row>
+        {responseMessage && (
+          <>
+            {" "}
+            <Alert key={"secondary"} variant={"secondary"}>
+              {responseMessage}
+            </Alert>
+          </>
+        )}
         {products.map((p) => (
           <Col key={p.productId} md={4} className="mb-4">
+            {" "}
             <Card className="shadow-sm h-80 p-3">
               <Link to={`/product/${p.productId}`}>
                 <Card.Img
                   variant="top"
                   src={p.imageUrl || "/akubata_product_image.png"}
                   style={{ width: 200, height: 240, objectFit: "fill" }}
-                />
+                />{" "}
               </Link>
-
               <Card.Body>
                 <Card.Title>{p.productName}</Card.Title>
                 <Card.Text className="text-muted">{p.category}</Card.Text>
                 <Card.Text className="mb-0" style={{ minHeight: 60 }}>
                   {p.description}
-                </Card.Text>
+                </Card.Text>{" "}
                 <h5>
                   ₦
                   {new Intl.NumberFormat("en-NG", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                  }).format(p.unitPrice)}
+                  }).format(p.unitPrice)}{" "}
                 </h5>
-
                 <div className="mb-2">
                   {[1, 2, 3, 4, 5].map((r) => (
                     <span
@@ -102,11 +123,9 @@ export default function Store() {
                     </span>
                   ))}
                 </div>
-
                 <div className="text-muted small mb-1">
                   In stock: {p.stockQuantity}
                 </div>
-
                 <div className="d-flex gap-2">
                   <div className="w-100">
                     <Form.Select
@@ -125,7 +144,6 @@ export default function Store() {
                         </option>
                       ))}
                     </Form.Select>
-
                     <Button
                       variant="warning"
                       className="w-100"
@@ -141,7 +159,6 @@ export default function Store() {
                     </Button>
                   </div>
                 </div>
-
                 <Button
                   variant="success"
                   className="mt-2 w-100"

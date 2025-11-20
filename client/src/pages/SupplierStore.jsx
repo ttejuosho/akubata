@@ -56,6 +56,9 @@ export default function SupplierStore() {
       toast.error("Could not add to cart");
     }
   };
+  const handleRate = (productId, rating) => {
+    toast.success(`You rated ${rating} stars`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -110,13 +113,10 @@ export default function SupplierStore() {
 
                 <Card.Body>
                   <Card.Title>{p.productName}</Card.Title>
-
                   <Card.Text className="text-muted">{p.category}</Card.Text>
-
                   <Card.Text className="mb-0" style={{ minHeight: 60 }}>
                     {p.description}
                   </Card.Text>
-
                   <h5 className="mt-2">
                     ₦
                     {new Intl.NumberFormat("en-NG", {

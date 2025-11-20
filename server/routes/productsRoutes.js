@@ -20,7 +20,6 @@ import {
   authorize,
   roleBasedResponse,
 } from "../middleware/authMiddleware.js";
-import Product from "../models/Product.js";
 
 const router = express.Router();
 

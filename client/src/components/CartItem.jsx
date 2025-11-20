@@ -37,7 +37,13 @@ export default function CartItem({
             <h5 className="fw-semibold">{item.productName}</h5>
           </Link>
 
-          <h6 className="text-muted">Unit Price: ₦{item.price}</h6>
+          <h6 className="text-muted">
+            Unit Price: ₦
+            {new Intl.NumberFormat("en-NG", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(item.price)}
+          </h6>
 
           <div className="mt-3">
             <Form.Select
@@ -56,7 +62,13 @@ export default function CartItem({
 
         {/* Price & Remove */}
         <Col xs={12} md={3} className="text-md-end">
-          <h5 className="fw-semibold mb-2">₦{item.productTotalPrice}</h5>
+          <h5 className="fw-semibold mb-2">
+            ₦
+            {new Intl.NumberFormat("en-NG", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(item.productTotalPrice)}
+          </h5>
           <Button
             variant="link"
             className="text-danger p-0"

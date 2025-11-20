@@ -50,7 +50,13 @@ export default function CartPage() {
     <div className="container py-5" style={{ maxWidth: "900px" }}>
       {/* ---------------------------------- TOP TOTAL ---------------------------------- */}
       <div className="text-center mb-4">
-        <h2 className="fw-bold">Your bag total is ₦{cart.totalAmount}</h2>
+        <h2 className="fw-bold">
+          Your bag total is ₦
+          {new Intl.NumberFormat("en-NG", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(cart.totalAmount)}
+        </h2>
         <p className="text-muted">Free delivery and free returns.</p>
 
         {/* Check Out Buttons */}
@@ -86,7 +92,13 @@ export default function CartPage() {
 
           <div className="d-flex justify-content-between mb-2">
             <span className="text-muted">Subtotal</span>
-            <span>₦{cart.totalAmount}</span>
+            <span>
+              ₦
+              {new Intl.NumberFormat("en-NG", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(cart.totalAmount)}
+            </span>
           </div>
 
           <div className="d-flex justify-content-between mb-2">
@@ -103,7 +115,13 @@ export default function CartPage() {
 
           <div className="d-flex justify-content-between align-items-center">
             <h4 className="fw-bold">Total</h4>
-            <h4 className="fw-bold text-primary">₦{cart.totalAmount}</h4>
+            <h4 className="fw-bold text-dark">
+              ₦
+              {new Intl.NumberFormat("en-NG", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(cart.totalAmount)}
+            </h4>
           </div>
 
           {/* Bottom buttons */}

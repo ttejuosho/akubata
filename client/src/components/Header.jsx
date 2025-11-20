@@ -1,12 +1,22 @@
-import { Navbar, Container, Nav, Button } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import {
+  Navbar,
+  Container,
+  Nav,
+  Button,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { FaUserCircle } from "react-icons/fa"; // profile icon
+import { FaUserCircle, FaSearch } from "react-icons/fa";
 import { NavbarCart } from "./NavbarCart";
+import { useState } from "react";
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const showLoginButton = !isAuthenticated && location.pathname === "/signup";
   const showSignupButton = !isAuthenticated && location.pathname === "/login";
@@ -16,6 +26,16 @@ const Header = () => {
     location.pathname === "/" ||
     location.pathname === "/store";
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim() !== "") {
+      navigate(`/store?searchQuery=${encodeURIComponent(searchTerm)}`);
+      setSearchTerm("");
+    } else {
+      navigate("/store");
+    }
+  };
+
   return (
     <Navbar
       bg="light"
@@ -24,7 +44,8 @@ const Header = () => {
       sticky="top"
       className="shadow-sm"
     >
-      <Container>
+      {" "}
+      <Container className="d-flex align-items-center">
         <Navbar.Brand
           as={Link}
           to="/"
@@ -32,9 +53,26 @@ const Header = () => {
         >
           Akubata Pharma
         </Navbar.Brand>
+        {/* Search bar with icon */}
+        <Form
+          className="mx-3 flex-grow-1"
+          onSubmit={handleSearch}
+          style={{ maxWidth: "500px" }}
+        >
+          <InputGroup>
+            <Form.Control
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Button variant="primary" onClick={handleSearch}>
+              <FaSearch />
+            </Button>
+          </InputGroup>
+        </Form>
 
         <Nav className="ms-auto align-items-center">
-          {/* Logged-in user view */}
           <Button as={Link} to="/store" variant="primary" className="me-2">
             Store
           </Button>
@@ -43,7 +81,6 @@ const Header = () => {
             <>
               <div className="d-flex align-items-center me-3">
                 <FaUserCircle size={24} className="me-2" />
-
                 <span className="fw-semibold">{user.firstName}</span>
               </div>
               <Button variant="outline-primary" onClick={logout}>
