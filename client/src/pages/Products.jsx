@@ -31,7 +31,7 @@ const Products = () => {
     try {
       setLoading(true);
       const { data } = await api.get("/products");
-      setProducts(data);
+      setProducts(data.products);
       setLoading(false);
     } catch (err) {
       console.error(err);
