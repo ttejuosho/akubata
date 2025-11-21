@@ -37,7 +37,13 @@ const Order = sequelize.define(
       defaultValue: DataTypes.NOW,
     },
     orderStatus: {
-      type: DataTypes.ENUM("pending", "completed", "cancelled", "open"),
+      type: DataTypes.ENUM(
+        "pending",
+        "completed",
+        "cancelled",
+        "open",
+        "closed"
+      ),
       defaultValue: "pending",
     },
     paymentMethod: {

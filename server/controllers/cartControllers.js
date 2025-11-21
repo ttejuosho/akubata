@@ -218,107 +218,92 @@ export const removeItemFromCart = async (req, res) => {
       });
     }
 
+    const userId = req.user.userId;
+
     // Find user's open order
     const openOrder = await Order.findOne({
-      where: { userId: req.user.userId, orderStatus: "open" },
+      where: { userId, orderStatus: "open" },
     });
 
     if (!openOrder) {
-      return res.status(404).json({
-        message: "No open order found for this user",
-      });
+      return res.status(404).json({ message: "No open order found" });
     }
 
-    // Check if item exists in order
-    const cartItem = await OrderItem.findOne({
-      where: { orderId: openOrder.orderId, productId },
-    });
-
-    if (!cartItem) {
-      return res.status(404).json({
-        message: "Item not found in cart",
+    // Execute everything inside a transaction
+    const result = await OrderItem.sequelize.transaction(async (t) => {
+      const cartItem = await OrderItem.findOne({
+        where: { orderId: openOrder.orderId, productId },
+        transaction: t,
+        lock: t.LOCK.UPDATE,
       });
-    }
 
-    // Get product reference
-    const product = await Product.findByPk(productId);
+      if (!cartItem) {
+        throw new Error("Item not found in cart");
+      }
 
-    let result = await OrderItem.sequelize.transaction(async (t) => {
-      // ---------------------------
-      // CASE 1: quantity < existing → reduce quantity
-      // ---------------------------
+      const product = await Product.findByPk(productId, {
+        transaction: t,
+        lock: t.LOCK.UPDATE,
+      });
+
+      // CASE 1: reduce quantity
       if (quantity < cartItem.quantity) {
         cartItem.quantity -= quantity;
         await cartItem.save({ transaction: t });
 
-        // Restore stock
         product.stockQuantity += quantity;
         await product.save({ transaction: t });
 
-        // Update order total
-        const itemTotal = quantity * Number(product.unitPrice);
-        openOrder.totalAmount =
-          Number(openOrder.totalAmount) - Number(itemTotal);
-
+        const itemTotal = quantity * Number(cartItem.price);
+        openOrder.totalAmount = Number(openOrder.totalAmount) - itemTotal;
         await openOrder.save({ transaction: t });
       }
 
-      // ---------------------------
-      // CASE 2: quantity >= existing → remove entire item
-      // ---------------------------
+      // CASE 2: remove entire line item
       else {
-        // Restore stock fully
         product.stockQuantity += cartItem.quantity;
         await product.save({ transaction: t });
 
-        // Subtract full value of this cart item
         const itemTotal = cartItem.quantity * Number(cartItem.price);
-        openOrder.totalAmount =
-          Number(openOrder.totalAmount) - Number(itemTotal);
+        openOrder.totalAmount = Number(openOrder.totalAmount) - itemTotal;
 
         await cartItem.destroy({ transaction: t });
         await openOrder.save({ transaction: t });
       }
 
-      // ---------------------------
-      // CASE 3: if order total becomes 0 → close order or delete it
-      // ---------------------------
-      const remainingItems = await OrderItem.count({
+      // Clamp negative totals
+      openOrder.totalAmount = Math.max(0, Number(openOrder.totalAmount));
+
+      // Check if order is now empty
+      const remaining = await OrderItem.count({
         where: { orderId: openOrder.orderId },
         transaction: t,
       });
 
-      if (remainingItems === 0) {
-        // Option 1: Close order
-        openOrder.orderStatus = "closed";
-        openOrder.totalAmount = 0;
-        await openOrder.save({ transaction: t });
-
-        // Option 2: Delete order
-        // await openOrder.destroy({ transaction: t });
-
+      if (remaining === 0) {
+        await openOrder.destroy({ transaction: t });
         return { closed: true, order: openOrder };
       }
 
       return { closed: false, order: openOrder };
     });
 
-    result.order.totalAmount = Number(result.order.totalAmount).toFixed(2);
+    const totalFormatted = Number(result.order.totalAmount).toFixed(2);
 
     if (result.closed) {
       return res.status(200).json({
         message: "All items removed — order closed",
-        order: result.order,
+        order: { ...result.order.toJSON(), totalAmount: totalFormatted },
       });
     }
 
     res.status(200).json({
       message: "Item removed from cart",
-      order: result.order,
+      order: { ...result.order.toJSON(), totalAmount: totalFormatted },
     });
   } catch (error) {
     console.error("Error removing from cart:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
