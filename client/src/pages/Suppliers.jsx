@@ -26,6 +26,7 @@ const Suppliers = () => {
     city: "",
     state: "",
     country: "",
+    isActive: false,
   });
 
   // Fetch suppliers
@@ -80,6 +81,7 @@ const Suppliers = () => {
       city: "",
       state: "",
       country: "",
+      isActive: true,
     });
     setShowModal(true);
   };
@@ -336,6 +338,17 @@ const Suppliers = () => {
                   value={formData.country}
                   onChange={(e) =>
                     setFormData({ ...formData, country: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Check
+                  type="switch"
+                  id="isActive"
+                  label="Active"
+                  checked={formData.isActive}
+                  onChange={(e) =>
+                    setFormData({ ...formData, isActive: e.target.checked })
                   }
                 />
               </Form.Group>

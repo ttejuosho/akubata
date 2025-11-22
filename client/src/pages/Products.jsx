@@ -25,6 +25,7 @@ const Products = () => {
     unitPrice: "",
     stockQuantity: "",
     supplierId: "",
+    isActive: false,
   });
 
   const fetchProducts = useCallback(async () => {
@@ -79,6 +80,7 @@ const Products = () => {
       unitPrice: product.unitPrice,
       stockQuantity: product.stockQuantity,
       supplierId: product.supplierId,
+      isActive: product.isActive,
     });
     setShowModal(true);
   };
@@ -92,6 +94,7 @@ const Products = () => {
       unitPrice: "",
       stockQuantity: "",
       supplierId: "",
+      isActive: false,
     });
     setShowModal(true);
   };
@@ -340,6 +343,17 @@ const Products = () => {
                   value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Check
+                  type="switch"
+                  id="isActive"
+                  label="Active"
+                  checked={formData.isActive}
+                  onChange={(e) =>
+                    setFormData({ ...formData, isActive: e.target.checked })
                   }
                 />
               </Form.Group>

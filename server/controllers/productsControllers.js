@@ -59,6 +59,7 @@ const searchProductsByTerm = async (term) => {
   const [products, suppliers] = await Promise.all([
     Product.findAll({
       where: {
+        isActive: true,
         [Op.or]: [
           { productName: { [Op.like]: query } },
           { category: { [Op.like]: query } },

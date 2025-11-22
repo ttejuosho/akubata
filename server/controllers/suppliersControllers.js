@@ -158,7 +158,7 @@ export const updateSupplier = async (req, res) => {
     supplier.city = city || supplier.city;
     supplier.state = state || supplier.state;
     supplier.country = country || supplier.country;
-    supplier.isActive = isActive || supplier.isActive;
+    supplier.isActive = isActive;
 
     await supplier.save();
 
