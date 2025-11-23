@@ -16,6 +16,7 @@ import Store from "./pages/Store";
 import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
 import SupplierStore from "./pages/SupplierStore";
+import Profile from "./pages/Profile";
 import "./App.css";
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/orders" element={<Orders />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
           {/* Optional: 404 */}

@@ -92,7 +92,7 @@ export default function Store() {
                 <Card.Img
                   variant="top"
                   src={p.imageUrl || "/akubata_product_image.png"}
-                  style={{ width: 200, height: 240, objectFit: "fill" }}
+                  style={{ width: 240, height: 240, objectFit: "fill" }}
                 />{" "}
               </Link>
               <Card.Body>

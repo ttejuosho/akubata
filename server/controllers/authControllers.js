@@ -133,9 +133,10 @@ export const login = async (req, res) => {
     // Normalize email
     const normalizedEmail = emailAddress.trim().toLowerCase();
 
-    const user = await User.findOne({
+    const user = await User.scope(null).findOne({
       where: { emailAddress: normalizedEmail },
     });
+
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
     const userData = user.toJSON();
 
@@ -278,6 +279,45 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+// In App Password Reset
+export const passwordReset = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { newPassword, confirmNewPassword } = req.body;
+
+    // Validate inputs
+    if (!newPassword || !confirmNewPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    // Fetch user
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Update password (beforeUpdate hook will hash it)
+    user.password = newPassword;
+
+    // Clear reset token fields (safety)
+    user.passwordResetToken = null;
+    user.tokenExpires = null;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password updated successfully",
+    });
+  } catch (err) {
+    console.error("Password reset error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 /**
  * POST /api/auth/verify-email
  * Placeholder for additional auth flow (e.g., email verification)
@@ -313,6 +353,33 @@ export const verifyEmail = async (req, res) => {
     return res.status(200).json({ message: "Email verified successfully" });
   } catch (err) {
     console.error("Verify email error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { firstName, lastName, phoneNumber } = req.body;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update allowed fields only
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+
+    await user.save();
+
+    return res.json({
+      message: "Profile updated successfully",
+      user,
+    });
+  } catch (err) {
+    console.error("Update user error:", err);
     return res.status(500).json({ message: "Server error" });
   }
 };

@@ -1,0 +1,27 @@
+.order-card {
+  border-radius: 12px;
+  transition: box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+.order-item {
+  background: #fafafa;
+  border: 1px solid #f1f1f1;
+}
+
+.order-item-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.order-items-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

@@ -19,6 +19,7 @@ const Supplier = () => {
   const [formData, setFormData] = useState({
     productName: "",
     category: "",
+    imageUrl: "",
     description: "",
     unitPrice: "",
     stockQuantity: "",
@@ -63,6 +64,7 @@ const Supplier = () => {
     setFormData({
       productName: product.productName,
       category: product.category,
+      imageUrl: product.imageUrl,
       description: product.description,
       unitPrice: product.unitPrice,
       stockQuantity: product.stockQuantity,
@@ -76,6 +78,7 @@ const Supplier = () => {
     setFormData({
       productName: "",
       category: "",
+      imageUrl: "",
       description: "",
       unitPrice: "",
       stockQuantity: "",
@@ -323,6 +326,16 @@ const Supplier = () => {
                 value={formData.category}
                 onChange={(e) =>
                   setFormData({ ...formData, category: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Image URL</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.imageUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, imageUrl: e.target.value })
                 }
               />
             </Form.Group>

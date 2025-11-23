@@ -61,7 +61,9 @@ export const createSupplier = async (req, res) => {
  */
 export const getSuppliers = async (req, res) => {
   try {
-    const suppliers = await Supplier.findAll();
+    const suppliers = await Supplier.findAll({
+      order: [["companyName", "ASC"]],
+    });
     res.status(200).json(suppliers);
   } catch (err) {
     console.error(err);

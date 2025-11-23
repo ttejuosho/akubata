@@ -22,10 +22,11 @@ const Products = () => {
     productName: "",
     category: "",
     description: "",
+    imageUrl: "",
     unitPrice: "",
     stockQuantity: "",
     supplierId: "",
-    isActive: false,
+    isActive: true,
   });
 
   const fetchProducts = useCallback(async () => {
@@ -76,6 +77,7 @@ const Products = () => {
     setFormData({
       productName: product.productName,
       category: product.category,
+      imageUrl: product.imageUrl,
       description: product.description,
       unitPrice: product.unitPrice,
       stockQuantity: product.stockQuantity,
@@ -90,11 +92,12 @@ const Products = () => {
     setFormData({
       productName: "",
       category: "",
+      imageUrl: "",
       description: "",
       unitPrice: "",
       stockQuantity: "",
       supplierId: "",
-      isActive: false,
+      isActive: true,
     });
     setShowModal(true);
   };
@@ -336,6 +339,16 @@ const Products = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-2">
+                <Form.Label>Image URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={formData.imageUrl}
+                  onChange={(e) =>
+                    setFormData({ ...formData, imageUrl: e.target.value })
+                  }
+                />
+              </Form.Group>
+              <Form.Group className="mb-2">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   as="textarea"
@@ -350,7 +363,7 @@ const Products = () => {
                 <Form.Check
                   type="switch"
                   id="isActive"
-                  label="Active"
+                  label={formData.isActive ? "Active" : "Inactive"}
                   checked={formData.isActive}
                   onChange={(e) =>
                     setFormData({ ...formData, isActive: e.target.checked })

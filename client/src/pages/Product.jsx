@@ -69,7 +69,7 @@ const Product = () => {
               variant="top"
               src={product.imageUrl || "/akubata_product_image.png"}
               alt={product.productName}
-              style={{ maxHeight: "320px", objectFit: "cover" }}
+              style={{ maxHeight: "320px", objectFit: "contain" }}
             />
 
             <Card.Body>

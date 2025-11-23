@@ -13,14 +13,19 @@ import {
   logout,
   forgotPassword,
   resetPassword,
-  verifyEmail, // placeholder for additional auth flow
+  verifyEmail,
+  updateUser,
+  passwordReset,
 } from "../controllers/authControllers.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // @route   GET /api/auth/me
 // @desc    Get current authenticated user
 router.get("/me", getCurrentUser);
+
+router.put("/", protect, updateUser);
 
 // @route   POST /api/auth/signup
 // @desc    Register a new user
@@ -41,6 +46,9 @@ router.post("/forgot-password", forgotPassword);
 // @route   POST /api/auth/reset-password/:token
 // @desc    Reset password using token
 router.post("/reset-password/:token", resetPassword);
+
+// In App Password Reset
+router.post("/password-reset", protect, passwordReset);
 
 // @route   POST /api/auth/verify-email
 // @desc    Placeholder for additional auth flow

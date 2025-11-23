@@ -185,6 +185,13 @@ const Suppliers = () => {
       flex: 1,
     },
     {
+      headerName: "Country",
+      field: "country",
+      sortable: true,
+      filter: true,
+      flex: 1,
+    },
+    {
       headerName: "Options",
       field: "options",
       flex: 1,
@@ -331,7 +338,7 @@ const Suppliers = () => {
                   }
                 />
               </Form.Group>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-4">
                 <Form.Label>Country</Form.Label>
                 <Form.Control
                   type="text"
@@ -341,11 +348,11 @@ const Suppliers = () => {
                   }
                 />
               </Form.Group>
-              <Form.Group className="mb-2">
+              <Form.Group className="mb-1">
                 <Form.Check
                   type="switch"
                   id="isActive"
-                  label="Active"
+                  label={formData.isActive ? "Active" : "Inactive"}
                   checked={formData.isActive}
                   onChange={(e) =>
                     setFormData({ ...formData, isActive: e.target.checked })

@@ -123,15 +123,17 @@ const getAdminOrders = async (req, res) => {
   const orders = await Order.findAll({
     include: [
       {
-        model: User,
-        attributes: ["userId", "firstName", "lastName", "emailAddress"],
-      },
-      {
         model: OrderItem,
         include: [
           {
             model: Product,
-            attributes: ["productId", "productName", "category", "unitPrice"],
+            attributes: [
+              "productId",
+              "productName",
+              "category",
+              "unitPrice",
+              "imageUrl",
+            ],
           },
         ],
       },

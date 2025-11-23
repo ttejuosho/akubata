@@ -79,10 +79,13 @@ const Header = () => {
           <NavbarCart />
           {isAuthenticated && user ? (
             <>
-              <div className="d-flex align-items-center me-3">
+              <Link
+                to="/profile"
+                className="d-flex align-items-center me-3 text-decoration-none text-dark"
+              >
                 <FaUserCircle size={24} className="me-2" />
                 <span className="fw-semibold">{user.firstName}</span>
-              </div>
+              </Link>
               <Button variant="outline-primary" onClick={logout}>
                 Logout
               </Button>
