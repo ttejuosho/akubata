@@ -187,7 +187,7 @@ const getBasicOrders = async (req, res) => {
 
 /**
  * Get order by ID
- * GET /api/orders/:id
+ * GET /api/orders/:orderId
  */
 export const getOrderById = async (req, res) => {
   try {
@@ -195,15 +195,17 @@ export const getOrderById = async (req, res) => {
     const order = await Order.findByPk(orderId, {
       include: [
         {
-          model: User,
-          attributes: ["userId", "firstName", "lastName", "emailAddress"],
-        },
-        {
           model: OrderItem,
           include: [
             {
               model: Product,
-              attributes: ["productId", "productName", "category", "unitPrice"],
+              attributes: [
+                "productId",
+                "productName",
+                "imageUrl",
+                "category",
+                "unitPrice",
+              ],
             },
           ],
         },

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Spinner, Row, Col, Badge, Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import api from "../api/axios";
 import "./OrderHistory.css";
 
@@ -46,7 +47,12 @@ const OrderHistory = () => {
                 <div className="d-flex justify-content-between align-items-start flex-wrap mb-3">
                   <div>
                     <h5 className="fw-semibold mb-1">
-                      Order #{order.orderId.slice(0, 8)}
+                      <Link
+                        className="text-decoration-none text-dark"
+                        to={`/order/${order.orderId}`}
+                      >
+                        Order #{order.orderId.slice(0, 8)}
+                      </Link>
                     </h5>
                     <Badge
                       bg={

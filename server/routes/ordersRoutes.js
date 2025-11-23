@@ -37,13 +37,13 @@ router.post("/:orderId/items", addOrderItem);
 //router.get("/", protect, getOrders);
 router.get("/", protect, authorize("admin", "manager", "basic"), getOrders);
 
-// @route   GET /api/orders/:id
+// @route   GET /api/orders/:orderId
 // @desc    Get order by ID including items
 // @access  Private
 //router.get("/:orderId", protect, getOrderById);
 router.get("/:orderId", getOrderById);
 
-// @route   PUT /api/orders/:id/status
+// @route   PUT /api/orders/:orderId/status
 // @desc    Update order status
 // @access  Private (admin or manager)
 // router.put(
@@ -54,7 +54,7 @@ router.get("/:orderId", getOrderById);
 // );
 router.put("/:orderId/:orderStatus", updateOrderStatus);
 
-// @route   DELETE /api/orders/:id
+// @route   DELETE /api/orders/:orderId
 // @desc    Delete an order
 // @access  Private (admin only)
 //router.delete("/:orderId", protect, authorize("admin"), deleteOrder);

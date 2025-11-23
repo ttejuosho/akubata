@@ -12,6 +12,7 @@ import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Orders from "./pages/Orders";
+import Order from "./pages/Order";
 import Store from "./pages/Store";
 import Cart from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
@@ -44,6 +45,7 @@ function App() {
               path="/store/supplier/:supplierId"
               element={<SupplierStore />}
             />
+            <Route path="/order/:orderId" element={<Order />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<CheckoutPage />} />

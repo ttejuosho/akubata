@@ -193,10 +193,10 @@ export default function Profile() {
             <h5>Account Menu</h5>
             <hr />
             {[
-              { key: "personalInfo", label: "📝 Personal Info" },
               { key: "orders", label: "🧾 Order History" },
               { key: "messages", label: "💬 My Messages" },
               { key: "paymentMethods", label: "💳 Payment Methods" },
+              { key: "personalInfo", label: "📝 Personal Info" },
               { key: "passwordReset", label: "🔒 Change Password" },
             ].map((item) => (
               <Button
