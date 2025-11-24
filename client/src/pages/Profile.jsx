@@ -16,6 +16,7 @@ export default function Profile() {
     firstName: user.firstName || "",
     lastName: user.lastName || "",
     emailAddress: user.emailAddress || "",
+    phoneNumber: user.phoneNumber || "",
     address: user.address || "",
   });
   //const [isLoading, setIsLoading] = useState(true);
@@ -92,6 +93,17 @@ export default function Profile() {
                   value={formData.lastName}
                   onChange={(e) =>
                     setFormData({ ...formData, lastName: e.target.value })
+                  }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Phone Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={formData.phoneNumber}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phoneNumber: e.target.value })
                   }
                 />
               </Form.Group>
