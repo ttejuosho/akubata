@@ -4,14 +4,13 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import api from "../api/axios";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
-import "./Profile.css"; // Add CSS for transitions
+import "./Profile.css";
 import { useRef } from "react";
 import OrderHistory from "../components/OrderHistory";
 
 export default function Profile() {
   const nodeRef = useRef(null);
   const { user, setUser } = useAuth();
-  //const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     firstName: user.firstName || "",
     lastName: user.lastName || "",
@@ -19,7 +18,6 @@ export default function Profile() {
     phoneNumber: user.phoneNumber || "",
     address: user.address || "",
   });
-  //const [isLoading, setIsLoading] = useState(true);
   const [selectedSection, setSelectedSection] = useState("personalInfo");
 
   useEffect(() => {}, []);
