@@ -30,6 +30,7 @@ const Signup = () => {
         firstName: data.firstName,
         lastName: data.lastName,
         emailAddress: data.emailAddress,
+        phoneNumber: data.phoneNumber,
         password: data.password,
         confirmPassword: data.confirmPassword,
       });
@@ -94,6 +95,21 @@ const Signup = () => {
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.emailAddress?.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="phoneNumber">
+                <Form.Label>Phone Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter phone number"
+                  {...register("phoneNumber", {
+                    required: "Phone Number is required",
+                  })}
+                  isInvalid={errors.phoneNumber}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.lastName?.message}
                 </Form.Control.Feedback>
               </Form.Group>
 

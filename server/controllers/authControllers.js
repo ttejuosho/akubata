@@ -62,6 +62,7 @@ export const signup = async (req, res) => {
       firstName,
       lastName,
       emailAddress,
+      phoneNumber,
       password,
       confirmPassword,
       role = "admin",
@@ -84,6 +85,7 @@ export const signup = async (req, res) => {
       firstName,
       lastName,
       emailAddress: normalizedEmail,
+      phoneNumber,
       password,
       role,
     });
@@ -95,7 +97,7 @@ export const signup = async (req, res) => {
         firstName: firstName,
         loginLink: `http://localhost:5173/login`,
       },
-      "Akubata Stores - Lets Reset Your Password",
+      "Akubata Stores - Welcome!",
       normalizedEmail
     );
 
@@ -114,6 +116,7 @@ export const signup = async (req, res) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         emailAddress: newUser.emailAddress,
+        phoneNumber: newUser.phoneNumber,
         role: newUser.role,
       },
     });
