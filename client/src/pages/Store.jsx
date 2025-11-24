@@ -60,6 +60,11 @@ export default function Store() {
     }
   };
 
+  const buyNow = async (productId, qty) => {
+    await addToCart(productId, qty);
+    navigate("/checkout");
+  };
+
   if (loading) {
     return (
       <div
@@ -163,11 +168,7 @@ export default function Store() {
                   variant="success"
                   className="mt-2 w-100"
                   onClick={() =>
-                    navigate(
-                      `/checkout?productId=${p.productId}&qty=${
-                        selectedQty[p.productId] || 1
-                      }`
-                    )
+                    buyNow(p.productId, selectedQty[p.productId] || 1)
                   }
                 >
                   Buy Now

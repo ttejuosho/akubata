@@ -56,6 +56,12 @@ export default function SupplierStore() {
       toast.error("Could not add to cart");
     }
   };
+
+  const buyNow = async (productId, qty) => {
+    await addToCart(productId, qty);
+    navigate("/checkout");
+  };
+
   const handleRate = (productId, rating) => {
     toast.success(`You rated ${rating} stars`);
   };
@@ -189,11 +195,7 @@ export default function SupplierStore() {
                     variant="success"
                     className="mt-2 w-100"
                     onClick={() =>
-                      navigate(
-                        `/checkout?productId=${p.productId}&qty=${
-                          selectedQty[p.productId] || 1
-                        }`
-                      )
+                      buyNow(p.productId, selectedQty[p.productId] || 1)
                     }
                   >
                     Buy Now
