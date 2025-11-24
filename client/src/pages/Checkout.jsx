@@ -3,9 +3,36 @@ import { useState } from "react";
 import { Row, Col, Form, Card, Button } from "react-bootstrap";
 import { useCart } from "../hooks/useCart";
 import CartItem from "../components/CartItem";
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
-  const { cart, cartTotal } = useCart();
+  const [removingId, setRemovingId] = useState(null);
+  const { cart, cartTotal, updateCartItem, removeItemFromCart } = useCart();
+
+  const updateQuantity = async (productId, qty) => {
+    try {
+      await updateCartItem(productId, Number(qty));
+      toast.success("Cart Updated");
+    } catch {
+      toast.error("Update failed");
+    }
+  };
+
+  const removeItem = (productId, quantity) => {
+    setRemovingId(productId);
+
+    // Delay for animation before hitting API
+    setTimeout(async () => {
+      try {
+        await removeItemFromCart(productId, quantity);
+        toast.success("Cart Updated");
+      } catch {
+        toast.error("Failed to remove item");
+      } finally {
+        setRemovingId(null);
+      }
+    }, 350); // match CSS duration
+  };
 
   const [form, setForm] = useState({
     firstName: "",
@@ -224,7 +251,13 @@ export default function CheckoutPage() {
               }}
             >
               {cart.items.map((item) => (
-                <CartItem key={item.productId} item={item} readOnly />
+                <CartItem
+                  key={item.orderItemId}
+                  removingId={removingId}
+                  item={item}
+                  updateQuantity={updateQuantity}
+                  removeItem={removeItem}
+                />
               ))}
             </div>
             <hr />
