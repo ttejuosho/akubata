@@ -1,6 +1,7 @@
 import express from "express";
 import { protect, authorize } from "../middleware/authMiddleware.js";
 import {
+  getAddressById,
   getAddresses,
   addAddress,
   updateAddress,
@@ -15,6 +16,9 @@ router.use(protect);
 
 // Get all addresses for current user
 router.get("/", getAddresses);
+
+// Get an address
+router.get("/:addressId", getAddressById);
 
 // Add a new address
 router.post("/", addAddress);

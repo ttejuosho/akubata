@@ -1,4 +1,28 @@
 import Address from "../models/Address.js";
+import sequelize from "../config/db.js";
+
+export const getAddressById = async (req, res) => {
+  try {
+    const { addressId } = req.params;
+    const userId = req.user.userId;
+
+    const address = await Address.findOne({
+      where: { addressId, userId },
+    });
+
+    if (!address) {
+      return res.status(404).json({ message: "Address not found" });
+    }
+
+    return res.status(200).json({
+      message: "success",
+      address,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 export const getAddresses = async (req, res) => {
   const addresses = await Address.findAll({
@@ -12,12 +36,15 @@ export const addAddress = async (req, res) => {
     ...req.body,
     userId: req.user.userId,
   });
-  res.status(201).json(address);
+  res.status(201).json({ message: "Address created successfully", address });
 };
 
 export const updateAddress = async (req, res) => {
   const address = await Address.findOne({
-    where: { addressId: req.params.addressId, userId: req.user.userId },
+    where: {
+      addressId: req.params.addressId,
+      userId: req.user.userId,
+    },
   });
   if (!address) return res.status(404).json({ message: "Address not found" });
   await address.update(req.body);
@@ -34,40 +61,43 @@ export const deleteAddress = async (req, res) => {
 };
 
 export const setDefaultAddress = async (req, res) => {
-  const t = await sequelize.transaction(); // start transaction
+  const t = await sequelize.transaction();
+
   try {
     const { addressId } = req.params;
     const userId = req.user.userId;
 
-    // Step 1: Find the address the user wants to set as default
-    const address = await UserAddress.findOne({
+    // Step 1: Verify the address belongs to the user
+    const exists = await Address.findOne({
       where: { addressId, userId },
       transaction: t,
-      lock: t.LOCK.UPDATE, // lock the row for update
     });
 
-    if (!address) {
+    if (!exists) {
       await t.rollback();
       return res.status(404).json({ message: "Address not found" });
     }
 
-    // Step 2: Reset all previous default addresses for this user
-    await UserAddress.update(
+    // Step 2: Clear all defaults
+    await Address.update(
       { isDefault: false },
       { where: { userId }, transaction: t }
     );
 
-    // Step 3: Set this address as default
-    address.isDefault = true;
-    await address.save({ transaction: t });
+    // Step 3: Set new default
+    await Address.update(
+      { isDefault: true },
+      { where: { addressId, userId }, transaction: t }
+    );
 
-    // Step 4: Commit transaction
     await t.commit();
 
-    res.json(address);
+    return res.json({
+      message: "Default address updated successfully",
+    });
   } catch (err) {
     await t.rollback();
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
