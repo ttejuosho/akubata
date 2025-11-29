@@ -1,13 +1,37 @@
 // Checkout.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Row, Col, Form, Card, Button } from "react-bootstrap";
 import { useCart } from "../hooks/useCart";
 import CartItem from "../components/CartItem";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
   const [removingId, setRemovingId] = useState(null);
-  const { cart, cartTotal, updateCartItem, removeItemFromCart } = useCart();
+  const [checkoutItems, setCheckoutItems] = useState([]);
+  const {
+    cart,
+    cartTotal,
+    updateCartItem,
+    removeItemFromCart,
+    buyNowItem,
+    clearBuyNow,
+  } = useCart();
+  const [useDifferentBilling, setUseDifferentBilling] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (buyNowItem) {
+      setCheckoutItems(buyNowItem.items); // Only one item — Buy Now mode
+    } else {
+      clearBuyNow();
+      setCheckoutItems(cart.items); // Normal cart checkout
+    }
+  }, [buyNowItem, cart, clearBuyNow]);
+
+  const computedTotal = buyNowItem
+    ? buyNowItem.totalAmount.toFixed(2)
+    : cartTotal;
 
   const updateQuantity = async (productId, qty) => {
     try {
@@ -19,19 +43,23 @@ export default function CheckoutPage() {
   };
 
   const removeItem = (productId, quantity) => {
-    setRemovingId(productId);
-
-    // Delay for animation before hitting API
-    setTimeout(async () => {
-      try {
-        await removeItemFromCart(productId, quantity);
-        toast.success("Cart Updated");
-      } catch {
-        toast.error("Failed to remove item");
-      } finally {
-        setRemovingId(null);
-      }
-    }, 350); // match CSS duration
+    if (buyNowItem) {
+      clearBuyNow();
+      navigate("/store");
+    } else {
+      setRemovingId(productId);
+      // Delay for animation before hitting API
+      setTimeout(async () => {
+        try {
+          await removeItemFromCart(productId, quantity);
+          toast.success("Cart Updated");
+        } catch {
+          toast.error("Failed to remove item");
+        } finally {
+          setRemovingId(null);
+        }
+      }, 350); // match CSS duration
+    }
   };
 
   const [form, setForm] = useState({
@@ -51,11 +79,11 @@ export default function CheckoutPage() {
     billingZip: "",
   });
 
-  const [useDifferentBilling, setUseDifferentBilling] = useState(false);
-
   const updateForm = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  //clearBuyNow(); on successful Checkout
 
   return (
     <div className="py-5" style={{ background: "#f8f9fa" }}>
@@ -250,9 +278,9 @@ export default function CheckoutPage() {
                 paddingRight: 5,
               }}
             >
-              {cart.items.map((item) => (
+              {checkoutItems.map((item) => (
                 <CartItem
-                  key={item.orderItemId}
+                  key={item.productId}
                   removingId={removingId}
                   item={item}
                   updateQuantity={updateQuantity}
@@ -263,7 +291,13 @@ export default function CheckoutPage() {
             <hr />
             <div className="d-flex justify-content-between mb-2 text-muted">
               <span>Subtotal</span>
-              <span>₦{cartTotal}</span>
+              <span>
+                ₦
+                {new Intl.NumberFormat("en-NG", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(computedTotal)}
+              </span>
             </div>
             <div className="d-flex justify-content-between mb-2 text-muted">
               <span>Shipping</span>
@@ -272,7 +306,13 @@ export default function CheckoutPage() {
             <hr />
             <div className="d-flex justify-content-between fw-bold fs-5">
               <span>Total</span>
-              <span>₦{cartTotal}</span>
+              <span>
+                ₦
+                {new Intl.NumberFormat("en-NG", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(computedTotal)}
+              </span>
             </div>
           </Card>
         </Col>

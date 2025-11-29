@@ -6,6 +6,7 @@
  */
 
 import api from "./axios.js";
+import toast from "react-hot-toast";
 
 // Add token to headers before each request
 api.interceptors.request.use(
@@ -24,9 +25,11 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      console.warn("Unauthorized or expired token, redirecting to login...");
       localStorage.removeItem("token");
       window.location.href = "/login";
+      toast.error(
+        "You've been logged out due to inactivity. Please login again"
+      );
     }
     return Promise.reject(error);
   }

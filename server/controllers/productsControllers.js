@@ -209,6 +209,7 @@ export const updateProduct = async (req, res) => {
     const {
       productName,
       category,
+      imageUrl,
       description,
       unitPrice,
       stockQuantity,
@@ -228,6 +229,7 @@ export const updateProduct = async (req, res) => {
 
     product.productName = productName || product.productName;
     product.category = category || product.category;
+    product.imageUrl = imageUrl || product.imageUrl;
     product.description = description || product.description;
     product.unitPrice = unitPrice || product.unitPrice;
     product.stockQuantity = stockQuantity || product.stockQuantity;

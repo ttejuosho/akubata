@@ -21,13 +21,10 @@ const JWT_EXPIRES_IN = "1d";
 //*/
 export const getCurrentUser = async (req, res) => {
   try {
-    let token;
+    let token = null;
 
-    // Get token from Authorization header or cookie
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer ")
-    ) {
+    // --- 1. Extract token (header > cookie) ---
+    if (req.headers.authorization?.startsWith("Bearer ")) {
       token = req.headers.authorization.split(" ")[1];
     } else if (req.cookies?.token) {
       token = req.cookies.token;
@@ -37,18 +34,37 @@ export const getCurrentUser = async (req, res) => {
       return res.status(401).json({ message: "Not authenticated" });
     }
 
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.userId); // exclude password
+    // --- 2. Soft decode for pre-validation ---
+    const decodedSoft = jwt.decode(token);
+    if (!decodedSoft) {
+      return res.status(401).json({ message: "Malformed token" });
+    }
 
+    // --- 3. Check expiration manually ---
+    const now = Math.floor(Date.now() / 1000);
+    if (decodedSoft.exp && decodedSoft.exp < now) {
+      return res.status(401).json({ message: "Token expired" });
+    }
+
+    // --- 4. Verify signature ---
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      console.error("JWT verification failed:", err.message);
+      return res.status(401).json({ message: "Invalid token signature" });
+    }
+
+    // --- 5. Fetch user ---
+    const user = await User.findByPk(decoded.userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User no longer exists" });
     }
 
     return res.status(200).json({ user });
   } catch (err) {
     console.error("getCurrentUser error:", err.message);
-    return res.status(401).json({ message: "Invalid or expired token" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

@@ -1,3 +1,4 @@
+//Store.jsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -20,7 +21,7 @@ export default function Store() {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedQty, setSelectedQty] = useState({});
-  const { addToCart } = useCart();
+  const { addToCart, startBuyNow } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -60,8 +61,8 @@ export default function Store() {
     }
   };
 
-  const buyNow = async (productId, qty) => {
-    await addToCart(productId, qty);
+  const handleBuyNow = async (productId, qty) => {
+    await startBuyNow(productId, qty);
     navigate("/checkout");
   };
 
@@ -168,7 +169,7 @@ export default function Store() {
                   variant="success"
                   className="mt-2 w-100"
                   onClick={() =>
-                    buyNow(p.productId, selectedQty[p.productId] || 1)
+                    handleBuyNow(p.productId, selectedQty[p.productId] || 1)
                   }
                 >
                   Buy Now

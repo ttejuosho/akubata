@@ -12,27 +12,45 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 export const protect = async (req, res, next) => {
-  let token;
-
-  if (req.cookies && req.cookies.token) {
-    token = req.cookies.token;
-  }
+  const token = req.cookies?.token;
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // decoded should contain { userId: '...' }
-    const user = await User.findByPk(decoded.userId);
-    if (!user) return res.status(401).json({ message: "User not found" });
+  // --- 1. Decode without verification ---
+  const decodedSoft = jwt.decode(token);
+  if (!decodedSoft) {
+    return res.status(401).json({ message: "Malformed token" });
+  }
 
-    req.user = user; // attach user to request
+  // --- 2. Check expiration ---
+  const now = Math.floor(Date.now() / 1000);
+  if (decodedSoft.exp && decodedSoft.exp < now) {
+    return res.status(401).json({ message: "Token expired" });
+  }
+
+  // --- 3. Verify signature safely ---
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    console.error("JWT signature invalid:", err.message);
+    return res.status(401).json({ message: "Invalid token signature" });
+  }
+
+  // --- 4. Load user from DB ---
+  try {
+    const user = await User.findByPk(decoded.userId);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
     next();
   } catch (err) {
-    console.error(err);
-    res.status(401).json({ message: "Token invalid" });
+    console.error("Error finding user:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
