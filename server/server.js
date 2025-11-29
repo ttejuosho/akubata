@@ -10,6 +10,7 @@ import ordersRoutes from "./routes/ordersRoutes.js";
 import productsRoutes from "./routes/productsRoutes.js";
 import suppliersRoutes from "./routes/suppliersRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import addressRoutes from "./routes/addressRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -29,12 +30,13 @@ app.use("/api/products", productsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/suppliers", suppliersRoutes);
 app.use("/api/carts", cartRoutes);
+app.use("/api/addresses", addressRoutes);
 
 app.get("/", (req, res) => res.send("Akubata API is running..."));
 
 // Sync DB
 sequelize
-  .sync() // { force: true } if you want to reset DB
+  .sync({ reset: true }) // { force: true } if you want to reset DB
   .then(() => {
     console.log("Database synced");
     const PORT = process.env.PORT || 5001;

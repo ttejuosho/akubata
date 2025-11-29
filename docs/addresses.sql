@@ -1,0 +1,56 @@
+INSERT INTO Addresses (
+    addressId, userId, label, recipientFirstName, recipientLastName,
+    phoneNumber, addressLine1, addressLine2, city, state, zipCode, country, isDefault,
+    createdAt, updatedAt
+) VALUES
+(
+    'a1b2c3d4-e5f6-7890-ab12-cdef12345678',
+    '39252d06-f433-4bd7-8b39-e0eaa453e285',
+    'Home',
+    'John',
+    'Doe',
+    '555-1234',
+    '123 Main St',
+    'Apt 4B',
+    'New York',
+    'NY',
+    '10001',
+    'USA',
+    TRUE,
+    NOW(),
+    NOW()
+),
+(
+    'b2c3d4e5-f678-9012-ab34-cdef23456789',
+    '39252d06-f433-4bd7-8b39-e0eaa453e285',
+    'Work',
+    'John',
+    'Doe',
+    '555-5678',
+    '456 Market St',
+    NULL,
+    'New York',
+    'NY',
+    '10002',
+    'USA',
+    FALSE,
+    NOW(),
+    NOW()
+),
+(
+    'c3d4e5f6-7890-1234-ab56-cdef34567890',
+    '39252d06-f433-4bd7-8b39-e0eaa453e285',
+    'Vacation',
+    'John',
+    'Doe',
+    '555-9012',
+    '789 Ocean Ave',
+    'Suite 10',
+    'Miami',
+    'FL',
+    '33101',
+    'USA',
+    FALSE,
+    NOW(),
+    NOW()
+);

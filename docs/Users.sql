@@ -15,3 +15,21 @@ INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`
 INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('h8k0j7f9-88h1-4i8h-gj9f-2i9h1l1l8h08','Olivia','Davis','olivia.davis@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','staff',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
 INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('i9l1k8g0-99i2-4j9i-hk0f-1j0i2m2m9i09','Ethan','White','ethan.white@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','manager',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
 INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('j0m2l9h1-00j3-4k0j-il1f-0k1j3n3n0j10','Ava','Taylor','ava.taylor@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','basic',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+
+CREATE TABLE `users` (
+  `userId` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `emailAddress` varchar(255) NOT NULL,
+  `phoneNumber` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','manager','staff','basic') DEFAULT 'basic',
+  `passwordResetToken` varchar(255) DEFAULT NULL,
+  `tokenExpires` datetime DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT '1',
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY `emailAddress` (`emailAddress`),
+  UNIQUE KEY `phoneNumber` (`phoneNumber`),
+)
