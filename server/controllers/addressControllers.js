@@ -32,9 +32,31 @@ export const getAddresses = async (req, res) => {
 };
 
 export const addAddress = async (req, res) => {
+  const userId = req.user.userId;
+  const addressPayload = req.body;
+
+  // Check for duplicates (same address for same user)
+  const duplicate = await Address.findOne({
+    where: {
+      userId,
+      addressLine1: addressPayload.addressLine1,
+      city: addressPayload.city,
+      state: addressPayload.state || null,
+      zipCode: addressPayload.zipCode,
+      country: addressPayload.country,
+    },
+  });
+
+  if (duplicate) {
+    return res.status(409).json({
+      message: "This address already exists",
+      addressId: duplicate.addressId,
+    });
+  }
+
   const address = await Address.create({
-    ...req.body,
-    userId: req.user.userId,
+    ...addressPayload,
+    userId,
   });
   res.status(201).json({ message: "Address created successfully", address });
 };

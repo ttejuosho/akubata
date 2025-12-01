@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
-import { Row, Col, Form, Card, Button } from "react-bootstrap";
+import { Row, Col, Form, Card, Button, Spinner } from "react-bootstrap";
 import { useCart } from "../hooks/useCart";
 import CartItem from "../components/CartItem";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import {
+  FaCreditCard,
+  FaMoneyCheckAlt,
+  FaBitcoin,
+  FaUniversity,
+  FaPaypal,
+  FaApplePay,
+  FaGooglePay,
+} from "react-icons/fa";
 
 export default function CheckoutPage() {
   const [removingId, setRemovingId] = useState(null);
@@ -12,18 +21,7 @@ export default function CheckoutPage() {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
-
-  const [newAddress, setNewAddress] = useState({
-    label: "",
-    country: "",
-    phoneNumber: "",
-    addressLine: "",
-    city: "",
-    state: "",
-    zip: "",
-    isDefault: false,
-  });
-
+  const [loading, setLoading] = useState(false);
   const {
     cart,
     cartTotal,
@@ -31,7 +29,39 @@ export default function CheckoutPage() {
     removeItemFromCart,
     buyNowItem,
     clearBuyNow,
+    clearCartState,
   } = useCart();
+
+  const [newAddress, setNewAddress] = useState({
+    label: "",
+    recipientFirstName: "",
+    recipientLastName: "",
+    country: "",
+    phoneNumber: "",
+    addressLine1: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    isDefault: false,
+  });
+
+  const [paymentInformation, setPaymentInformation] = useState({
+    paymentMethod: "",
+    cardNumber: "",
+    expiry: "",
+    cvc: "",
+  });
+
+  const [billingAddress, setBillingAddress] = useState({
+    billingFirstName: "",
+    billingLastName: "",
+    billingPhoneNumber: "",
+    billingAddressLine1: "",
+    billingCity: "",
+    billingState: "",
+    billingCountry: "",
+    billingZipCode: "",
+  });
 
   const [useDifferentBilling, setUseDifferentBilling] = useState(false);
   const navigate = useNavigate();
@@ -108,12 +138,28 @@ export default function CheckoutPage() {
     });
   };
 
+  const updateBillingAddress = (e) => {
+    const { name, value } = e.target;
+    setBillingAddress({
+      ...billingAddress,
+      [name]: value,
+    });
+  };
+
+  const updatePaymentInformation = (e) => {
+    const { name, value } = e.target;
+    setPaymentInformation({
+      ...paymentInformation,
+      [name]: value,
+    });
+  };
+
   // Save new address
   const saveNewAddress = async () => {
     // simple validation
     if (
-      !newAddress.label ||
-      !newAddress.addressLine ||
+      !newAddress.zipCode ||
+      !newAddress.addressLine1 ||
       !newAddress.city ||
       !newAddress.country
     ) {
@@ -122,25 +168,117 @@ export default function CheckoutPage() {
     }
 
     try {
-      await api.post("/addresses", newAddress);
+      const { data } = await api.post("/addresses", newAddress);
       toast.success("Address added");
+      setSelectedAddress(data.address);
+      setAddresses((prev) => [...prev, data.address]);
 
-      setShowNewAddressForm(false);
       setNewAddress({
         label: "",
-        country: "",
+        recipientFirstName: "",
+        recipientLastName: "",
         phoneNumber: "",
-        addressLine: "",
+        addressLine1: "",
         city: "",
         state: "",
-        zip: "",
+        zipCode: "",
+        country: "",
         isDefault: false,
       });
 
-      await loadAddresses();
+      setShowNewAddressForm(false);
     } catch (err) {
+      if (err.response?.status === 409) {
+        toast.error("This address already exists.");
+        return;
+      }
       toast.error("Could not save address");
     }
+  };
+
+  const handlePlaceOrder = async () => {
+    console.log(cart);
+    if (cart.items.length === 0) {
+      toast.error("Your cart is empty.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const payload = {
+        orderId: buyNowItem ? buyNowItem.orderId : cart.orderId,
+        totalAmount: computedTotal,
+        items: cart.items,
+        useDifferentBilling: useDifferentBilling,
+        shippingInfo: {
+          firstName: selectedAddress.recipientFirstName,
+          lastName: selectedAddress.recipientLastName,
+          address: selectedAddress.addressLine1,
+          city: selectedAddress.city,
+          state: selectedAddress.state,
+          zipCode: selectedAddress.zipCode,
+          phoneNumber: selectedAddress.phoneNumber,
+          country: selectedAddress.country,
+        },
+        billingInfo: useDifferentBilling
+          ? {
+              firstName: billingAddress.billingFirstName,
+              lastName: billingAddress.billingLastName,
+              address: billingAddress.billingAddressLine1,
+              city: billingAddress.billingCity,
+              state: billingAddress.billingState,
+              zip: billingAddress.billingZipCode,
+              country: billingAddress.billingCountry,
+              phoneNumber: billingAddress.billingPhoneNumber,
+            }
+          : null,
+        paymentInformation: {
+          paymentMethod: paymentInformation.paymentMethod,
+          cardNumber: paymentInformation.cardNumber,
+          expiry: paymentInformation.expiry,
+          cvc: paymentInformation.cvc,
+        },
+      };
+
+      console.log("Order Payload:", payload);
+      //const res = await api.post("/orders", payload);
+      toast.success("Order placed successfully!");
+      //clearCartState(); // clear context cart
+      //navigate(`/order-confirmation/${res.data.orderId}`);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to place order");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetBillingAddressForm = () => {
+    setBillingAddress({
+      billingFirstName: "",
+      billingLastName: "",
+      billingCountry: "",
+      billingPhoneNumber: "",
+      billingAddressLine1: "",
+      billingCity: "",
+      billingState: "",
+      billingZipCode: "",
+    });
+  };
+
+  const resetShippingAddressForm = () => {
+    setNewAddress({
+      label: "",
+      recipientFirstName: "",
+      recipientLastName: "",
+      phoneNumber: "",
+      addressLine1: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
+      isDefault: false,
+    });
   };
 
   return (
@@ -160,16 +298,16 @@ export default function CheckoutPage() {
                 <Form.Group className="mb-3">
                   <Form.Label>Select Address</Form.Label>
                   <Form.Select
-                    value={selectedAddress?.id || ""}
+                    value={selectedAddress?.addressId || ""}
                     onChange={(e) => {
                       const addr = addresses.find(
-                        (a) => a.id === Number(e.target.value)
+                        (a) => a.addressId === e.target.value
                       );
                       setSelectedAddress(addr);
                     }}
                   >
                     {addresses.map((addr) => (
-                      <option key={addr.id} value={addr.id}>
+                      <option key={addr.addressId} value={addr.addressId}>
                         {addr.label} {addr.isDefault ? "(Default)" : ""}
                       </option>
                     ))}
@@ -182,7 +320,7 @@ export default function CheckoutPage() {
                     <div>{selectedAddress.addressLine1}</div>
                     <div>
                       {selectedAddress.city}, {selectedAddress.state}{" "}
-                      {selectedAddress.zip}
+                      {selectedAddress.zipCode}
                     </div>
                     <div>{selectedAddress.country}</div>
                     <div>{selectedAddress.phoneNumber}</div>
@@ -204,35 +342,25 @@ export default function CheckoutPage() {
                 <Row className="gy-3">
                   <Col md={6}>
                     <Form.Control
-                      name="label"
-                      placeholder="Label (Home, Office)"
-                      value={newAddress.label}
+                      name="recipientFirstName"
+                      placeholder="First Name"
+                      value={newAddress.recipientFirstName}
                       onChange={updateNewAddress}
                     />
                   </Col>
                   <Col md={6}>
                     <Form.Control
-                      name="country"
-                      placeholder="Country"
-                      value={newAddress.country}
+                      name="recipientLastName"
+                      placeholder="Last Name"
+                      value={newAddress.recipientLastName}
                       onChange={updateNewAddress}
                     />
                   </Col>
-
                   <Col xs={12}>
                     <Form.Control
-                      name="phoneNumber"
-                      placeholder="Phone Number"
-                      value={newAddress.phoneNumber}
-                      onChange={updateNewAddress}
-                    />
-                  </Col>
-
-                  <Col xs={12}>
-                    <Form.Control
-                      name="addressLine"
+                      name="addressLine1"
                       placeholder="Street Address"
-                      value={newAddress.addressLine}
+                      value={newAddress.addressLine1}
                       onChange={updateNewAddress}
                     />
                   </Col>
@@ -257,14 +385,37 @@ export default function CheckoutPage() {
 
                   <Col md={3}>
                     <Form.Control
-                      name="zip"
+                      name="zipCode"
                       placeholder="ZIP"
-                      value={newAddress.zip}
+                      value={newAddress.zipCode}
+                      onChange={updateNewAddress}
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <Form.Control
+                      name="phoneNumber"
+                      placeholder="Phone Number"
+                      value={newAddress.phoneNumber}
+                      onChange={updateNewAddress}
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <Form.Control
+                      name="country"
+                      placeholder="Country"
+                      value={newAddress.country}
+                      onChange={updateNewAddress}
+                    />
+                  </Col>
+                  <Col xs={12}>
+                    <Form.Control
+                      name="label"
+                      placeholder="Label (Home, Office)"
+                      value={newAddress.label}
                       onChange={updateNewAddress}
                     />
                   </Col>
                 </Row>
-
                 <Form.Check
                   className="mt-3"
                   type="checkbox"
@@ -280,7 +431,10 @@ export default function CheckoutPage() {
                   </Button>
                   <Button
                     variant="outline-secondary"
-                    onClick={() => setShowNewAddressForm(false)}
+                    onClick={() => {
+                      resetShippingAddressForm();
+                      setShowNewAddressForm(false);
+                    }}
                   >
                     Cancel
                   </Button>
@@ -294,7 +448,10 @@ export default function CheckoutPage() {
                 type="checkbox"
                 label="Billing address is different from shipping"
                 checked={useDifferentBilling}
-                onChange={() => setUseDifferentBilling(!useDifferentBilling)}
+                onChange={() => {
+                  resetBillingAddressForm();
+                  setUseDifferentBilling(!useDifferentBilling);
+                }}
               />
             </Form.Group>
 
@@ -305,17 +462,69 @@ export default function CheckoutPage() {
                 <h5 className="fw-semibold mb-3">Billing Address</h5>
                 <Form className="mb-4">
                   <Row className="gy-3">
-                    <Col xs={12}>
-                      <Form.Control placeholder="Street Address" />
+                    <Col md={6}>
+                      <Form.Control
+                        name="billingFirstName"
+                        placeholder="First Name"
+                        value={billingAddress.billingFirstName}
+                        onChange={updateBillingAddress}
+                      />
                     </Col>
                     <Col md={6}>
-                      <Form.Control placeholder="City" />
+                      <Form.Control
+                        name="billingLastName"
+                        placeholder="Last Name"
+                        value={billingAddress.billingLastName}
+                        onChange={updateBillingAddress}
+                      />
+                    </Col>
+                    <Col xs={12}>
+                      <Form.Control
+                        name="billingAddressLine1"
+                        placeholder="Street Address"
+                        value={billingAddress.billingAddressLine1}
+                        onChange={updateBillingAddress}
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <Form.Control
+                        name="billingCity"
+                        placeholder="City"
+                        value={billingAddress.billingCity}
+                        onChange={updateBillingAddress}
+                      />
                     </Col>
                     <Col md={3}>
-                      <Form.Control placeholder="State" />
+                      <Form.Control
+                        name="billingState"
+                        placeholder="State"
+                        value={billingAddress.billingState}
+                        onChange={updateBillingAddress}
+                      />
                     </Col>
                     <Col md={3}>
-                      <Form.Control placeholder="ZIP Code" />
+                      <Form.Control
+                        name="billingZipCode"
+                        placeholder="Zip Code"
+                        value={billingAddress.billingZipCode}
+                        onChange={updateBillingAddress}
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <Form.Control
+                        name="billingPhoneNumber"
+                        placeholder="Phone Number"
+                        value={billingAddress.billingPhoneNumber}
+                        onChange={updateBillingAddress}
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <Form.Control
+                        name="billingCountry"
+                        placeholder="Country"
+                        value={billingAddress.billingCountry}
+                        onChange={updateBillingAddress}
+                      />
                     </Col>
                   </Row>
                 </Form>
@@ -326,27 +535,204 @@ export default function CheckoutPage() {
 
             {/* PAYMENT INFO */}
             <h5 className="fw-semibold mb-3">Payment Details</h5>
-            <Form>
-              <Row className="gy-3">
-                <Col xs={12}>
-                  <Form.Control placeholder="Card Number" />
-                </Col>
-                <Col md={6}>
-                  <Form.Control placeholder="MM/YY" />
-                </Col>
-                <Col md={6}>
-                  <Form.Control placeholder="CVC" />
-                </Col>
-              </Row>
-            </Form>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold">Payment Method</Form.Label>
+
+              <div className="d-flex flex-column gap-2">
+                {[
+                  { label: "Credit Card", icon: <FaCreditCard /> },
+                  { label: "Check", icon: <FaMoneyCheckAlt /> },
+                  { label: "Cryptocurrency", icon: <FaBitcoin /> },
+                  { label: "Bank Transfer", icon: <FaUniversity /> },
+                  { label: "PayPal", icon: <FaPaypal /> },
+                  { label: "Apple Pay", icon: <FaApplePay /> },
+                  { label: "Google Pay", icon: <FaGooglePay /> },
+                ].map((method) => {
+                  const selected =
+                    paymentInformation.paymentMethod === method.label;
+
+                  return (
+                    <div
+                      key={method.label}
+                      className={`payment-option ${selected ? "selected" : ""}`}
+                      onClick={() =>
+                        updatePaymentInformation({
+                          target: {
+                            name: "paymentMethod",
+                            value: method.label,
+                          },
+                        })
+                      }
+                    >
+                      {/* Radio Button + Label */}
+                      <Form.Check
+                        type="radio"
+                        name="paymentMethod"
+                        value={method.label}
+                        checked={selected}
+                        onChange={updatePaymentInformation}
+                        label={
+                          <span className="d-flex align-items-center gap-2">
+                            {method.icon}
+                            {method.label}
+                          </span>
+                        }
+                      />
+
+                      {/* ----- CONDITIONAL CONTENT UNDER SELECTED METHOD ----- */}
+                      {selected && (
+                        <div className="mt-3 ms-4">
+                          {/* ================= CREDIT CARD FIELDS ================= */}
+                          {method.label === "Credit Card" && (
+                            <Form>
+                              <Row className="gy-3">
+                                <Col xs={12}>
+                                  <Form.Control
+                                    name="cardNumber"
+                                    placeholder="Card Number"
+                                    value={paymentInformation.cardNumber}
+                                    onChange={updatePaymentInformation}
+                                  />
+                                </Col>
+
+                                <Col md={6}>
+                                  <Form.Control
+                                    name="expiry"
+                                    placeholder="MM/YY"
+                                    value={paymentInformation.expiry}
+                                    onChange={updatePaymentInformation}
+                                  />
+                                </Col>
+
+                                <Col md={6}>
+                                  <Form.Control
+                                    name="cvc"
+                                    placeholder="CVC"
+                                    value={paymentInformation.cvc}
+                                    onChange={updatePaymentInformation}
+                                  />
+                                </Col>
+                              </Row>
+                            </Form>
+                          )}
+
+                          {/* ================= BANK TRANSFER DETAILS ================= */}
+                          {method.label === "Bank Transfer" && (
+                            <Card className="p-3 bg-light mb-3">
+                              <h6 className="fw-semibold">
+                                Bank Transfer Instructions
+                              </h6>
+                              <p className="mb-0">
+                                Please transfer the total amount to the
+                                following bank account:
+                              </p>
+                              <ul>
+                                <li>Bank: GTBank</li>
+                                <li>Account Name: Akubata Online Store</li>
+                                <li>Account Number: 1234567890</li>
+                                <li>SWIFT Code: ABCD1234</li>
+                              </ul>
+                              <p>
+                                Once the transfer is complete, email your
+                                confirmation to:
+                                <strong> payments@akubata.com</strong>
+                              </p>
+                            </Card>
+                          )}
+
+                          {/* ================= CHECK ================= */}
+                          {method.label === "Check" && (
+                            <Card className="p-3 bg-light mb-3">
+                              <h6 className="fw-semibold">
+                                Check Payment Instructions
+                              </h6>
+                              <p className="mb-0">Please mail your check to:</p>
+                              <ul>
+                                <li>Akubata Online Store</li>
+                                <li>PO Box 9876, Asaba</li>
+                                <li>Delta State, Nigeria</li>
+                              </ul>
+                            </Card>
+                          )}
+
+                          {/* ================= CRYPTO ================= */}
+                          {method.label === "Cryptocurrency" && (
+                            <Card className="p-3 bg-light mb-3">
+                              <h6 className="fw-semibold">
+                                Crypto Payment Wallet
+                              </h6>
+                              <p>Send payment to the wallet below:</p>
+                              <strong>
+                                bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                              </strong>
+                              <p className="mt-2">
+                                After payment, email your TXID to
+                                <strong> payments@akubata.com</strong>
+                              </p>
+                            </Card>
+                          )}
+
+                          {/* ================= PAYPAL ================= */}
+                          {method.label === "PayPal" && (
+                            <Card className="p-3 bg-light mb-3">
+                              <Card.Img
+                                variant="top"
+                                src={"/paypal-button.avif"}
+                                alt={"PayPal"}
+                                style={{
+                                  maxHeight: "90px",
+                                  objectFit: "none",
+                                }}
+                              />
+                            </Card>
+                          )}
+
+                          {/* ================= APPLE PAY ================= */}
+                          {method.label === "Apple Pay" && (
+                            <Card className="p-1 bg-dark mb-3">
+                              <Card.Img
+                                variant="top"
+                                src={"/apple-pay.png"}
+                                alt={"Apple Pay"}
+                                style={{
+                                  maxHeight: "50px",
+                                  objectFit: "contain",
+                                }}
+                              />
+                            </Card>
+                          )}
+
+                          {/* ================= GOOGLE PAY ================= */}
+                          {method.label === "Google Pay" && (
+                            <Card className="p-1 bg-light mb-3">
+                              <Card.Img
+                                variant="top"
+                                src={"/google-pay-button.svg"}
+                                alt={"Google Pay"}
+                                style={{
+                                  maxHeight: "50px",
+                                  objectFit: "contain",
+                                }}
+                              />
+                            </Card>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </Form.Group>
 
             {/* SUBMIT */}
             <Button
               variant="dark"
               className="w-100 mt-4 py-3 fw-semibold"
               size="lg"
+              onClick={handlePlaceOrder}
+              disabled={loading}
             >
-              Place Order
+              {loading ? <Spinner size="sm" /> : "Place Order"}
             </Button>
           </Card>
         </Col>

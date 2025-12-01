@@ -512,7 +512,12 @@ export const checkoutCart = async (req, res) => {
     const productId = req.params.productId;
     const quantity = req.params.quantity;
     console.log("Checkout cart called with:", productId, quantity);
-    // Logic to checkout cart for userId
+
+    // validate the order details here
+    // confirm stock availability, payment details, etc.
+    // if orderId is available, process the checkout
+    // else create a new order
+
     res.status(200).json({
       message: `Checked out cart for user ${userId}`,
     });

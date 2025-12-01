@@ -49,7 +49,6 @@ const Order = sequelize.define(
     paymentMethod: {
       type: DataTypes.ENUM(
         "credit card",
-        "cash",
         "check",
         "bank transfer",
         "cryptocurrency"

@@ -67,7 +67,7 @@ const Address = sequelize.define(
     },
   },
   {
-    tableName: "Addresses",
+    tableName: "addresses",
     timestamps: true,
     hooks: {
       beforeCreate: async (address) => {

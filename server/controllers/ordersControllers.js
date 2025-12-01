@@ -16,7 +16,7 @@ import OrderItem from "../models/OrderItem.js";
  */
 export const createOrder = async (req, res) => {
   try {
-    const { items } = req.body; // items: [{ productId, quantity }]
+    const { items } = req.body;
     if (!items || items.length === 0) {
       return res
         .status(400)
@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
     const result = await Order.sequelize.transaction(async (t) => {
       // Create the order
       const order = await Order.create(
-        { userId: "39252d06-f433-4bd7-8b39-e0eaa453e285", status: "completed" },
+        { userId: req.user.userId, status: "completed" },
         { transaction: t }
       );
 
@@ -272,6 +272,8 @@ export const deleteOrder = async (req, res) => {
   }
 };
 
+// Add item to an existing order
+// POST /api/orders/:orderId/items
 export const addOrderItem = async (req, res) => {
   try {
     const { orderId } = req.params;
