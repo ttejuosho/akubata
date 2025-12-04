@@ -68,6 +68,7 @@ export default function Profile() {
   const {
     register,
     handleSubmit,
+    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -234,9 +235,11 @@ export default function Profile() {
             ].map((item) => (
               <Button
                 key={item.key}
-                //variant={selectedSection === item.key ? "secondary" : ""}
                 className="d-block mb-2 text-start"
-                onClick={() => setSelectedSection(item.key)}
+                onClick={() => {
+                  clearErrors();
+                  setSelectedSection(item.key);
+                }}
                 style={
                   selectedSection === item.key
                     ? {
