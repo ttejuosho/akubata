@@ -29,6 +29,7 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       // handled via toast
+      console.error(err.message);
     } finally {
       setLoading(false);
     }

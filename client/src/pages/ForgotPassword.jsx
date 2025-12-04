@@ -27,7 +27,7 @@ const ForgotPassword = () => {
       await forgotPassword(data.emailAddress);
       // Optionally show a toast notification via AuthContext
     } catch (err) {
-      // Error handled in AuthContext
+      console.error(err.message);
     } finally {
       setLoading(false);
     }

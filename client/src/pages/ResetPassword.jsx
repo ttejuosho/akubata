@@ -8,14 +8,25 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { Form, Button, Card, Container, Row, Col } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ResetPassword = () => {
   const { resetPassword } = useAuth();
   const { token } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   const {
     register,
@@ -28,10 +39,9 @@ const ResetPassword = () => {
     setLoading(true);
     try {
       await resetPassword(token, data.newPassword, data.confirmPassword);
-      // Optionally show toast success
       navigate("/login"); // redirect to login after reset
     } catch (err) {
-      // Error handled in AuthContext
+      console.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -56,38 +66,67 @@ const ResetPassword = () => {
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Form.Group className="mb-3" controlId="newPassword">
                 <Form.Label>New Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="New password"
-                  {...register("newPassword", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                  })}
-                  isInvalid={errors.newPassword}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.newPassword?.message}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={showNewPassword ? "text" : "password"}
+                    placeholder="New password"
+                    {...register("newPassword", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters",
+                      },
+                    })}
+                    isInvalid={errors.newPassword}
+                  />
+
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    style={{
+                      borderLeft: "none",
+                      borderRadius: "0 10px 10px 0",
+                      borderColor: "#e4dfdf",
+                    }}
+                    tabIndex={-1}
+                  >
+                    {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.newPassword?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="confirmPassword">
                 <Form.Label>Confirm New Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm password"
-                  {...register("confirmPassword", {
-                    required: "Please confirm password",
-                    validate: (value) =>
-                      value === newPassword || "Passwords do not match",
-                  })}
-                  isInvalid={errors.confirmPassword}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.confirmPassword?.message}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm password"
+                    {...register("confirmPassword", {
+                      required: "Please confirm password",
+                      validate: (value) =>
+                        value === newPassword || "Passwords do not match",
+                    })}
+                    isInvalid={errors.confirmPassword}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    tabIndex={-1}
+                    style={{
+                      borderLeft: "none",
+                      borderRadius: "0 10px 10px 0",
+                      borderColor: "#e4dfdf",
+                    }}
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.confirmPassword?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Button

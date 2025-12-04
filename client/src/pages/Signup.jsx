@@ -8,13 +8,24 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Card, Container, Row, Col } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -36,7 +47,7 @@ const Signup = () => {
       });
       navigate("/"); // redirect after signup
     } catch (err) {
-      // Error handled in AuthContext via toast
+      console.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -115,38 +126,66 @@ const Signup = () => {
 
               <Form.Group className="mb-3" controlId="password">
                 <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                  })}
-                  isInvalid={errors.password}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.password?.message}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters",
+                      },
+                    })}
+                    isInvalid={errors.password}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                    style={{
+                      borderLeft: "none",
+                      borderRadius: "0 10px 10px 0",
+                      borderColor: "#e4dfdf",
+                    }}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.password?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="confirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm password"
-                  {...register("confirmPassword", {
-                    required: "Please confirm password",
-                    validate: (value) =>
-                      value === password || "Passwords do not match",
-                  })}
-                  isInvalid={errors.confirmPassword}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.confirmPassword?.message}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm password"
+                    {...register("confirmPassword", {
+                      required: "Please confirm password",
+                      validate: (value) =>
+                        value === password || "Passwords do not match",
+                    })}
+                    isInvalid={errors.confirmPassword}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    tabIndex={-1}
+                    style={{
+                      borderLeft: "none",
+                      borderRadius: "0 10px 10px 0",
+                      borderColor: "#e4dfdf",
+                    }}
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.confirmPassword?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Button

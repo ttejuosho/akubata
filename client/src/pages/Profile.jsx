@@ -18,7 +18,7 @@ export default function Profile() {
     phoneNumber: user.phoneNumber || "",
     address: user.address || "",
   });
-  const [selectedSection, setSelectedSection] = useState("personalInfo");
+  const [selectedSection, setSelectedSection] = useState("orders");
 
   useEffect(() => {}, []);
 

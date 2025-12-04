@@ -95,6 +95,7 @@ export default function CheckoutPage() {
 
       setSelectedAddress(defaultAddress);
     } catch (err) {
+      console.error(err.message);
       toast.error("Failed to load addresses");
     }
   };
