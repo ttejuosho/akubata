@@ -49,7 +49,7 @@ const Header = () => {
         <Navbar.Brand
           as={Link}
           to="/"
-          style={{ fontWeight: "700", color: "#123456" }}
+          style={{ fontWeight: "700", color: "#237bd3" }}
         >
           Akubata Pharma
         </Navbar.Brand>
@@ -66,14 +66,22 @@ const Header = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button variant="primary" onClick={handleSearch}>
+            <Button
+              style={{ backgroundColor: "#237bd3", borderColor: "#237bd3" }}
+              onClick={handleSearch}
+            >
               <FaSearch />
             </Button>
           </InputGroup>
         </Form>
 
         <Nav className="ms-auto align-items-center">
-          <Button as={Link} to="/store" variant="primary" className="me-2">
+          <Button
+            as={Link}
+            to="/store"
+            style={{ backgroundColor: "#237bd3", borderColor: "#237bd3" }}
+            className="me-2"
+          >
             Store
           </Button>
           <NavbarCart />
@@ -86,7 +94,10 @@ const Header = () => {
                 <FaUserCircle size={24} className="me-2" />
                 <span className="fw-semibold">{user.firstName}</span>
               </Link>
-              <Button variant="outline-primary" onClick={logout}>
+              <Button
+                style={{ backgroundColor: "#237bd3", borderColor: "#237bd3" }}
+                onClick={logout}
+              >
                 Logout
               </Button>
             </>

@@ -55,7 +55,7 @@ const Login = () => {
       >
         <h2
           className="text-center fw-bold mb-4"
-          style={{ color: "#123456", fontSize: "28px" }}
+          style={{ color: "#237bd3", fontSize: "28px" }}
         >
           Welcome Back
         </h2>
@@ -127,8 +127,8 @@ const Login = () => {
             type="submit"
             className="w-100 py-2"
             style={{
-              backgroundColor: "#123456",
-              borderColor: "#123456",
+              backgroundColor: "#237bd3",
+              borderColor: "#237bd3",
               fontSize: "18px",
               borderRadius: "10px",
             }}

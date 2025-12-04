@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { Container, Card, Table, Badge, Spinner } from "react-bootstrap";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -48,7 +49,14 @@ const Orders = () => {
         <Card key={order.orderId} className="mb-4 shadow-sm">
           <Card.Header className="d-flex justify-content-between align-items-center">
             <div>
-              <strong>Order #{order.orderId.slice(0, 8).toUpperCase()}</strong>
+              <Link
+                to={`/order/${order.orderId}`}
+                className="text-decoration-none text-dark"
+              >
+                <strong>
+                  Order #{order.orderId.slice(0, 8).toUpperCase()}
+                </strong>
+              </Link>
               <div className="text-muted small">
                 Placed on {new Date(order.orderDate).toLocaleDateString()}
               </div>

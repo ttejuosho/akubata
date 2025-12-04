@@ -60,7 +60,7 @@ const Signup = () => {
       <Row className="align-items-center" style={{ marginTop: "10%" }}>
         <Col md={{ span: 6, offset: 3 }} className="align-self-center">
           <Card className="p-4 shadow-sm">
-            <h2 className="mb-4 text-center" style={{ color: "#123456" }}>
+            <h2 className="mb-4 text-center" style={{ color: "#237bd3" }}>
               Sign Up
             </h2>
             <Form onSubmit={handleSubmit(onSubmit)}>

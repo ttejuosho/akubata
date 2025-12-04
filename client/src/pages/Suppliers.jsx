@@ -236,7 +236,10 @@ const Suppliers = () => {
               style={{ width: "250px" }}
             />
 
-            <Button variant="primary" onClick={handleNewSupplier}>
+            <Button
+              style={{ backgroundColor: "#237bd3", borderColor: "#237bd3" }}
+              onClick={handleNewSupplier}
+            >
               <FaPlus /> New Supplier
             </Button>
           </div>

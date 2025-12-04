@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import "./Profile.css";
 import { useRef } from "react";
 import OrderHistory from "../components/OrderHistory";
+import { useForm } from "react-hook-form";
 
 export default function Profile() {
   const nodeRef = useRef(null);
@@ -64,7 +65,11 @@ export default function Profile() {
     }
   };
 
-  //if (isLoading) return <div>Loading...</div>;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const renderMainContent = () => {
     switch (selectedSection) {
@@ -127,7 +132,10 @@ export default function Profile() {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit">
+              <Button
+                style={{ backgroundColor: "#237bd3", borderColor: "#237bd3" }}
+                type="submit"
+              >
                 Save Changes
               </Button>
             </Form>
@@ -138,15 +146,21 @@ export default function Profile() {
         return (
           <Card className="p-4 shadow-sm mb-4">
             <h4>Password Reset</h4>
-            <Form onSubmit={handlePasswordReset}>
+            <Form onSubmit={handleSubmit(handlePasswordReset)}>
               <Form.Group className="mb-3" controlId="newPassword">
                 <Form.Label>New Password</Form.Label>
                 <Form.Control
                   type="password"
                   name="newPassword"
-                  required
                   minLength={6}
+                  {...register("newPassword", {
+                    required: "Password is required",
+                  })}
+                  isInvalid={errors.newPassword}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.newPassword?.message}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="confirmNewPassword">
@@ -154,11 +168,20 @@ export default function Profile() {
                 <Form.Control
                   type="password"
                   name="confirmNewPassword"
-                  required
+                  {...register("confirmNewPassword", {
+                    required: "Confirm password is required",
+                  })}
+                  isInvalid={errors.confirmNewPassword}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.confirmNewPassword?.message}
+                </Form.Control.Feedback>
               </Form.Group>
 
-              <Button type="submit" variant="secondary">
+              <Button
+                type="submit"
+                style={{ backgroundColor: "#237bd3", borderColor: "#237bd3" }}
+              >
                 Reset Password
               </Button>
             </Form>
@@ -211,9 +234,22 @@ export default function Profile() {
             ].map((item) => (
               <Button
                 key={item.key}
-                variant={selectedSection === item.key ? "secondary" : ""}
+                //variant={selectedSection === item.key ? "secondary" : ""}
                 className="d-block mb-2 text-start"
                 onClick={() => setSelectedSection(item.key)}
+                style={
+                  selectedSection === item.key
+                    ? {
+                        backgroundColor: "#237bd3",
+                        borderColor: "#237bd3",
+                        color: "#fff",
+                      }
+                    : {
+                        backgroundColor: "transparent",
+                        borderColor: "transparent",
+                        color: "#000",
+                      }
+                }
               >
                 {item.label}
               </Button>

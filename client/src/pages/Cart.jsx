@@ -65,7 +65,15 @@ export default function CartPage() {
             <Link to="/store" className="btn btn-outline-primary px-4 py-2">
               Continue Shopping
             </Link>
-            <Link to="/checkout" className="btn btn-primary px-4 py-2">
+            <Link
+              to="/checkout"
+              style={{
+                backgroundColor: "#237bd3",
+                borderColor: "#237bd3",
+                color: "#fff",
+              }}
+              className="btn px-4 py-2"
+            >
               Check Out
             </Link>
           </div>
@@ -129,7 +137,15 @@ export default function CartPage() {
             <Link to="/store" className="btn btn-outline-primary px-4 py-2">
               Continue Shopping
             </Link>
-            <Link to="/checkout" className="btn btn-primary px-4 py-2">
+            <Link
+              to="/checkout"
+              style={{
+                backgroundColor: "#237bd3",
+                borderColor: "#237bd3",
+                color: "#fff",
+              }}
+              className="btn px-4 py-2"
+            >
               Check Out
             </Link>
           </div>

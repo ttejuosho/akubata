@@ -278,7 +278,14 @@ const Supplier = () => {
             onChange={(e) => setSearch(e.target.value)}
             style={{ width: "250px" }}
           />
-          <Button variant="primary" onClick={handleNewProduct}>
+          <Button
+            style={{
+              backgroundColor: "#237bd3",
+              borderColor: "#237bd3",
+              color: "#fff",
+            }}
+            onClick={handleNewProduct}
+          >
             <FaPlus /> New Product
           </Button>
         </div>

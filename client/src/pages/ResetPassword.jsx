@@ -60,7 +60,7 @@ const ResetPassword = () => {
       <Row className="justify-content-center w-100">
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>
           <Card className="p-4 shadow-sm reset-card">
-            <h2 className="mb-4 text-center" style={{ color: "#123456" }}>
+            <h2 className="mb-4 text-center" style={{ color: "#237bd3" }}>
               Reset Password
             </h2>
             <Form onSubmit={handleSubmit(onSubmit)}>
