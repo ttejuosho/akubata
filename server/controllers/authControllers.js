@@ -11,10 +11,21 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { Op } from "sequelize";
 import { sendEmail } from "../middleware/mailer.js";
+import { getDefaultAddress } from "./addressControllers.js";
+import Address from "../models/Address.js";
 
 // JWT secret and expiration (move to environment variables in production)
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 const JWT_EXPIRES_IN = "1d";
+
+function formatAddress(address) {
+  if (!address) return null;
+  const { addressLine1, addressLine2, city, state, zipCode, country } = address;
+
+  return [addressLine1, addressLine2, city, state, zipCode, country]
+    .filter(Boolean) // removes null, undefined, empty strings
+    .join(", ");
+}
 
 //** GET /api/auth/me
 //* Get current authenticated user
@@ -154,6 +165,23 @@ export const login = async (req, res) => {
 
     const user = await User.scope(null).findOne({
       where: { emailAddress: normalizedEmail },
+      include: [
+        {
+          model: Address,
+          //as: "address",
+          where: { isDefault: true },
+          required: false,
+          attributes: [
+            "addressId",
+            "addressLine1",
+            "addressLine2",
+            "city",
+            "state",
+            "zipCode",
+            "country",
+          ],
+        },
+      ],
     });
 
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
@@ -173,7 +201,6 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    // Respond with user data excluding password
     res.status(200).json({
       message: "Logged in successfully",
       user: {
@@ -183,6 +210,7 @@ export const login = async (req, res) => {
         emailAddress: user.emailAddress,
         phoneNumber: user.phoneNumber,
         role: user.role,
+        address: formatAddress(userData.Addresses[0]),
       },
     });
   } catch (err) {

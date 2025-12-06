@@ -123,3 +123,25 @@ export const setDefaultAddress = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getDefaultAddress = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const defaultAddress = await Address.findOne({
+      where: { userId, isDefault: true },
+    });
+
+    if (!defaultAddress) {
+      return res.status(404).json({ message: "No default address set" });
+    }
+
+    return res.status(200).json({
+      message: "success",
+      address: defaultAddress,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

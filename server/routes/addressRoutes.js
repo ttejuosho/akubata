@@ -7,6 +7,7 @@ import {
   updateAddress,
   deleteAddress,
   setDefaultAddress,
+  getDefaultAddress,
 } from "../controllers/addressControllers.js";
 
 const router = express.Router();
@@ -31,5 +32,8 @@ router.delete("/:addressId", deleteAddress);
 
 // Set an address as default
 router.patch("/:addressId/default", setDefaultAddress);
+
+// Get default address
+router.get("/default", getDefaultAddress);
 
 export default router;

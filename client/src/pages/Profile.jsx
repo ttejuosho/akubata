@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  InputGroup,
+} from "react-bootstrap";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import api from "../api/axios";
 import { useAuth } from "../hooks/useAuth";
@@ -7,7 +15,18 @@ import toast from "react-hot-toast";
 import "./Profile.css";
 import { useRef } from "react";
 import OrderHistory from "../components/OrderHistory";
+import Addresses from "../components/Addresses";
 import { useForm } from "react-hook-form";
+import {
+  FaFileInvoice,
+  FaCommentDots,
+  FaCreditCard,
+  FaUser,
+  FaLock,
+  FaHome,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
 export default function Profile() {
   const nodeRef = useRef(null);
@@ -20,6 +39,8 @@ export default function Profile() {
     address: user.address || "",
   });
   const [selectedSection, setSelectedSection] = useState("orders");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -150,33 +171,63 @@ export default function Profile() {
             <Form onSubmit={handleSubmit(handlePasswordReset)}>
               <Form.Group className="mb-3" controlId="newPassword">
                 <Form.Label>New Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="newPassword"
-                  minLength={6}
-                  {...register("newPassword", {
-                    required: "Password is required",
-                  })}
-                  isInvalid={errors.newPassword}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.newPassword?.message}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    name="newPassword"
+                    minLength={6}
+                    {...register("newPassword", {
+                      required: "Password is required",
+                    })}
+                    isInvalid={errors.newPassword}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                    style={{
+                      borderLeft: "none",
+                      borderRadius: "0 10px 10px 0",
+                      borderColor: "#e4dfdf",
+                    }}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.newPassword?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="confirmNewPassword">
                 <Form.Label>Confirm New Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="confirmNewPassword"
-                  {...register("confirmNewPassword", {
-                    required: "Confirm password is required",
-                  })}
-                  isInvalid={errors.confirmNewPassword}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.confirmNewPassword?.message}
-                </Form.Control.Feedback>
+                <InputGroup>
+                  <Form.Control
+                    type={showConfirmNewPassword ? "text" : "password"}
+                    name="confirmNewPassword"
+                    {...register("confirmNewPassword", {
+                      required: "Confirm password is required",
+                    })}
+                    isInvalid={errors.confirmNewPassword}
+                  />
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() =>
+                      setShowConfirmNewPassword(!showConfirmNewPassword)
+                    }
+                    tabIndex={-1}
+                    style={{
+                      borderLeft: "none",
+                      borderRadius: "0 10px 10px 0",
+                      borderColor: "#e4dfdf",
+                    }}
+                  >
+                    {showConfirmNewPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.confirmNewPassword?.message}
+                  </Form.Control.Feedback>
+                </InputGroup>
               </Form.Group>
 
               <Button
@@ -212,6 +263,9 @@ export default function Profile() {
           </Card>
         );
 
+      case "addresses":
+        return <Addresses />;
+
       default:
         return <div>Section not found</div>;
     }
@@ -226,16 +280,34 @@ export default function Profile() {
           <Card className="mb-4 p-3 shadow-sm">
             <h5>Account Menu</h5>
             <hr />
+
             {[
-              { key: "orders", label: "🧾 Order History" },
-              { key: "messages", label: "💬 My Messages" },
-              { key: "paymentMethods", label: "💳 Payment Methods" },
-              { key: "personalInfo", label: "📝 Personal Info" },
-              { key: "passwordReset", label: "🔒 Change Password" },
+              {
+                key: "orders",
+                label: "Order History",
+                icon: <FaFileInvoice />,
+              },
+              {
+                key: "messages",
+                label: "My Messages",
+                icon: <FaCommentDots />,
+              },
+              {
+                key: "paymentMethods",
+                label: "Payment Methods",
+                icon: <FaCreditCard />,
+              },
+              { key: "personalInfo", label: "Personal Info", icon: <FaUser /> },
+              {
+                key: "passwordReset",
+                label: "Change Password",
+                icon: <FaLock />,
+              },
+              { key: "addresses", label: "Your Addresses", icon: <FaHome /> },
             ].map((item) => (
               <Button
                 key={item.key}
-                className="d-block mb-2 text-start"
+                className="d-flex align-items-center gap-2 mb-2 text-start"
                 onClick={() => {
                   clearErrors();
                   setSelectedSection(item.key);
@@ -254,7 +326,8 @@ export default function Profile() {
                       }
                 }
               >
-                {item.label}
+                {item.icon}
+                <span>{item.label}</span>
               </Button>
             ))}
           </Card>
