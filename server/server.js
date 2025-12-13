@@ -2,9 +2,9 @@ import express from "express";
 import http from "http";
 import dotenv from "dotenv";
 import cors from "cors";
-import sequelize from "./config/db.js";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
+import { connectToDatabase, syncDatabase } from "./db/index.js";
 
 // Routes
 import authRoutes from "./routes/authRoutes.js";
@@ -100,11 +100,17 @@ io.on("connection", (socket) => {
 });
 
 // Sync DB
-sequelize
-  .sync() // { force: true } if you want to reset DB
-  .then(() => {
-    console.log("Database synced");
+const startServer = async () => {
+  try {
+    await connectToDatabase();
+    await syncDatabase();
+
     const PORT = process.env.PORT || 5001;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => console.error("DB connection error:", err));
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  } catch (err) {
+    console.error("Failed to start server:", err);
+    process.exit(1);
+  }
+};
+
+startServer();
