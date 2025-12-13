@@ -3,6 +3,7 @@ import { DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sequelize from "../config/db.js";
+import config from "../config/index.js";
 
 const User = sequelize.define(
   "User",
@@ -86,8 +87,8 @@ User.prototype.generateJWT = function () {
     role: this.role,
   };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: "1d",
+  return jwt.sign(payload, config.auth.jwtSecret, {
+    expiresIn: config.auth.jwtExpiresIn,
   });
 };
 

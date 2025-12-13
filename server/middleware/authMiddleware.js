@@ -10,6 +10,7 @@
  */
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import config from "../config/index.js";
 
 export const protect = async (req, res, next) => {
   const token = req.cookies?.token;
@@ -33,7 +34,7 @@ export const protect = async (req, res, next) => {
   // --- 3. Verify signature safely ---
   let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
+    decoded = jwt.verify(token, config.auth.jwtSecret);
   } catch (err) {
     console.error("JWT signature invalid:", err.message);
     return res.status(401).json({ message: "Invalid token signature" });

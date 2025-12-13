@@ -10,13 +10,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { Op } from "sequelize";
+import config from "../config/index.js";
 import { sendEmail } from "../middleware/mailer.js";
 import { getDefaultAddress } from "./addressControllers.js";
 import { Address } from "../models/index.js";
 
 // JWT secret and expiration (move to environment variables in production)
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
-const JWT_EXPIRES_IN = "1d";
+const JWT_SECRET = config.auth.jwtSecret;
 
 function formatAddress(address) {
   if (!address) return null;
@@ -60,7 +60,7 @@ export const getCurrentUser = async (req, res) => {
     // --- 4. Verify signature ---
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
+      decoded = jwt.verify(token, JWT_SECRET);
     } catch (err) {
       console.error("JWT verification failed:", err.message);
       return res.status(401).json({ message: "Invalid token signature" });
@@ -131,7 +131,7 @@ export const signup = async (req, res) => {
     // set token in HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: config.cookies.secure,
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -196,7 +196,7 @@ export const login = async (req, res) => {
     // set token in HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: config.cookies.secure,
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -232,7 +232,7 @@ export const logout = async (req, res) => {
     // Clear the HttpOnly cookie storing the JWT
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: config.cookies.secure,
       sameSite: "strict",
     });
 

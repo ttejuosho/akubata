@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import nodemailer from "nodemailer";
 
-const __dirname = path.resolve();
+import config from "../config/index.js";
 
 export const sendEmail = async (
   templateName,
@@ -13,8 +13,7 @@ export const sendEmail = async (
   try {
     // Load template
     const templatePath = path.join(
-      __dirname,
-      "emailTemplates",
+      config.email.templatesDir,
       `${templateName}.html`
     );
     let emailBody = fs.readFileSync(templatePath, "utf8");
@@ -25,18 +24,18 @@ export const sendEmail = async (
     }
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.aol.com",
-      port: 587,
-      secure: false,
+      host: config.email.host,
+      port: config.email.port,
+      secure: config.email.secure,
       auth: {
-        user: "ttejuosho@aol.com",
-        pass: process.env.EMAIL_PASSWORD,
+        user: config.email.user,
+        pass: config.email.password,
       },
       tls: { rejectUnauthorized: false },
     });
 
     const mailOptions = {
-      from: '"Akubata Stores" <ttejuosho@aol.com>',
+      from: config.email.from,
       to: recipients,
       subject,
       html: emailBody,

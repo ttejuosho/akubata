@@ -3,6 +3,8 @@ import http from "http";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
+import config from "./config/index.js";
 import { Server } from "socket.io";
 import { connectToDatabase, syncDatabase } from "./db/index.js";
 
@@ -20,7 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // your frontend origin
+    origin: config.server.corsOrigin, // your frontend origin
     credentials: true, // if you need cookies
   })
 );
@@ -54,7 +56,7 @@ io.use((socket, next) => {
   if (!token) return next(new Error("Authentication error"));
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, config.auth.jwtSecret);
     socket.user = decoded;
     next();
   } catch (err) {
