@@ -14,10 +14,10 @@ const OrderAddress = sequelize.define(
     orderId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: Order,
-        key: "orderId",
-      },
+      // references: {
+      //   model: Order,
+      //   key: "orderId",
+      // },
       onDelete: "CASCADE",
     },
 
@@ -41,9 +41,5 @@ const OrderAddress = sequelize.define(
     timestamps: true,
   }
 );
-
-// Associations
-Order.hasMany(OrderAddress, { foreignKey: "orderId", as: "addresses" });
-OrderAddress.belongsTo(Order, { foreignKey: "orderId", as: "order" });
 
 export default OrderAddress;

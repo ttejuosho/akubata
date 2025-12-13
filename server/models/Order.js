@@ -27,10 +27,10 @@ const Order = sequelize.define(
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: User,
-        key: "userId",
-      },
+      // references: {
+      //   model: User,
+      //   key: "userId",
+      // },
     },
     orderDate: {
       type: DataTypes.DATE,
@@ -66,9 +66,5 @@ const Order = sequelize.define(
     timestamps: true,
   }
 );
-
-// Associations
-User.hasMany(Order, { foreignKey: "userId" });
-Order.belongsTo(User, { foreignKey: "userId" });
 
 export default Order;

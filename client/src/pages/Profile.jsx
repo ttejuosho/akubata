@@ -27,6 +27,7 @@ import {
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
+import Messages from "../components/Messages";
 
 export default function Profile() {
   const nodeRef = useRef(null);
@@ -253,15 +254,7 @@ export default function Profile() {
         return <OrderHistory />;
 
       case "messages":
-        return (
-          <Card className="p-4 shadow-sm mb-4">
-            <h4>My Messages</h4>
-            <p>
-              Check notifications, alerts, and messages from Akubata Stores.
-            </p>
-            <Button variant="secondary">View Messages</Button>
-          </Card>
-        );
+        return <Messages />;
 
       case "addresses":
         return <Addresses />;
@@ -276,7 +269,7 @@ export default function Profile() {
       {/* <h2 className="mb-4">My Profile</h2> */}
       <Row>
         {/* LEFT SIDEBAR */}
-        <Col md={4}>
+        <Col md={3}>
           <Card className="mb-4 p-3 shadow-sm">
             <h5>Account Menu</h5>
             <hr />
@@ -334,7 +327,7 @@ export default function Profile() {
         </Col>
 
         {/* MAIN CONTENT */}
-        <Col md={8}>
+        <Col md={9}>
           <SwitchTransition mode="out-in">
             <CSSTransition
               key={selectedSection}

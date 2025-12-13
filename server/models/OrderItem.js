@@ -36,10 +36,10 @@ const OrderItem = sequelize.define(
     productId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: Product,
-        key: "productId",
-      },
+      // references: {
+      //   model: Product,
+      //   key: "productId",
+      // },
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -56,24 +56,5 @@ const OrderItem = sequelize.define(
     timestamps: true,
   }
 );
-
-// Associations
-Order.belongsToMany(Product, {
-  through: OrderItem,
-  foreignKey: "orderId",
-  otherKey: "productId",
-});
-Product.belongsToMany(Order, {
-  through: OrderItem,
-  foreignKey: "productId",
-  otherKey: "orderId",
-});
-
-// Direct relationships (for querying items)
-Order.hasMany(OrderItem, { foreignKey: "orderId" });
-OrderItem.belongsTo(Order, { foreignKey: "orderId" });
-
-Product.hasMany(OrderItem, { foreignKey: "productId" });
-OrderItem.belongsTo(Product, { foreignKey: "productId" });
 
 export default OrderItem;

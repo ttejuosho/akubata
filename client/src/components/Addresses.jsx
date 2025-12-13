@@ -12,7 +12,6 @@ import {
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import Divider from "./Divider";
 
 const Addresses = () => {
   const [addresses, setAddresses] = useState([]);

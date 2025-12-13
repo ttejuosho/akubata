@@ -15,10 +15,10 @@ const Address = sequelize.define(
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: User,
-        key: "userId",
-      },
+      // references: {
+      //   model: User,
+      //   key: "userId",
+      // },
       onDelete: "CASCADE",
     },
     label: {
@@ -95,9 +95,5 @@ const Address = sequelize.define(
     },
   }
 );
-
-// Associations
-User.hasMany(Address, { foreignKey: "userId" });
-Address.belongsTo(User, { foreignKey: "userId" });
 
 export default Address;

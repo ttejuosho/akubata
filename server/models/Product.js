@@ -55,10 +55,10 @@ const Product = sequelize.define(
     supplierId: {
       type: DataTypes.UUID,
       allowNull: true,
-      references: {
-        model: Supplier,
-        key: "supplierId",
-      },
+      // references: {
+      //   model: Supplier,
+      //   key: "supplierId",
+      // },
     },
     isActive: {
       type: DataTypes.BOOLEAN,
@@ -70,9 +70,5 @@ const Product = sequelize.define(
     timestamps: true,
   }
 );
-
-// Define associations
-Supplier.hasMany(Product, { foreignKey: "supplierId", onDelete: "SET NULL" });
-Product.belongsTo(Supplier, { foreignKey: "supplierId" });
 
 export default Product;

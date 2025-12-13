@@ -15,7 +15,7 @@ const OrderPayment = sequelize.define(
     orderId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: { model: Order, key: "orderId" },
+      //references: { model: Order, key: "orderId" },
       onDelete: "CASCADE",
     },
 
@@ -45,9 +45,5 @@ const OrderPayment = sequelize.define(
   },
   { tableName: "orderPayments", timestamps: true }
 );
-
-// Relationship: 1 Order → 1 Payment
-Order.hasOne(OrderPayment, { foreignKey: "orderId", as: "payment" });
-OrderPayment.belongsTo(Order, { foreignKey: "orderId", as: "order" });
 
 export default OrderPayment;

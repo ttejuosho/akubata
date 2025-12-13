@@ -12,7 +12,7 @@ import crypto from "crypto";
 import { Op } from "sequelize";
 import { sendEmail } from "../middleware/mailer.js";
 import { getDefaultAddress } from "./addressControllers.js";
-import Address from "../models/Address.js";
+import { Address } from "../models/index.js";
 
 // JWT secret and expiration (move to environment variables in production)
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
