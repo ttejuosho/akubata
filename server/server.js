@@ -17,7 +17,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 
-dotenv.config();
+import { errorHandler, notFound } from "./middleware/errorHandler.js";
 const app = express();
 
 app.use(
@@ -39,6 +39,8 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/messages", messageRoutes);
 
 app.get("/", (req, res) => res.send("Akubata API is running..."));
+app.use(notFound);
+app.use(errorHandler);
 
 const server = http.createServer(app);
 

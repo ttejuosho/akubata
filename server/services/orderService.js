@@ -2,6 +2,7 @@ import Order from "../models/Order.js";
 import OrderItem from "../models/OrderItem.js";
 import Product from "../models/Product.js";
 import User from "../models/User.js";
+import { ApiError } from "../middleware/errorHandler.js";
 
 const serializeOrderTotals = (order) => {
   if (!order) return order;
@@ -13,7 +14,7 @@ const serializeOrderTotals = (order) => {
 
 export const createOrderForUser = async (userId, items) => {
   if (!userId) {
-    throw new Error("User context is required to create an order");
+    throw new ApiError(400, "User context is required to create an order");
   }
 
   return Order.sequelize.transaction(async (t) => {
@@ -31,11 +32,12 @@ export const createOrderForUser = async (userId, items) => {
       });
 
       if (!product) {
-        throw new Error(`Product ${item.productId} not found`);
+        throw new ApiError(404, `Product ${item.productId} not found`);
       }
 
       if (product.stockQuantity < item.quantity) {
-        throw new Error(
+        throw new ApiError(
+          400,
           `Insufficient stock for product ${product.productName}`
         );
       }
@@ -72,13 +74,13 @@ export const addItemToOrder = async ({
   const order = await Order.findByPk(orderId);
 
   if (!order) {
-    throw new Error("Order not found");
+    throw new ApiError(404, "Order not found");
   }
 
   const product = await Product.findByPk(productId);
 
   if (!product) {
-    throw new Error("Product not found");
+    throw new ApiError(404, "Product not found");
   }
 
   return OrderItem.sequelize.transaction(async (t) => {
@@ -164,7 +166,7 @@ export const listOrdersForRole = async (role, userId) => {
     return Order.findAll(basicOrderQuery(userId));
   }
 
-  throw new Error("Unauthorized role for listing orders");
+  throw new ApiError(403, "Unauthorized role for listing orders");
 };
 
 export const fetchOrderById = (orderId) =>

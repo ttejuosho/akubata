@@ -1,9 +1,11 @@
+import { ApiError } from "./errorHandler.js";
+
 export const validateRequest = (validator) => async (req, res, next) => {
   try {
     const validationResult = await validator(req);
 
     if (validationResult?.error) {
-      return res.status(400).json({ message: validationResult.error });
+      throw new ApiError(400, validationResult.error);
     }
 
     if (validationResult?.value) {
@@ -12,9 +14,10 @@ export const validateRequest = (validator) => async (req, res, next) => {
 
     return next();
   } catch (error) {
-    console.error("Validation error:", error);
-    return res
-      .status(400)
-      .json({ message: error.message || "Invalid request" });
+    return next(
+      error instanceof ApiError
+        ? error
+        : new ApiError(400, error.message || "Invalid request")
+    );
   }
 };

@@ -33,7 +33,7 @@ const User = sequelize.define(
     phoneNumber: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true, // remove if you want duplicates
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -59,7 +59,6 @@ const User = sequelize.define(
   {
     tableName: "users",
     timestamps: true,
-
     defaultScope: {
       attributes: {
         exclude: ["password", "passwordResetToken", "tokenExpires"],
