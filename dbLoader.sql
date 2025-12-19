@@ -1,47 +1,43 @@
 USE akubata;
 
--- Supplier Data Seed
-INSERT INTO Suppliers (supplierId, companyName, contactName, contactEmail, contactPhone, address, city, state, country, createdAt, updatedAt) VALUES
-('b3d7c540-32a1-4b6d-91ac-69f4c1e24f01', 'Ally Pharma', 'Ally McBeal', 'ally.mcbeal@allypharma.com', '3468820922', '1200 E Ozzy Street', 'Hillside', 'Illinois', 'USA', NOW(), NOW()),
-('9d2b94c4-8c88-4f4d-a5c0-8a9b9a7e4102', 'Medline Corp', 'Derek Watson', 'derek.watson@medlinecorp.com', '3125558711', '220 North River Rd', 'Rosemont', 'Illinois', 'USA', NOW(), NOW()),
-('e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03', 'HealthFirst Supply', 'Rachel Green', 'rachel.green@healthfirst.com', '9175552212', '45 Hudson Ave', 'Brooklyn', 'New York', 'USA', NOW(), NOW()),
-('6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04', 'PureMed Distributors', 'Chris Nolan', 'chris.nolan@puremed.com', '4698821002', '303 Elm Drive', 'Plano', 'Texas', 'USA', NOW(), NOW()),
-('3a0d3f5f-bf81-4b3f-9a20-34b3b8dc4a05', 'GlobalPharm Inc', 'Sophia Lee', 'sophia.lee@globalpharm.com', '2134409283', '1101 Pico Blvd', 'Los Angeles', 'California', 'USA', NOW(), NOW()),
-('a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06', 'Sunrise Medical', 'Brian Thompson', 'brian.thompson@sunrise.com', '4806622391', '550 W Apache Trail', 'Mesa', 'Arizona', 'USA', NOW(), NOW()),
-('7c0d58b5-3e73-4cb3-a0de-2d2e6a4c4a07', 'Elite Pharma', 'Monica Patel', 'monica.patel@elitepharma.com', '3057783499', '2400 Brickell Ave', 'Miami', 'Florida', 'USA', NOW(), NOW()),
-('1a9f2d4d-58d2-4a8e-b91e-6f2a1c3b4a08', 'WellCare Logistics', 'Ethan Brooks', 'ethan.brooks@wellcarelogistics.com', '4029902133', '1010 Farnam St', 'Omaha', 'Nebraska', 'USA', NOW(), NOW()),
-('d9c81c5b-15d3-4c7f-bc67-0a6e6b3a4a09', 'Summit Healthcare', 'Lena Adams', 'lena.adams@summithealthcare.com', '6147728822', '660 High St', 'Columbus', 'Ohio', 'USA', NOW(), NOW()),
-('fe29ac10-3f8b-4f23-8f99-90a1b8e44a10', 'Northstar Pharma', 'Jacob White', 'jacob.white@northstarpharma.com', '6123039911', '2210 University Ave', 'Minneapolis', 'Minnesota', 'USA', NOW(), NOW()),
-('820b6f87-48a3-4c4c-8c8f-90b6f6e44a11', 'Prime Biotech', 'Natalie Cruz', 'natalie.cruz@primebiotech.com', '7138229988', '909 Westheimer Rd', 'Houston', 'Texas', 'USA', NOW(), NOW()),
-('da3f90a9-567c-4b2a-8aa0-8a2b3f4e4a12', 'MediTrust Supply', 'Oscar Rivera', 'oscar.rivera@meditrust.com', '2069205567', '120 Pike St', 'Seattle', 'Washington', 'USA', NOW(), NOW()),
-('ed4c1e32-7b94-45d4-91e3-bb7d4f3f4a13', 'CuraMed Solutions', 'Hannah Kim', 'hannah.kim@curamed.com', '7208812234', '600 17th St', 'Denver', 'Colorado', 'USA', NOW(), NOW()),
-('a72c7812-19a3-42c7-bac1-5c6a1d4f4a14', 'Zenith Pharmaceuticals', 'Michael Ross', 'michael.ross@zenithpharma.com', '3127734488', '355 Michigan Ave', 'Chicago', 'Illinois', 'USA', NOW(), NOW()),
-('fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15', 'TruLife Medical', 'Emma Brown', 'emma.brown@trulifemedical.com', '6159091221', '800 Broadway', 'Nashville', 'Tennessee', 'USA', NOW(), NOW()),
-('b6f9c6f2-91a1-48db-91d4-2b1a4a5f4a16', 'BluePeak Pharma', 'Caleb Harris', 'caleb.harris@bluepeak.com', '8016623311', '177 Main St', 'Salt Lake City', 'Utah', 'USA', NOW(), NOW()),
-('5b9d4c8e-5d5e-46f2-8b7e-7b4a2f4f4a17', 'MedSmart Supply Co.', 'Ava Johnson', 'ava.johnson@medsmart.com', '6179932278', '92 Commonwealth Ave', 'Boston', 'Massachusetts', 'USA', NOW(), NOW()),
-('f7d1b9e0-2a2b-4b1c-93d2-9b7a3a6f4a18', 'Evergreen Health', 'Daniel Clark', 'daniel.clark@evergreen.com', '5038884455', '411 Burnside St', 'Portland', 'Oregon', 'USA', NOW(), NOW()),
-('2e4a6a5f-7f3b-42d1-8b92-0a7b4b7f4a19', 'NextGen Pharma', 'Victoria Lopez', 'victoria.lopez@nextgenpharma.com', '7027713399', '840 Fremont St', 'Las Vegas', 'Nevada', 'USA', NOW(), NOW()),
-('c9b6a1e1-32e9-48af-81f0-3b9a6b8f4a20', 'Integrity Meds', 'Anthony Carter', 'anthony.carter@integritymeds.com', '9196624433', '390 Hillsborough St', 'Raleigh', 'North Carolina', 'USA', NOW(), NOW());
+-- Users
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('39252d06-f433-4bd7-8b39-e0eaa453e285','Al-Amin','Tejuosho','chromebooker0@gmail.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','admin',NULL,NULL,1,'2025-11-09 15:30:34','2025-11-09 15:30:34');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('a1f3c0e2-11a4-4b1a-bc2f-9d2a3f4e1a01','James','Anderson','james.anderson@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','admin',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('b2e4d1f3-22b5-4c2b-ad3f-8c3b5f5f2b02','Maria','Lopez','maria.lopez@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','manager',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('c3f5e2a4-33c6-4d3c-be4f-7d4c6g6g3c03','David','Kim','david.kim@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','staff',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('d4g6f3b5-44d7-4e4d-cf5f-6e5d7h7h4d04','Sophia','Nguyen','sophia.nguyen@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','basic',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('e5h7g4c6-55e8-4f5e-dg6f-5f6e8i8i5e05','Michael','Brown','michael.brown@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','manager',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('f6i8h5d7-66f9-4g6f-eh7f-4g7f9j9j6f06','Emma','Johnson','emma.johnson@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','staff',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('g7j9i6e8-77g0-4h7g-fi8f-3h8g0k0k7g07','William','Martinez','william.martinez@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','admin',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('h8k0j7f9-88h1-4i8h-gj9f-2i9h1l1l8h08','Olivia','Davis','olivia.davis@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','staff',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('i9l1k8g0-99i2-4j9i-hk0f-1j0i2m2m9i09','Ethan','White','ethan.white@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','manager',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
+INSERT INTO `users` (`userId`,`firstName`,`lastName`,`emailAddress`,`password`,`role`,`passwordResetToken`,`tokenExpires`,`isActive`,`createdAt`,`updatedAt`) VALUES ('j0m2l9h1-00j3-4k0j-il1f-0k1j3n3n0j10','Ava','Taylor','ava.taylor@example.com','$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa','basic',NULL,NULL,1,'2025-11-10 21:20:18','2025-11-10 21:20:18');
 
--- Product Data Seed
--- productId should be UUIDs, change accordingly
+-- Suppliers
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('1a9f2d4d-58d2-4a8e-b91e-6f2a1c3b4a08','WellCare Logistics','Ethan Brooks','ethan.brooks@wellcarelogistics.com','4029902133','1010 Farnam St','Omaha','Nebraska','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('1b544d87-fe49-4d69-be9e-dfde6ea6a024','Shenzhen Beauty Inc','Jack Zhou Chen','jackchen@shenzhen.com','20947749479292','Shanghai Industrial Village','Shanghai','Shanghai','China',1,'2025-11-08 15:21:25','2025-11-08 15:21:25');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('2e4a6a5f-7f3b-42d1-8b92-0a7b4b7f4a19','NextGen Pharma','Victoria Lopez','victoria.lopez@nextgenpharma.com','7027713399','840 Fremont St','Las Vegas','Nevada','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('3a0d3f5f-bf81-4b3f-9a20-34b3b8dc4a05','GlobalPharm Inc','Sophia Lee','sophia.lee@globalpharm.com','2134409283','1101 Pico Blvd','Los Angeles','California','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('5b9d4c8e-5d5e-46f2-8b7e-7b4a2f4f4a17','MedSmart Supply Co.','Ava Johnson','ava.johnson@medsmart.com','6179932278','92 Commonwealth Ave','Boston','Massachusetts','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04','PureMed Distributors','Chris Nolan','chris.nolan@puremed.com','4698821002','303 Elm Drive','Plano','Texas','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('7c0d58b5-3e73-4cb3-a0de-2d2e6a4c4a07','Elite Pharma','Monica Patel','monica.patel@elitepharma.com','3057783499','2400 Brickell Ave','Miami','Florida','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('820b6f87-48a3-4c4c-8c8f-90b6f6e44a11','Prime Biotech','Natalie Cruz','natalie.cruz@primebiotech.com','7138229988','909 Westheimer Rd','Houston','Texas','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('9d2b94c4-8c88-4f4d-a5c0-8a9b9a7e4102','Medline Corp','Derek Watson','derek.watson@medlinecorp.com','3125558711','220 North River Rd','Rosemont','Illinois','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06','Sunrise Medical','Brian Thompson','brian.thompson@sunrise.com','4806622391','550 W Apache Trail','Mesa','Arizona','USA',0,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('a72c7812-19a3-42c7-bac1-5c6a1d4f4a14','Zenith Pharmaceuticals','Michael Ross','michael.ross@zenithpharma.com','3127734488','355 Michigan Ave','Chicago','Illinois','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('b3d7c540-32a1-4b6d-91ac-69f4c1e24f01','Akubata Inc','Chinyere Atueyi','chinyere@atueyi.com','08034045123','818 E Ozzy Street','Upkor','Anambra','Nigeria',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('b6f9c6f2-91a1-48db-91d4-2b1a4a5f4a16','BluePeak Pharma','Caleb Harris','caleb.harris@bluepeak.com','8016623311','177 Main St','Salt Lake City','Utah','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('c9b6a1e1-32e9-48af-81f0-3b9a6b8f4a20','Integrity Meds','Anthony Carter','anthony.carter@integritymeds.com','9196624433','390 Hillsborough St','Raleigh','North Carolina','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('d9c81c5b-15d3-4c7f-bc67-0a6e6b3a4a09','Summit Healthcare','Lena Adams','lena.adams@summithealthcare.com','6147728822','660 High St','Columbus','Ohio','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('da3f90a9-567c-4b2a-8aa0-8a2b3f4e4a12','MediTrust Supply','Oscar Rivera','oscar.rivera@meditrust.com','2069205567','120 Pike St','Seattle','Washington','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03','HealthFirst Supply','Rachel Green','rachel.green@healthfirst.com','9175552212','45 Hudson Ave','Brooklyn','New York','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('ed4c1e32-7b94-45d4-91e3-bb7d4f3f4a13','CuraMed Solutions','Hannah Kim','hannah.kim@curamed.com','7208812234','600 17th St','Denver','Colorado','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('f7d1b9e0-2a2b-4b1c-93d2-9b7a3a6f4a18','Evergreen Health','Daniel Clark','daniel.clark@evergreen.com','5038884455','411 Burnside St','Portland','Oregon','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15','TruLife Medical','Emma Brown','emma.brown@trulifemedical.com','6159091221','800 Broadway','Nashville','Tennessee','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
+INSERT INTO `suppliers` (`supplierId`,`companyName`,`contactName`,`contactEmail`,`contactPhone`,`address`,`city`,`state`,`country`,`isActive`,`createdAt`,`updatedAt`) VALUES ('fe29ac10-3f8b-4f23-8f99-90a1b8e44a10','Northstar Pharma','Jacob White','jacob.white@northstarpharma.com','6123039911','2210 University Ave','Minneapolis','Minnesota','USA',1,'2025-11-08 08:37:51','2025-11-08 08:37:51');
 
+-- Products
 INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06','Loratadine 10mg','Allergy Relief','Non-drowsy antihistamine for allergy symptoms',8.99,160,'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06',1,'2025-11-08 09:12:11','2025-11-13 21:07:08','https://m.media-amazon.com/images/I/71geO9hP4VL._AC_UF1000,1000_QL80_.jpg');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06','Loratadine 10mg','Allergy Relief','Non-drowsy antihistamine for allergy symptoms',8.99,160,'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06',1,'2025-11-08 09:12:11','2025-11-13 21:07:08','https://m.media-amazon.com/images/I/71geO9hP4VL._AC_UF1000,1000_QL80_.jpg');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06','Loratadine 10mg','Allergy Relief','Non-drowsy antihistamine for allergy symptoms',8.99,160,'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06',1,'2025-11-08 09:12:11','2025-11-13 21:07:08','https://m.media-amazon.com/images/I/71geO9hP4VL._AC_UF1000,1000_QL80_.jpg');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06','Loratadine 10mg','Allergy Relief','Non-drowsy antihistamine for allergy symptoms',8.99,160,'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06',1,'2025-11-08 09:12:11','2025-11-13 21:07:08','https://m.media-amazon.com/images/I/71geO9hP4VL._AC_UF1000,1000_QL80_.jpg');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06','Loratadine 10mg','Allergy Relief','Non-drowsy antihistamine for allergy symptoms',8.99,160,'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06',1,'2025-11-08 09:12:11','2025-11-13 21:07:08','https://m.media-amazon.com/images/I/71geO9hP4VL._AC_UF1000,1000_QL80_.jpg');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06','Loratadine 10mg','Allergy Relief','Non-drowsy antihistamine for allergy symptoms',8.99,160,'a1e3db41-21a8-46e9-bf2e-bd8e3e6c4a06',1,'2025-11-08 09:12:11','2025-11-13 21:07:08','https://m.media-amazon.com/images/I/71geO9hP4VL._AC_UF1000,1000_QL80_.jpg');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
-INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
 INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('5c2b73d3-93c1-46f2-a8e9-9b4f2d4bad15','Lisinopril 10mg','Blood Pressure','ACE inhibitor for managing high blood pressure and heart failure',12.49,75,'fa7d2a9c-4e3c-46e8-8893-8b8a2e4f4a15',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://evolutionpharmacyng.com/wp-content/uploads/Tab.-Lisinopril-10mg-by-Teva.png');
 INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('8b62b78c-8a35-4c9d-9b8e-f9d5a2a4ad14','Levothyroxine 50mcg','Thyroid Medication','Hormone replacement therapy for hypothyroidism',18.99,50,'a72c7812-19a3-42c7-bac1-5c6a1d4f4a14',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://medplusnig.com/storage/app/public/product/2024-11-05-672a10c7aa05f.webp');
 INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('92a47c89-02d5-48a4-8f0b-9e0c124cad03','Paracetamol 500mg','Pain Relief','Used to relieve mild to moderate pain and reduce fever',6.99,180,'e8a4ab6b-5f5f-4a89-8df1-57e20a8b4b03',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://www.polskaapteczka.com/cdn/shop/files/paracetamol-500mg-01.jpg?v=1724089739&width=1946');
@@ -85,61 +81,89 @@ INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unit
 INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('fa92f3d4-66e1-44d4-b3d1-0bcb7c1bad04','Amoxicillin 250mg','Antibiotics','Broad-spectrum antibiotic used to treat bacterial infections',12.99,120,'6b4a2900-b8b1-4b22-b2b0-baa80e4a4a04',1,'2025-11-08 09:12:11','2025-11-08 09:12:11','https://www.ddgroup.com/globalassets/productimages/naa014/naa014_1.jpg');
 INSERT INTO `products` (`productId`,`productName`,`category`,`description`,`unitPrice`,`stockQuantity`,`supplierId`,`isActive`,`createdAt`,`updatedAt`,`imageUrl`) VALUES ('ff43c7b1-0a4c-4e99-9c44-7e4f2e4fad16','Amlodipine 5mg','Blood Pressure','Calcium channel blocker used to treat hypertension',13.49,83,'b6f9c6f2-91a1-48db-91d4-2b1a4a5f4a16',1,'2025-11-08 09:12:11','2025-11-13 03:13:49','https://s.turbifycdn.com/aah/yhst-135855760451349/amlodipine-5-mg-per-tablet-manufacture-may-vary-44.jpg');
 
+-- Orders
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('11111111-aaaa-4a1a-bb1b-000000000001','39252d06-f433-4bd7-8b39-e0eaa453e285','2025-11-10 21:48:05','completed',58.94,'2025-11-10 21:48:05','2025-11-10 21:48:05','credit card');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('17b9c7b5-e17c-435a-8691-1f496ba87317','39252d06-f433-4bd7-8b39-e0eaa453e285','2025-11-13 03:35:30','pending',58.98,'2025-11-13 03:35:30','2025-11-13 03:35:30','credit card');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('22222222-bbbb-4b2b-cc2c-000000000002','b2e4d1f3-22b5-4c2b-ad3f-8c3b5f5f2b02','2025-11-10 21:48:05','pending',26.97,'2025-11-10 21:48:05','2025-11-10 21:48:05','credit card');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('237692b8-b51d-42db-a77a-780f91a0cc4c','39252d06-f433-4bd7-8b39-e0eaa453e285','2025-11-13 03:13:49','completed',47.68,'2025-11-13 03:13:49','2025-11-13 03:21:02','credit card');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('33333333-cccc-4c3c-dd3d-000000000003','c3f5e2a4-33c6-4d3c-be4f-7d4c6g6g3c03','2025-11-10 21:48:05','completed',113.40,'2025-11-10 21:48:05','2025-11-13 02:33:09','bank transfer');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('3fe6b606-0b76-4787-b571-850a86bf3022','39252d06-f433-4bd7-8b39-e0eaa453e285','2025-11-13 03:48:18','pending',69.99,'2025-11-13 03:48:18','2025-11-13 03:48:18','credit card');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('44444444-dddd-4d4d-ee4e-000000000004','d4g6f3b5-44d7-4e4d-cf5f-6e5d7h7h4d04','2025-11-10 21:48:05','open',44.95,'2025-11-10 21:48:05','2025-11-10 21:48:05','check');
+INSERT INTO `orders` (`orderId`,`userId`,`orderDate`,`orderStatus`,`totalAmount`,`createdAt`,`updatedAt`,`paymentMethod`) VALUES ('55555555-eeee-4e5e-ff5f-000000000005','e5h7g4c6-55e8-4f5e-dg6f-5f6e8i8i5e05','2025-11-10 21:48:05','cancelled',27.96,'2025-11-10 21:48:05','2025-11-10 21:48:05','cryptocurrency');
 
-INSERT INTO Users (userId, firstName, lastName, emailAddress, password, isActive, role, passwordResetToken, tokenExpires, createdAt, updatedAt) VALUES
-('a1f3c0e2-11a4-4b1a-bc2f-9d2a3f4e1a01', 'James', 'Anderson', 'james.anderson@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'admin', NULL, NULL, NOW(), NOW()),
-('b2e4d1f3-22b5-4c2b-ad3f-8c3b5f5f2b02', 'Maria', 'Lopez', 'maria.lopez@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'manager', NULL, NULL,NOW(), NOW()),
-('c3f5e2a4-33c6-4d3c-be4f-7d4c6g6g3c03', 'David', 'Kim', 'david.kim@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'staff', NULL, NULL,NOW(), NOW()),
-('d4g6f3b5-44d7-4e4d-cf5f-6e5d7h7h4d04', 'Sophia', 'Nguyen', 'sophia.nguyen@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'basic', NULL, NULL,NOW(), NOW()),
-('e5h7g4c6-55e8-4f5e-dg6f-5f6e8i8i5e05', 'Michael', 'Brown', 'michael.brown@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'manager', NULL, NULL,NOW(), NOW()),
-('f6i8h5d7-66f9-4g6f-eh7f-4g7f9j9j6f06', 'Emma', 'Johnson', 'emma.johnson@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'staff', NULL, NULL,NOW(), NOW()),
-('g7j9i6e8-77g0-4h7g-fi8f-3h8g0k0k7g07', 'William', 'Martinez', 'william.martinez@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'admin', NULL, NULL,NOW(), NOW()),
-('h8k0j7f9-88h1-4i8h-gj9f-2i9h1l1l8h08', 'Olivia', 'Davis', 'olivia.davis@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'staff', NULL, NULL,NOW(), NOW()),
-('i9l1k8g0-99i2-4j9i-hk0f-1j0i2m2m9i09', 'Ethan', 'White', 'ethan.white@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'manager', NULL, NULL,NOW(), NOW()),
-('j0m2l9h1-00j3-4k0j-il1f-0k1j3n3n0j10', 'Ava', 'Taylor', 'ava.taylor@example.com', '$2b$10$nXTWiD2iLxoLFBr8KsIL..ydxbvjldp1wjEkrDCZrQoqnekwuFnMa', true, 'basic', NULL, NULL,NOW(), NOW());
 
-INSERT INTO order_items (orderItemId, orderId, productId, quantity, price, createdAt, updatedAt)
-VALUES
--- Order 1 (Admin - James Anderson)
-('aaa11111-aaaa-4a1a-bb1b-000000000101', '11111111-aaaa-4a1a-bb1b-000000000001', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 2, 8.99, NOW(), NOW()), -- Loratadine
--- Order 2 (Manager - Maria Lopez)
-('bbb22222-bbbb-4b2b-cc2c-000000000201', '22222222-bbbb-4b2b-cc2c-000000000002', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 3, 8.99, NOW(), NOW()),
+-- Order Items
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('2585c8a4-593f-46f3-94e5-b172653f5aef','17b9c7b5-e17c-435a-8691-1f496ba87317','f3a2b5c7-1f7d-4e92-b8d1-99f2c3e91a12',1,17.50,'2025-11-13 03:35:30','2025-11-13 03:35:30');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('38944596-ed8e-4c59-822b-91dbc0a1c2c6','3fe6b606-0b76-4787-b571-850a86bf3022','a3e2d9b1-5c73-42f9-8a7a-91e8d4f91a05',1,9.99,'2025-11-13 03:48:18','2025-11-13 03:48:18');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('5f875560-9276-4d17-a01e-36817a1261f8','33333333-cccc-4c3c-dd3d-000000000003','e8b79e4f-6d9a-4c3d-9b6e-72c14e68ad02',3,7.49,'2025-11-13 02:33:09','2025-11-13 02:33:09');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('78ba3fec-1b7e-45ef-af0e-21d523df70e7','17b9c7b5-e17c-435a-8691-1f496ba87317','f92a6e7a-78f2-4b4b-801f-63d5a1baad12',2,16.99,'2025-11-13 03:35:30','2025-11-13 03:35:30');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('8f867e7e-0dd3-497b-9a82-62ad6c34150d','237692b8-b51d-42db-a77a-780f91a0cc4c','df91a64b-7b2a-43b4-9e7c-15b3b5e91a02',1,11.80,'2025-11-13 03:13:49','2025-11-13 03:13:49');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('94b544b0-b444-4427-915d-8fd849eae15c','237692b8-b51d-42db-a77a-780f91a0cc4c','ff43c7b1-0a4c-4e99-9c44-7e4f2e4fad16',2,13.49,'2025-11-13 03:13:49','2025-11-13 03:13:49');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('a5da2a52-08b8-4a18-97fb-b0e35c704d6f','3fe6b606-0b76-4787-b571-850a86bf3022','b2a6d9e9-7e2f-4e81-a2c7-55a8b1f91a10',2,12.50,'2025-11-13 03:48:18','2025-11-13 03:48:18');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('aaa11111-aaaa-4a1a-bb1b-000000000101','11111111-aaaa-4a1a-bb1b-000000000001','3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06',2,8.99,'2025-11-10 22:30:08','2025-11-10 22:30:08');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('ac7073f0-b5bf-41f1-aa11-bb183e9e19bc','237692b8-b51d-42db-a77a-780f91a0cc4c','b7d9e1c4-55a1-44af-87f2-2a1f3b7a1a13',1,8.90,'2025-11-13 03:13:49','2025-11-13 03:13:49');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('b17d51d5-c1f2-4da4-92fd-680ec25f84c2','3fe6b606-0b76-4787-b571-850a86bf3022','f3a2b5c7-1f7d-4e92-b8d1-99f2c3e91a12',2,17.50,'2025-11-13 03:48:18','2025-11-13 03:48:18');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('bbb22222-bbbb-4b2b-cc2c-000000000201','22222222-bbbb-4b2b-cc2c-000000000002','3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06',3,8.99,'2025-11-10 22:30:08','2025-11-10 22:30:08');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('ccc33333-cccc-4c3c-dd3d-000000000301','33333333-cccc-4c3c-dd3d-000000000003','3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06',5,8.99,'2025-11-10 22:30:08','2025-11-10 22:30:08');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('ccc33333-cccc-4c3c-dd3d-000000000302','33333333-cccc-4c3c-dd3d-000000000003','e4b8c9f7-2f1a-4b3e-8b9d-7a3e1f9a1a20',2,22.99,'2025-11-10 22:30:08','2025-11-10 22:30:08');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('ddd44444-dddd-4d4d-ee4e-000000000401','44444444-dddd-4d4d-ee4e-000000000004','efc6a2a3-87a2-4c9e-8221-32b7b9d01a07',5,8.99,'2025-11-10 22:30:08','2025-11-10 22:30:08');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('df8854b0-6f98-4b39-a53a-1e75b34b91cc','17b9c7b5-e17c-435a-8691-1f496ba87317','e6a4b2c7-21f9-4f91-9a7d-3a8e1d7e1a14',1,7.50,'2025-11-13 03:35:30','2025-11-13 03:35:30');
+INSERT INTO `orderitems` (`orderItemId`,`orderId`,`productId`,`quantity`,`price`,`createdAt`,`updatedAt`) VALUES ('eee55555-eeee-4e5e-ff5f-000000000501','55555555-eeee-4e5e-ff5f-000000000005','a5f1b4c7-48e9-456b-9b2b-5a2c3b9a1a08',4,6.99,'2025-11-10 22:30:08','2025-11-10 22:30:08');
 
--- Order 3 (Staff - David Kim)
-('ccc33333-cccc-4c3c-dd3d-000000000301', '33333333-cccc-4c3c-dd3d-000000000003', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 5, 8.99, NOW(), NOW()),
-('ccc33333-cccc-4c3c-dd3d-000000000302', '33333333-cccc-4c3c-dd3d-000000000003', 'e4b8c9f7-2f1a-4b3e-8b9d-7a3e1f9a1a20', 2, 22.99, NOW(), NOW()),
-
--- Order 4 (Basic - Sophia Nguyen)
-('ddd44444-dddd-4d4d-ee4e-000000000401', '44444444-dddd-4d4d-ee4e-000000000004', 'efc6a2a3-87a2-4c9e-8221-32b7b9d01a07', 5, 8.99, NOW(), NOW()),
-
--- Order 5 (Manager - Michael Brown)
-('eee55555-eeee-4e5e-ff5f-000000000501', '55555555-eeee-4e5e-ff5f-000000000005', 'a5f1b4c7-48e9-456b-9b2b-5a2c3b9a1a08', 0, 0.00, NOW(), NOW());
-
--- ===== ORDERS =====
-INSERT INTO orders (orderId, userId, orderDate, orderStatus, paymentMethod, totalAmount, createdAt, updatedAt)
-VALUES
-('11111111-aaaa-4a1a-bb1b-000000000001', 'a1f3c0e2-11a4-4b1a-bc2f-9d2a3f4e1a01', NOW(), 'completed', 'credit card', 58.94, NOW(), NOW()),
-('22222222-bbbb-4b2b-cc2c-000000000002', 'b2e4d1f3-22b5-4c2b-ad3f-8c3b5f5f2b02', NOW(), 'pending', 'cash', 26.97, NOW(), NOW()),
-('33333333-cccc-4c3c-dd3d-000000000003', 'c3f5e2a4-33c6-4d3c-be4f-7d4c6g6g3c03', NOW(), 'completed', 'bank transfer', 89.95, NOW(), NOW()),
-('44444444-dddd-4d4d-ee4e-000000000004', 'd4g6f3b5-44d7-4e4d-cf5f-6e5d7h7h4d04', NOW(), 'open', 'check', 44.95, NOW(), NOW()),
-('55555555-eeee-4e5e-ff5f-000000000005', 'e5h7g4c6-55e8-4f5e-dg6f-5f6e8i8i5e05', NOW(), 'cancelled', 'cryptocurrency', 0.00, NOW(), NOW());
-
--- ===== ORDER ITEMS =====
-INSERT INTO order_items (orderItemId, orderId, productId, quantity, price, createdAt, updatedAt)
-VALUES
--- Order 1 (Admin - James Anderson)
-('aaa11111-aaaa-4a1a-bb1b-000000000101', '11111111-aaaa-4a1a-bb1b-000000000001', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 2, 8.99, NOW(), NOW()), -- Loratadine
-('aaa11111-aaaa-4a1a-bb1b-000000000102', '11111111-aaaa-4a1a-bb1b-000000000001', '4d82f91b-9a7b-4b2d-912f-9c2a6f3b4c07', 4, 10.24, NOW(), NOW()),
-
--- Order 2 (Manager - Maria Lopez)
-('bbb22222-bbbb-4b2b-cc2c-000000000201', '22222222-bbbb-4b2b-cc2c-000000000002', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 3, 8.99, NOW(), NOW()),
-
--- Order 3 (Staff - David Kim)
-('ccc33333-cccc-4c3c-dd3d-000000000301', '33333333-cccc-4c3c-dd3d-000000000003', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 5, 8.99, NOW(), NOW()),
-('ccc33333-cccc-4c3c-dd3d-000000000302', '33333333-cccc-4c3c-dd3d-000000000003', '5c83fa2c-ab8c-4c3e-923f-8d3b7h4c5d08', 2, 22.99, NOW(), NOW()),
-
--- Order 4 (Basic - Sophia Nguyen)
-('ddd44444-dddd-4d4d-ee4e-000000000401', '44444444-dddd-4d4d-ee4e-000000000004', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 5, 8.99, NOW(), NOW()),
-
--- Order 5 (Manager - Michael Brown)
-('eee55555-eeee-4e5e-ff5f-000000000501', '55555555-eeee-4e5e-ff5f-000000000005', '3b72d81e-8b9a-4e19-a7b1-8391b6a2ad06', 0, 0.00, NOW(), NOW());
+-- Addresses
+INSERT INTO Addresses (
+    addressId, userId, label, recipientFirstName, recipientLastName,
+    phoneNumber, addressLine1, addressLine2, city, state, zipCode, country, isDefault,
+    createdAt, updatedAt
+) VALUES
+(
+    'a1b2c3d4-e5f6-7890-ab12-cdef12345678',
+    '39252d06-f433-4bd7-8b39-e0eaa453e285',
+    'Home',
+    'John',
+    'Doe',
+    '555-1234',
+    '123 Main St',
+    'Apt 4B',
+    'New York',
+    'NY',
+    '10001',
+    'USA',
+    TRUE,
+    NOW(),
+    NOW()
+),
+(
+    'b2c3d4e5-f678-9012-ab34-cdef23456789',
+    '39252d06-f433-4bd7-8b39-e0eaa453e285',
+    'Work',
+    'John',
+    'Doe',
+    '555-5678',
+    '456 Market St',
+    NULL,
+    'New York',
+    'NY',
+    '10002',
+    'USA',
+    FALSE,
+    NOW(),
+    NOW()
+),
+(
+    'c3d4e5f6-7890-1234-ab56-cdef34567890',
+    '39252d06-f433-4bd7-8b39-e0eaa453e285',
+    'Vacation',
+    'John',
+    'Doe',
+    '555-9012',
+    '789 Ocean Ave',
+    'Suite 10',
+    'Miami',
+    'FL',
+    '33101',
+    'USA',
+    FALSE,
+    NOW(),
+    NOW()
+);

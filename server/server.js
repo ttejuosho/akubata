@@ -18,6 +18,7 @@ import addressRoutes from "./routes/addressRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import { version } from "os";
 const app = express();
 
 app.use(
@@ -38,7 +39,7 @@ app.use("/api/carts", cartRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.get("/", (req, res) => res.send("Akubata API is running..."));
+app.get("/", (req, res) => res.send({ message: "Akubata Server is running", version: "1.0.0" }));
 app.use(notFound);
 app.use(errorHandler);
 

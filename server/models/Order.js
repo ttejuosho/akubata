@@ -27,10 +27,6 @@ const Order = sequelize.define(
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      // references: {
-      //   model: User,
-      //   key: "userId",
-      // },
     },
     orderDate: {
       type: DataTypes.DATE,
