@@ -36,10 +36,6 @@ const OrderItem = sequelize.define(
     productId: {
       type: DataTypes.UUID,
       allowNull: false,
-      // references: {
-      //   model: Product,
-      //   key: "productId",
-      // },
     },
     quantity: {
       type: DataTypes.INTEGER,

@@ -14,10 +14,6 @@ const OrderAddress = sequelize.define(
     orderId: {
       type: DataTypes.UUID,
       allowNull: false,
-      // references: {
-      //   model: Order,
-      //   key: "orderId",
-      // },
       onDelete: "CASCADE",
     },
 

@@ -1,7 +1,6 @@
 // models/OrderPayment.js
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import Order from "./Order.js";
 
 const OrderPayment = sequelize.define(
   "OrderPayment",
@@ -15,7 +14,6 @@ const OrderPayment = sequelize.define(
     orderId: {
       type: DataTypes.UUID,
       allowNull: false,
-      //references: { model: Order, key: "orderId" },
       onDelete: "CASCADE",
     },
 

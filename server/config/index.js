@@ -1,3 +1,12 @@
+// config/index.js
+/**
+ * Application Configuration
+ * -------------------------
+ * Centralized configuration for the application, including server settings,
+ * database connection details, authentication parameters, and email service
+ * configurations.
+ */
+
 import dotenv from "dotenv";
 import path from "path";
 

@@ -3,12 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.api.routes import router as api_router
+from app.db.session import test_db_connection
+from app.db.session import get_db
 
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="FastAPI Starter",
-        version="0.1.0",
+        title="Akubata Server",
+        version="1.0.0",
         openapi_url="/openapi.json",
         docs_url="/docs",
         redoc_url="/redoc",
@@ -23,13 +25,22 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    @app.on_event("startup")
+    def on_startup() -> None:
+        test_db_connection()
+
+    @app.get("/db-check")
+    def db_check(db: Session = Depends(get_db)) -> dict:
+        db.execute(text("SELECT 1"))
+        return {"db": "ok"}
+
     # Health check
     @app.get("/health")
     def health() -> dict:
         return {"status": "ok"}
 
     # API routes
-    app.include_router(api_router, prefix="/api/v1")
+    app.include_router(api_router, prefix="/api")
 
     return app
 

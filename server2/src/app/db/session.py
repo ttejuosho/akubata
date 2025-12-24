@@ -1,12 +1,14 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 
 from app.core.config import settings
 
-# SQLite needs this flag for multithreaded access (common in dev)
-connect_args = {"check_same_thread": False} if settings.database_url.startswith("sqlite") else {}
-
-engine = create_engine(settings.database_url, echo=False, connect_args=connect_args)
+engine = create_engine(
+    settings.database_url,
+    pool_pre_ping=True,                 # detects stale MySQL connections
+    pool_size=settings.db_pool_size,    # like Sequelize pool.max
+    max_overflow=settings.db_max_overflow,
+)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
@@ -17,3 +19,9 @@ def get_db() -> Session:
         yield db
     finally:
         db.close()
+
+
+def test_db_connection() -> None:
+    # Similar to sequelize.authenticate()
+    with engine.connect() as conn:
+        conn.execute(text("SELECT 1"))

@@ -12,8 +12,8 @@ src/app/db/session.py
 src/app/models/user.py
 src/app/schemas/auth.py
 src/app/schemas/user.py
-src/fastapi_starter.egg-info/PKG-INFO
-src/fastapi_starter.egg-info/SOURCES.txt
-src/fastapi_starter.egg-info/dependency_links.txt
-src/fastapi_starter.egg-info/requires.txt
-src/fastapi_starter.egg-info/top_level.txt
+src/akubata.egg-info/PKG-INFO
+src/akubata.egg-info/SOURCES.txt
+src/akubata.egg-info/dependency_links.txt
+src/akubata.egg-info/requires.txt
+src/akubata.egg-info/top_level.txt

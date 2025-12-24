@@ -55,10 +55,6 @@ const Product = sequelize.define(
     supplierId: {
       type: DataTypes.UUID,
       allowNull: true,
-      // references: {
-      //   model: Supplier,
-      //   key: "supplierId",
-      // },
     },
     isActive: {
       type: DataTypes.BOOLEAN,

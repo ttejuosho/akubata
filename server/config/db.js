@@ -1,4 +1,4 @@
-// config/database.js
+// config/db.js
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 import config from "./index.js";

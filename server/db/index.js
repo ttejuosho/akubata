@@ -1,3 +1,11 @@
+//db/index.js
+/**
+ * Database Connection and Synchronization
+ * ----------------------------------------
+ * This module handles the connection to the MySQL database using Sequelize.
+ * It provides functions to connect, sync models, and close the connection.
+ */
+
 import sequelize from "../config/db.js";
 
 /**
