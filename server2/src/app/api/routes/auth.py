@@ -21,9 +21,9 @@ from app.schemas.auth import (
 from app.schemas.user import UserPublic
 from app.api.deps import CurrentUserDep, get_current_user
 from app.services.mailer import send_email  # you will implement this
+import sys
 
-
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter()
 
 
 def _set_auth_cookie(response: Response, token: str) -> None:
@@ -44,7 +44,6 @@ def _clear_auth_cookie(response: Response) -> None:
         secure=settings.cookie_secure,
         samesite=settings.cookie_samesite,
     )
-
 
 @router.get("/me", response_model=UserPublic)
 def me(current_user: CurrentUserDep) -> User:
@@ -75,7 +74,7 @@ def signup(payload: SignupRequest, response: Response, db: Session = Depends(get
     db.commit()
     db.refresh(user)
 
-    token = create_access_token(user_id=user.user_id, email_address=user.email_address, role=user.role)
+    token = create_access_token(userId=user.userId, email_address=user.email_address, role=user.role)
     _set_auth_cookie(response, token)
 
     # Welcome email (parity with Node)
@@ -97,7 +96,7 @@ def signup(payload: SignupRequest, response: Response, db: Session = Depends(get
     return {
         "message": "Welcome! Signup successful.",
         "user": {
-            "userId": user.user_id,
+            "userId": user.userId,
             "firstName": user.first_name,
             "lastName": user.last_name,
             "emailAddress": user.email_address,
@@ -125,7 +124,7 @@ def login(payload: LoginRequest, response: Response, db: Session = Depends(get_d
     if not verify_password(payload.password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Invalid credentials")
 
-    token = create_access_token(user_id=user.user_id, email_address=user.email_address, role=user.role)
+    token = create_access_token(userId=user.userId, email_address=user.email_address, role=user.role)
     _set_auth_cookie(response, token)
 
     default_address = next((a for a in user.addresses if a.is_default), None)
@@ -139,7 +138,7 @@ def login(payload: LoginRequest, response: Response, db: Session = Depends(get_d
     return {
         "message": "Logged in successfully",
         "user": {
-            "userId": user.user_id,
+            "userId": user.userId,
             "firstName": user.first_name,
             "lastName": user.last_name,
             "emailAddress": user.email_address,

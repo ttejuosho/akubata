@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Optional
 
 import enum
 from datetime import datetime
@@ -23,7 +24,7 @@ class User(Base):
 
     # Sequelize UUID primary key: DataTypes.UUID + UUIDV4
     # In MySQL this is commonly stored as CHAR(36)
-    user_id: Mapped[str] = mapped_column(
+    userId: Mapped[str] = mapped_column(
         "userId",
         CHAR(36),
         primary_key=True,
@@ -41,7 +42,7 @@ class User(Base):
         index=True,
     )
 
-    phone_number: Mapped[str | None] = mapped_column(
+    phone_number: Mapped[Optional[str]] = mapped_column(
         "phoneNumber",
         String(50),
         nullable=True,
@@ -59,8 +60,17 @@ class User(Base):
         default=UserRole.basic,
     )
 
-    password_reset_token: Mapped[str | None] = mapped_column("passwordResetToken", String(255), nullable=True)
-    token_expires: Mapped[datetime | None] = mapped_column("tokenExpires", DateTime, nullable=True)
+    password_reset_token: Mapped[Optional[str]] = mapped_column(
+        "passwordResetToken",
+        String(255),
+        nullable=True,
+    )
+
+    token_expires: Mapped[Optional[datetime]] = mapped_column(
+        "tokenExpires",
+        DateTime,
+        nullable=True,
+    )
 
     is_active: Mapped[bool] = mapped_column("isActive", Boolean, nullable=False, default=True)
 

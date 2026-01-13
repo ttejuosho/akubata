@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import enum
 from datetime import datetime
+from typing import Optional
 from uuid import uuid4
 
 from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Text, func
@@ -45,7 +46,7 @@ class Notification(Base):
 
     is_read: Mapped[bool] = mapped_column("isRead", Boolean, nullable=False, default=False)
 
-    related_conversation_id: Mapped[str | None] = mapped_column(
+    related_conversation_id: Mapped[Optional[str]] = mapped_column(
         "relatedConversationId",
         CHAR(36),
         ForeignKey("conversations.conversationId", ondelete="SET NULL"),
@@ -53,7 +54,7 @@ class Notification(Base):
         index=True,
     )
 
-    related_message_id: Mapped[str | None] = mapped_column(
+    related_message_id: Mapped[Optional[str]] = mapped_column(
         "relatedMessageId",
         CHAR(36),
         ForeignKey("messages.messageId", ondelete="SET NULL"),

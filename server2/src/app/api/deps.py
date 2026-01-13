@@ -42,11 +42,11 @@ def get_current_user(request: Request, db: DbDep) -> User:
         # covers malformed token, expired token, invalid signature
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
-    user_id = payload.get("userId")
-    if not user_id:
+    userId = payload.get("userId")
+    if not userId:
         raise HTTPException(status_code=401, detail="Malformed token")
 
-    user = db.query(User).filter(User.user_id == user_id).first()
+    user = db.query(User).filter(User.userId == userId).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
 

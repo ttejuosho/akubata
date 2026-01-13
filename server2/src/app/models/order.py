@@ -36,7 +36,7 @@ class Order(Base):
         default=lambda: str(uuid4()),
     )
 
-    user_id: Mapped[str] = mapped_column(
+    userId: Mapped[str] = mapped_column(
         "userId",
         CHAR(36),
         ForeignKey("users.userId", ondelete="CASCADE"),

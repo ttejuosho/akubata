@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class Token(BaseModel):
@@ -8,20 +8,20 @@ class Token(BaseModel):
 class SignupRequest(BaseModel):
     firstName: str
     lastName: str
-    emailAddress: EmailStr
-    phoneNumber: str | None = None
+    emailAddress: str
+    phoneNumber: str
     password: str
     confirmPassword: str
     role: str = "admin"
 
 
 class LoginRequest(BaseModel):
-    emailAddress: EmailStr
+    emailAddress: str
     password: str
 
 
 class ForgotPasswordRequest(BaseModel):
-    emailAddress: EmailStr
+    emailAddress: str
 
 
 class ResetPasswordRequest(BaseModel):

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, ConfigDict
 
 
 class UserPublic(BaseModel):
@@ -7,7 +7,7 @@ class UserPublic(BaseModel):
     userId: str
     firstName: str
     lastName: str
-    emailAddress: EmailStr
-    phoneNumber: str | None
+    emailAddress: str
+    phoneNumber: str
     role: str
     isActive: bool

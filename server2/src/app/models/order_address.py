@@ -3,6 +3,7 @@ from __future__ import annotations
 import enum
 from datetime import datetime
 from uuid import uuid4
+from typing import Optional
 
 from sqlalchemy import DateTime, Enum, ForeignKey, String, func
 from sqlalchemy.dialects.mysql import CHAR
@@ -41,12 +42,12 @@ class OrderAddress(Base):
     )
 
     first_name: Mapped[str] = mapped_column("firstName", String(255), nullable=False)
-    last_name: Mapped[str | None] = mapped_column("lastName", String(255), nullable=True)
+    last_name: Mapped[Optional[str]] = mapped_column("lastName", String(255), nullable=True)
 
     phone_number: Mapped[str] = mapped_column("phoneNumber", String(50), nullable=False)
 
     address_line1: Mapped[str] = mapped_column("addressLine1", String(255), nullable=False)
-    address_line2: Mapped[str | None] = mapped_column("addressLine2", String(255), nullable=True)
+    address_line2: Mapped[Optional[str]] = mapped_column("addressLine2", String(255), nullable=True)
 
     city: Mapped[str] = mapped_column("city", String(100), nullable=False)
     state: Mapped[str] = mapped_column("state", String(100), nullable=False)

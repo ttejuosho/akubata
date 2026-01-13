@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from uuid import uuid4
+from typing import Optional
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, Numeric, String, Text, func
 from sqlalchemy.dialects.mysql import CHAR
@@ -21,16 +22,16 @@ class Product(Base):
     )
 
     product_name: Mapped[str] = mapped_column("productName", String(255), nullable=False)
-    category: Mapped[str | None] = mapped_column("category", String(255), nullable=True)
-    description: Mapped[str | None] = mapped_column("description", Text, nullable=True)
+    category: Mapped[Optional[str]] = mapped_column("category", String(255), nullable=True)
+    description: Mapped[Optional[str]] = mapped_column("description", Text, nullable=True)
 
     unit_price: Mapped[float] = mapped_column("unitPrice", Numeric(10, 2), nullable=False)
 
     stock_quantity: Mapped[int] = mapped_column("stockQuantity", Integer, nullable=False, default=0)
 
-    image_url: Mapped[str | None] = mapped_column("imageUrl", String(2048), nullable=True)
+    image_url: Mapped[Optional[str]] = mapped_column("imageUrl", String(2048), nullable=True)
 
-    supplier_id: Mapped[str | None] = mapped_column(
+    supplier_id: Mapped[Optional[str]] = mapped_column(
         "supplierId",
         CHAR(36),
         ForeignKey("suppliers.supplierId", ondelete="SET NULL"),

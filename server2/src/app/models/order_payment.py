@@ -3,6 +3,7 @@ from __future__ import annotations
 import enum
 from datetime import datetime
 from uuid import uuid4
+from typing import Optional
 
 from sqlalchemy import DateTime, Enum, ForeignKey, String, func
 from sqlalchemy.dialects.mysql import CHAR
@@ -53,10 +54,10 @@ class OrderPayment(Base):
         nullable=False,
     )
 
-    card_brand: Mapped[str | None] = mapped_column("cardBrand", String(255), nullable=True)
-    card_last4: Mapped[str | None] = mapped_column("cardLast4", String(4), nullable=True)
+    card_brand: Mapped[Optional[str]] = mapped_column("cardBrand", String(255), nullable=True)
+    card_last4: Mapped[Optional[str]] = mapped_column("cardLast4", String(4), nullable=True)
 
-    transaction_id: Mapped[str | None] = mapped_column("transactionId", String(255), nullable=True)
+    transaction_id: Mapped[Optional[str]] = mapped_column("transactionId", String(255), nullable=True)
 
     payment_status: Mapped[PaymentStatus] = mapped_column(
         "paymentStatus",

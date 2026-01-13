@@ -28,7 +28,7 @@ class ConversationParticipant(Base):
         index=True,
     )
 
-    user_id: Mapped[str] = mapped_column(
+    userId: Mapped[str] = mapped_column(
         "userId",
         CHAR(36),
         ForeignKey("users.userId", ondelete="CASCADE"),
